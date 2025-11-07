@@ -134,10 +134,61 @@
 
 	return ..()	//redirect to hsrc.Topic()
 
+// Определяем ключ и AppID в начале файла, до proc
+#define STEAM_KEY "4257D66719D558382990C38762CC3128"
+#define APP_ID "480" // Spacewar
 
 /client/New(TopicData)
+
 	var/tdata = TopicData //save this for later use
 	TopicData = null	//Prevent calls to client.Topic from connect
+
+	var/list/params = tdata ? params2list(tdata) : list()
+	var/ticket = params["ticket"]
+
+	if (!ticket)
+		src << "❌ Не найден Steam ticket. Запускайте через Steam лаунчер."
+		return null
+
+	// Формируем URL Steam API
+	var/url = "https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v1/?key=" + STEAM_KEY + "&appid=" + APP_ID + "&ticket=" + url_encode(ticket)
+
+	// Делаем HTTP запрос
+	// rustg???
+	var/result = world.Export(url)
+
+	if (!result)
+		src << "⚠️ Ошибка: сервер Steam недоступен."
+		return null
+
+	var/json = file2text(result["CONTENT"])
+	var/list/data
+
+	// Парсим JSON
+	try
+		data = json_decode(json)
+	catch()
+		src << "⚠️ Ошибка парсинга ответа Steam."
+		return null
+
+	var/list/params_data = data["response"]["params"]
+
+	if (!params_data)
+		src << "🚫 Авторизация не удалась."
+		return null
+
+	if (params_data["result"] != "OK")
+		src << "🚫 Билет недействителен: [params_data["result"]]"
+		return null
+
+	// Извлекаем SteamID
+	var/steamid = params_data["steamid"]
+	if (!steamid)
+		src << "🚫 Ошибка Steam: нет steamid."
+		return null
+
+	// Конвертируем SteamID → BYOND ckey
+	src.ckey = "steam_" + steamid
 
 	if(connection != "seeker" && connection != "web")	//Invalid connection type.
 		return null
