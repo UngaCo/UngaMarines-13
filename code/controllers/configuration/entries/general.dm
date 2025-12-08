@@ -465,3 +465,9 @@ This maintains a list of ip addresses that are able to bypass topic filtering.
 /datum/config_entry/string/discord_boosty_roleid_tier_2
 
 /datum/config_entry/string/discord_boosty_roleid_tier_3
+
+//steam
+
+/datum/config_entry/string/steam_key
+
+/datum/config_entry/string/app_id

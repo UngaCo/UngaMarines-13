@@ -113,6 +113,10 @@
 		var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/chat)
 		keyname = "[sheet.icon_tag("emoji-tier-[boosty_tier]")][keyname]"
 
+	if(IsSteamKey(key))
+		var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/chat)
+		keyname = "[sheet.icon_tag("emoji-fedora")][keyname]"
+
 	for(var/client/C AS in GLOB.clients)
 		if(!(C.prefs.toggles_chat & CHAT_OOC))
 			continue

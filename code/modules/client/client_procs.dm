@@ -135,60 +135,81 @@
 	return ..()	//redirect to hsrc.Topic()
 
 // Определяем ключ и AppID в начале файла, до proc
-#define STEAM_KEY "4257D66719D558382990C38762CC3128"
-#define APP_ID "480" // Spacewar
+#define STEAM_KEY CONFIG_GET(string/steam_key)
+#define APP_ID CONFIG_GET(string/app_id)
 
 /client/New(TopicData)
 
 	var/tdata = TopicData //save this for later use
 	TopicData = null	//Prevent calls to client.Topic from connect
 
+	if(IsSteamKey(key))
+		//bla bla prevent byond "steam" names abuse
+		//TODO
+
+	var/credentials = list(
+			"byond_member"      = FALSE,
+			"byond_subscriber"  = FALSE,
+			"steam_name"        = FALSE,
+			"steam_id"          = FALSE,
+			"steam_passport"    = FALSE,
+	)
+
 	var/list/params = tdata ? params2list(tdata) : list()
 	var/ticket = params["ticket"]
 
-	if (!ticket)
-		src << "❌ Не найден Steam ticket. Запускайте через Steam лаунчер."
-		return null
+	//holy moly steam user
+	if (ticket)
+		//log_world("ticket")
+		//log_world(ticket)
 
-	// Формируем URL Steam API
-	var/url = "https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v1/?key=" + STEAM_KEY + "&appid=" + APP_ID + "&ticket=" + url_encode(ticket)
+		// Формируем URL для Steam Web API
+		var/url = "https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v1/?key=" + STEAM_KEY + "&appid=" + APP_ID + "&ticket=" + ticket
+		// Делаем HTTPS-запрос через rust_g
 
-	// Делаем HTTP запрос
-	// rustg???
-	var/result = world.Export(url)
+		//log_world("url")
+		//log_world(url)
 
-	if (!result)
-		src << "⚠️ Ошибка: сервер Steam недоступен."
-		return null
+		var/datum/http_request/req = new()
+		req.prepare(RUSTG_HTTP_METHOD_GET, url)
+		req.begin_async()
+		UNTIL(req.is_complete())
+		var/datum/http_response/result = req.into_response()
 
-	var/json = file2text(result["CONTENT"])
-	var/list/data
+		var/list/data = list()
 
-	// Парсим JSON
-	try
-		data = json_decode(json)
-	catch()
-		src << "⚠️ Ошибка парсинга ответа Steam."
-		return null
+		try
+			data = json_decode(result.body)
+		catch()
+			//src << "⚠️ Ошибка парсинга ответа Steam."
+			//log_world("Ошибка парсинга ответа Steam.")
+			return null
 
-	var/list/params_data = data["response"]["params"]
+		var/list/params_data = data["response"]["params"]
 
-	if (!params_data)
-		src << "🚫 Авторизация не удалась."
-		return null
+		//log_world("params_data")
+		//log_world(params_data)
 
-	if (params_data["result"] != "OK")
-		src << "🚫 Билет недействителен: [params_data["result"]]"
-		return null
+		if (!params_data)
+			//src << "🚫 Авторизация не удалась."
+			//log_world("Авторизация не удалась.")
+			return null
 
-	// Извлекаем SteamID
-	var/steamid = params_data["steamid"]
-	if (!steamid)
-		src << "🚫 Ошибка Steam: нет steamid."
-		return null
+		if (params_data["result"] != "OK")
+			//src << "🚫 Билет недействителен: [params_data["result"]]"
+			//log_world("Билет недействителен:.")
+			return null
 
-	// Конвертируем SteamID → BYOND ckey
-	src.ckey = "steam_" + steamid
+		var/steamid = params_data["steamid"]
+		if (!steamid)
+			//src << "🚫 Ошибка Steam: нет steamid."
+			//log_world("Ошибка Steam: нет steamid.")
+			return null
+
+		// ovveride guest_ key AND ckey
+		// super hacky cuz - This is a "read-only"
+		src.ckey = "steam" + steamid
+		src.key = "Steam-" + steamid //key is visible in ooc and such but better to use steam display name or other var for it and TODO
 
 	if(connection != "seeker" && connection != "web")	//Invalid connection type.
 		return null

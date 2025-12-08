@@ -235,6 +235,11 @@
 			return FALSE
 	return TRUE
 
+//Returns whether or not a player is a steam user using their ckey as an input
+/proc/IsSteamKey(key)
+	if(findtext(key, "Steam-", 1, 7) != 1) //was findtextEx
+		return FALSE
+	return TRUE
 
 // Ensure the frequency is within bounds of what it should be sending/receiving at
 /proc/sanitize_frequency(frequency, free = FALSE)
