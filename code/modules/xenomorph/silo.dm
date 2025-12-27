@@ -40,6 +40,8 @@
 
 /obj/structure/xeno/silo/LateInitialize()
 	. = ..()
+	if(!(SSticker.mode?.round_type_flags & MODE_SILO_RESPAWN))
+		QDEL_NULL(proximity_monitor)
 	var/siloprefix = GLOB.hive_datums[hivenumber].name
 	number_silo = length(GLOB.xeno_resin_silos_by_hive[hivenumber]) + 1
 	name = "[siloprefix == "Normal" ? "" : "[siloprefix] "][name] [number_silo]"
@@ -58,11 +60,6 @@
 		newt.name += " [name]"
 	if(GLOB.hive_datums[hivenumber])
 		SSticker.mode.update_silo_death_timer(GLOB.hive_datums[hivenumber])
-
-/obj/structure/xeno/silo/set_proximity_warning()
-	if(!(SSticker.mode?.round_type_flags & MODE_SILO_RESPAWN))
-		return
-	return ..()
 
 /obj/structure/xeno/silo/obj_destruction(damage_amount, damage_type, damage_flag, mob/living/blame_mob)
 	if(GLOB.hive_datums[hivenumber])

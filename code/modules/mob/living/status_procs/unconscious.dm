@@ -1,3 +1,7 @@
+///Returns if unconscious
+/mob/living/proc/IsUnconscious()
+	return has_status_effect(STATUS_EFFECT_UNCONSCIOUS)
+
 ///Returns remaining unconscious duration
 /mob/living/proc/AmountUnconscious()
 	var/datum/status_effect/incapacitating/unconscious/current_unconscious = has_status_effect(STATUS_EFFECT_UNCONSCIOUS)

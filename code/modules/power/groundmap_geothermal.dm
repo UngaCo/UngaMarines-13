@@ -263,10 +263,15 @@ GLOBAL_VAR_INIT(generators_on_ground, 0)
 		user.visible_message(span_notice("[user] burns [src]'s resin off."),
 		span_notice("You burn [src]'s resin off."))
 
+		var/old_corrupted = corrupted
 		corrupted = 0
 		stop_processing()
 		update_icon()
 		update_minimap_icon()
+
+		// Invalidate cache for the hive since generator corruption was removed
+		if(GLOB.hive_datums[old_corrupted])
+			GLOB.hive_datums[old_corrupted].update_corrupted_generators_cache()
 		return
 
 	if(user.skills.getRating(SKILL_ENGINEER) < SKILL_ENGINEER_ENGI)
@@ -347,6 +352,10 @@ GLOBAL_VAR_INIT(generators_on_ground, 0)
 	update_icon()
 	update_minimap_icon()
 	start_processing()
+
+	// Invalidate cache for the hive since generator state changed
+	if(GLOB.hive_datums[hivenumber])
+		GLOB.hive_datums[hivenumber].update_corrupted_generators_cache()
 
 /obj/machinery/power/geothermal/bigred //used on big red
 	name = "\improper Reactor Turbine"

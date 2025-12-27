@@ -40,6 +40,7 @@
 #define span_linkify(str) ("<span class='linkify'>" + str + "</span>")
 #define span_linkoff(str) ("<span class='linkoff'>" + str + "</span>")
 #define span_linkon(str) ("<span class='linkon'>" + str + "</span>")
+#define span_lobbytext(str) ("<span class='lobbytext'>" + str + "</span>")
 #define span_looc(str) ("<span class='looc'>" + str + "</span>")
 #define span_memo(str) ("<span class='memo'>" + str + "</span>")
 #define span_memoedit(str) ("<span class='memoedit'>" + str + "</span>")

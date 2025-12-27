@@ -27,6 +27,10 @@
 	var/datum/status_effect/stacking/essence_link/existing_link
 	/// The target of an existing link, if applicable.
 	var/mob/living/carbon/xenomorph/linked_target
+	/// A percentage of health to restore to the owner whenever the linked target deals slash damage.
+	var/lifesteal_percentage = 0
+	/// The additive amount to increase melee damage modifier to the survivor if the link ends due to death.
+	var/revenge_modifier = 0
 	/// Time it takes for the attunement levels to increase.
 	var/attunement_cooldown = 10 SECONDS
 
@@ -53,7 +57,7 @@
 		if(!do_after(xeno_owner, DRONE_ESSENCE_LINK_WINDUP, NONE, target, BUSY_ICON_FRIENDLY, BUSY_ICON_FRIENDLY))
 			xeno_owner.balloon_alert(xeno_owner, "Link cancelled")
 			return
-		xeno_owner.apply_status_effect(STATUS_EFFECT_XENO_ESSENCE_LINK, 1, target)
+		xeno_owner.apply_status_effect(STATUS_EFFECT_XENO_ESSENCE_LINK, 1, target, lifesteal_percentage, revenge_modifier)
 		existing_link = xeno_owner.has_status_effect(STATUS_EFFECT_XENO_ESSENCE_LINK)
 		linked_target = target
 		target.balloon_alert(target, "Essence Link established")
@@ -95,12 +99,23 @@
 	heal_range = DRONE_HEAL_RANGE
 	target_flags = ABILITY_MOB_TARGET
 
+	/// Should cast time / do_after be ignored if healing linked partner?
+	var/saving_grace_enabled = FALSE
+
 /datum/action/ability/activable/xeno/psychic_cure/acidic_salve/use_ability(atom/target)
 	if(xeno_owner.do_actions)
 		return FALSE
-	owner.face_atom(target) //Face the target so we don't look stupid
-	if(!do_after(xeno_owner, 1 SECONDS, NONE, target, BUSY_ICON_FRIENDLY, BUSY_ICON_MEDICAL))
-		return FALSE
+
+	// Check if we should bypass cast time (Saving Grace mutation)
+	var/should_bypass_cast = FALSE
+	if(saving_grace_enabled)
+		var/datum/action/ability/activable/xeno/essence_link/essence_link_action = xeno_owner.actions_by_path[/datum/action/ability/activable/xeno/essence_link]
+		if(essence_link_action?.existing_link?.link_target == target)
+			should_bypass_cast = TRUE
+
+	if(!should_bypass_cast)
+		if(!do_after(xeno_owner, 1 SECONDS, NONE, target, BUSY_ICON_FRIENDLY, BUSY_ICON_MEDICAL))
+			return FALSE
 	xeno_owner.visible_message(span_xenowarning("\the [xeno_owner] vomits acid over [target], mending their wounds!"))
 	owner.changeNext_move(CLICK_CD_RANGE)
 	salve_healing(target)
@@ -115,17 +130,12 @@
 	var/datum/action/ability/activable/xeno/essence_link/essence_link_action = owner.actions_by_path[/datum/action/ability/activable/xeno/essence_link]
 	var/heal_multiplier = 1
 	if(essence_link_action.existing_link?.link_target == target)
-		var/remaining_health = round(target.maxHealth - (target.get_brute_loss() + target.get_fire_loss()))
-		var/health_threshold = round(target.maxHealth * 0.1) // 10% of the target's maximum health
 		target.apply_status_effect(STATUS_EFFECT_XENO_SALVE_REGEN)
-		if(essence_link_action.existing_link.stacks > 0 && remaining_health <= health_threshold)
-			heal_multiplier = 3
 	playsound(target, SFX_ALIEN_DROOL, 25)
 	new /obj/effect/temp_visual/telekinesis(get_turf(target))
 	var/heal_amount = (DRONE_BASE_SALVE_HEAL + target.recovery_aura * target.maxHealth * 0.01) * heal_multiplier
-	target.adjust_fire_loss(-max(0, heal_amount - target.get_brute_loss()), TRUE)
-	target.adjust_brute_loss(-heal_amount)
-	target.adjust_sunder(-heal_amount * 0.1)
+	var/leftover_healing = heal_amount
+	HEAL_XENO_DAMAGE(target, leftover_healing, FALSE)
 	if(heal_multiplier > 1) // A signal depends on the above heals, so this has to be done here.
 		playsound(target,'sound/effects/magic.ogg', 75, 1)
 		essence_link_action.existing_link.add_stacks(-1)

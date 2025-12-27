@@ -144,7 +144,6 @@
 		add_pass_flags(pass_flags, INNATE_TRAIT)
 
 /atom/movable/Destroy()
-	QDEL_NULL(proximity_monitor)
 	QDEL_NULL(language_holder)
 	QDEL_NULL(em_block)
 
@@ -552,6 +551,8 @@
 	var/hit_successful
 	var/old_throw_source = throw_source
 	if(QDELETED(hit_atom))
+		return FALSE
+	if(SEND_SIGNAL(hit_atom, COMSIG_PRE_MOVABLE_IMPACT, src) & COMPONENT_PRE_MOVABLE_IMPACT_DODGED)
 		return FALSE
 	hit_successful = hit_atom.hitby(src, speed)
 	if(hit_successful)

@@ -15,6 +15,10 @@
 	hive?.on_xeno_death(src)
 	hive?.update_tier_limits() //Update our tier limits.
 
+	// Invalidate hivemind cache if this was a hivemind
+	if(isxenohivemind(src))
+		hive?.update_hivemind_cache()
+
 	if(xeno_flags & XENO_ZOOMED)
 		zoom_out()
 

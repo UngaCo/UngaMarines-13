@@ -8,7 +8,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	var/deployable_item = /obj/machinery/optable/deployable
 
-/obj/item/deployable_optable/Initialize()
+/obj/item/deployable_optable/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/deployable_item, deployable_item, 2 SECONDS, 2 SECONDS)
 

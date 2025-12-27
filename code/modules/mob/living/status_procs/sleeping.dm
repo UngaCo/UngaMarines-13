@@ -1,3 +1,7 @@
+///Returns if sleeping
+/mob/living/proc/IsSleeping()
+	return has_status_effect(STATUS_EFFECT_SLEEPING)
+
 ///Returns remaining sleeping duration
 /mob/living/proc/AmountSleeping()
 	var/datum/status_effect/incapacitating/sleeping/current_sleeping = has_status_effect(STATUS_EFFECT_SLEEPING)

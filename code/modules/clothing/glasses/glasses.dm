@@ -388,7 +388,7 @@
 	desc = "Sunglasses with a HUD."
 	icon_state = "sunhud"
 
-/obj/item/clothing/glasses/sunglasses/sechud/mp/Initialize()
+/obj/item/clothing/glasses/sunglasses/sechud/mp/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/clothing_tint, TINT_NONE)
 

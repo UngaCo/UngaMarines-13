@@ -65,7 +65,6 @@
 	hud_state = "grenade_frag"
 	power = 150
 	falloff = 25
-	overlay_type = "yellow"
 
 /obj/item/explosive/grenade/agls
 	name = "\improper AGLS-37 HEDP grenade"
@@ -76,7 +75,6 @@
 	det_time = 1 SECONDS
 	power = 80
 	falloff = 20
-	overlay_type = "yellow"
 
 /obj/item/explosive/grenade/impact
 	name = "\improper M40 IMDP grenade"
@@ -89,7 +87,7 @@
 	icon_state_mini = "grenade_blue_white"
 	power = 80
 	falloff = 30
-	overlay_type = "blue"
+	overlay_type = "cyan"
 
 /obj/item/explosive/grenade/impact/throw_impact(atom/hit_atom, speed)
 	. = ..()

@@ -844,7 +844,7 @@
 	var/sound_to_play = pick(1, 2) == 1 ? 'sound/voice/alien/spitacid.ogg' : 'sound/voice/alien/spitacid2.ogg'
 	playsound(xeno_owner.loc, sound_to_play, 25, 1)
 
-	var/obj/projectile/newspit = new /obj/projectile(current_turf)
+	var/atom/movable/projectile/newspit = new /atom/movable/projectile(current_turf)
 	ability_cost = xeno_owner.ammo.spit_cost
 	newspit.generate_bullet(xeno_owner.ammo, xeno_owner.ammo.damage * SPIT_UPGRADE_BONUS(xeno_owner))
 	newspit.def_zone = xeno_owner.get_limbzone_target()
@@ -1257,7 +1257,15 @@
 
 	victim.do_jitter_animation(2)
 	victim.adjust_clone_loss(20)
-	xeno_owner.biomass = min(xeno_owner.biomass + 15, 100)
+
+	// Caster gets 5 biomass immediately
+	xeno_owner.biomass = min(xeno_owner.biomass + 5, 50)
+
+	// All living xenos (including caster) get +0.05 passive biomass gain
+	for(var/mob/living/carbon/xenomorph/xeno AS in GLOB.alive_xeno_list_hive[xeno_owner.hivenumber])
+		if(xeno.xeno_caste.caste_flags & CASTE_IS_A_MINION)
+			continue
+		xeno.biomass_gain_bonus += 0.05
 
 	ADD_TRAIT(victim, TRAIT_PSY_DRAINED, TRAIT_PSY_DRAINED)
 	if(HAS_TRAIT(victim, TRAIT_UNDEFIBBABLE))
@@ -1375,7 +1383,10 @@
 	victim.dead_ticks = 0
 	ADD_TRAIT(victim, TRAIT_STASIS, TRAIT_STASIS)
 	xeno_owner.eject_victim(TRUE, starting_turf)
-	xeno_owner.biomass = min(xeno_owner.biomass + 15, 100)
+	for(var/mob/living/carbon/xenomorph/xeno AS in GLOB.alive_xeno_list_hive[xeno_owner.hivenumber])
+		if(xeno.xeno_caste.caste_flags & CASTE_IS_A_MINION)
+			continue
+		xeno.biomass_gain_bonus += 0.05
 	if(owner.client)
 		var/datum/personal_statistics/personal_statistics = GLOB.personal_statistics_list[owner.ckey]
 		personal_statistics.cocooned++

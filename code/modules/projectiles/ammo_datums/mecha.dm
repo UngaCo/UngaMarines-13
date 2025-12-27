@@ -49,7 +49,7 @@
 	damage = 75
 	damage_falloff = 4
 
-/datum/ammo/bullet/shotgun/mech/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/shotgun/mech/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, paralyze = 2 SECONDS, stagger = 2 SECONDS, knockback = 2, slowdown = 0.5, max_range = 3)
 
 /datum/ammo/tx54/mech
@@ -63,7 +63,7 @@
 	damage = 15
 	penetration = 10
 
-/datum/ammo/bullet/tx54_spread/mech/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/tx54_spread/mech/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, max_range = 3, slowdown = 0.2)
 
 /datum/ammo/energy/lasgun/marine/mech
@@ -113,7 +113,7 @@
 	bullet_color = COLOR_PULSE_BLUE
 	on_pierce_multiplier = 0.85
 
-/datum/ammo/bullet/apfsds/on_hit_obj(obj/target_obj, obj/projectile/proj)
+/datum/ammo/bullet/apfsds/on_hit_obj(obj/target_obj, atom/movable/projectile/proj)
 	if(ishitbox(target_obj) || ismecha(target_obj) || isarmoredvehicle(target_obj))
 		proj.damage *= 1.5
 		proj.proj_max_range = 0

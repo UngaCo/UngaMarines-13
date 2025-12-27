@@ -3316,10 +3316,6 @@
 /obj/item/stack/sheet/metal,
 /turf/open/floor/plating/ground/mars/random/sand,
 /area/kutjevo/exterior/Northwest_Colony)
-"dFV" = (
-/obj/structure/sign/double/barsign/carp,
-/turf/closed/mineral/smooth/bigred/indestructible,
-/area/kutjevo/interior/oob)
 "dGi" = (
 /obj/effect/turf_decal/medical_decals/cryo/cell,
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{
@@ -6230,6 +6226,9 @@
 /mob/living/simple_animal/hostile/carp{
 	desc = "Harold Carps Esq. A distant cousin of Glubs from Sorokyne Strata. Proud owner of this here fine establishment.";
 	name = "Harold"
+	},
+/obj/machinery/barsign/thedrunkcarp{
+	dir = 1
 	},
 /turf/open/floor/plating/ground/mars/dirttosand/autosmooth,
 /area/kutjevo/interior/oob/dev_room)
@@ -23809,7 +23808,7 @@ dxF
 dxF
 dxF
 dxF
-dFV
+ybY
 gEk
 ejT
 fHX

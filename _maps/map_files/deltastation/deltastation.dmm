@@ -89699,7 +89699,7 @@
 /area/deltastation/engineering/storage)
 "sDO" = (
 /obj/effect/spawner/random/misc/structure/chair_or_metal/east,
-/obj/structure/sign/double/barsign{
+/obj/machinery/barsign{
 	pixel_y = 32
 	},
 /obj/effect/turf_decal/tile/transparent/bar,

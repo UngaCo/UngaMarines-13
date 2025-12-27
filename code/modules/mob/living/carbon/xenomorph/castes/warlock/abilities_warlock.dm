@@ -218,12 +218,12 @@
 		bound_x = -32
 		pixel_x = -32
 
-/obj/effect/xeno/shield/projectile_hit(obj/projectile/proj, cardinal_move, uncrossing)
+/obj/effect/xeno/shield/projectile_hit(atom/movable/projectile/proj, cardinal_move, uncrossing)
 	if(!(cardinal_move & REVERSE_DIR(dir)))
 		return FALSE
 	return !uncrossing
 
-/obj/effect/xeno/shield/do_projectile_hit(obj/projectile/proj)
+/obj/effect/xeno/shield/do_projectile_hit(atom/movable/projectile/proj)
 	proj.projectile_behavior_flags |= PROJECTILE_FROZEN
 	proj.iff_signal = null
 	frozen_projectiles += proj
@@ -240,7 +240,7 @@
 
 ///Unfeezes the projectiles on their original path
 /obj/effect/xeno/shield/proc/release_projectiles()
-	for(var/obj/projectile/proj AS in frozen_projectiles)
+	for(var/atom/movable/projectile/proj AS in frozen_projectiles)
 		proj.projectile_behavior_flags &= ~PROJECTILE_FROZEN
 		proj.resume_move()
 	record_projectiles_frozen(owner, LAZYLEN(frozen_projectiles))
@@ -251,7 +251,7 @@
 
 	var/perpendicular_angle = Get_Angle(get_turf(src), get_step(src, dir)) //the angle src is facing, get_turf because pixel_x or y messes with the angle
 	var/direction_to_atom = angle_to_dir(Get_Angle(src, targetted_atom))
-	for(var/obj/projectile/reflected_projectile AS in frozen_projectiles)
+	for(var/atom/movable/projectile/reflected_projectile AS in frozen_projectiles)
 		reflected_projectile.projectile_behavior_flags &= ~PROJECTILE_FROZEN
 		reflected_projectile.distance_travelled = 0
 
@@ -507,6 +507,7 @@
 	. = ..()
 	particle_holder = new(src, channel_particle)
 	particle_holder.pixel_y = 0
+	notify_ai_hazard()
 
 /obj/effect/xeno/crush_orb
 	icon = 'icons/xeno/2x2building.dmi'
@@ -586,7 +587,7 @@
 
 	succeed_activate()
 
-	var/obj/projectile/hitscan/projectile = new /obj/projectile/hitscan(xeno_owner.loc)
+	var/atom/movable/projectile/hitscan/projectile = new /atom/movable/projectile/hitscan(xeno_owner.loc)
 	projectile.effect_icon = initial(ammo_type.hitscan_effect_icon)
 	projectile.generate_bullet(ammo_type)
 	projectile.fire_at(A, xeno_owner, xeno_owner, projectile.ammo.max_range, projectile.ammo.shell_speed)

@@ -16,6 +16,8 @@
 	pounce_range = RUNNER_POUNCE_RANGE
 	/// Whether Savage is active or not.
 	var/savage_activated = TRUE
+	/// The amount of deciseconds that confusion will last and the potency of the blurriness.
+	var/savage_debuff_amount = 0
 	/// Savage's cooldown.
 	COOLDOWN_DECLARE(savage_cooldown)
 
@@ -45,6 +47,9 @@
 		owner.balloon_alert(owner, "Not enough plasma to Savage ([savage_cost])")
 		return
 	living_target.attack_alien_harm(xeno_owner, savage_damage)
+	if(savage_debuff_amount)
+		living_target.adjust_blurriness(savage_debuff_amount * 0.2) // Blurriness goes away at a decent speed when nothing else keeps adding to it.
+		living_target.AdjustConfused(savage_debuff_amount)
 	xeno_owner.use_plasma(savage_cost)
 	COOLDOWN_START(src, savage_cooldown, RUNNER_SAVAGE_COOLDOWN)
 	START_PROCESSING(SSprocessing, src)
@@ -87,14 +92,26 @@
 		KEYBINDING_NORMAL = COMSIG_XENOABILITY_EVASION,
 		KEYBINDING_ALTERNATE = COMSIG_XENOABILITY_AUTO_EVASION,
 	)
-	/// Whether auto evasion is on or off.
-	var/auto_evasion = TRUE
 	/// Whether evasion is currently active
 	var/evade_active = FALSE
-	/// How long our Evasion will last.
+	/// How long our Evasion will last in seconds.
 	var/evasion_duration = 0
+	/// The starting duration of Evasion in seconds.
+	var/evasion_starting_duration = RUNNER_EVASION_DURATION
 	/// Current amount of Evasion stacks.
 	var/evasion_stacks = 0
+	/// Whether Auto Evasion is on or off.
+	var/auto_evasion = TRUE
+	/// Whether Auto Evasion can be toggled to on.
+	var/auto_evasion_togglable = TRUE
+	/// Should they gain/loss passthrough when Evade is active?
+	var/evasion_passthrough = FALSE
+	/// Were they already given passthrough?
+	var/has_passthrough = FALSE
+	/// The amount of deciseconds of confusion should be applied to humans that are passed through, if applicable.
+	var/passthrough_confusion_length = 0
+	/// A list of humans that were touched / affected while the owner had passthrough. Used to prevent applying confusion more than once.
+	var/list/mob/living/carbon/human/touched_humans = list()
 
 /datum/action/ability/xeno_action/evasion/on_cooldown_finish()
 	. = ..()
@@ -119,11 +136,16 @@
 	add_cooldown()
 	if(evade_active)
 		evasion_stacks = 0
-		evasion_duration = min(evasion_duration + RUNNER_EVASION_DURATION, RUNNER_EVASION_MAX_DURATION)
+		evasion_duration = min(evasion_duration + evasion_starting_duration, RUNNER_EVASION_MAX_DURATION)
 		owner.balloon_alert(owner, "Extended evasion: [evasion_duration]s.")
 		return
 	evade_active = TRUE
-	evasion_duration = RUNNER_EVASION_DURATION
+	if(evasion_passthrough && !has_passthrough)
+		xeno_owner.allow_pass_flags |= PASS_MOB
+		xeno_owner.add_pass_flags(PASS_MOB, type)
+		has_passthrough = TRUE
+		RegisterSignal(xeno_owner, COMSIG_MOVABLE_MOVED, PROC_REF(on_passthrough_move))
+	evasion_duration = evasion_starting_duration
 	owner.balloon_alert(owner, "Begin evasion: [evasion_duration]s.")
 	to_chat(owner, span_userdanger("We take evasive action, making us impossible to hit."))
 	START_PROCESSING(SSprocessing, src)
@@ -136,7 +158,7 @@
 		COMSIG_LIVING_IGNITED), PROC_REF(evasion_debuff_check))
 	RegisterSignal(owner, COMSIG_XENO_PROJECTILE_HIT, PROC_REF(evasion_dodge))
 	RegisterSignal(owner, COMSIG_ATOM_BULLET_ACT, PROC_REF(evasion_flamer_hit))
-	RegisterSignal(owner, COMSIG_LIVING_PRE_THROW_IMPACT, PROC_REF(evasion_throw_dodge))
+	RegisterSignal(owner, COMSIG_PRE_MOVABLE_IMPACT, PROC_REF(evasion_throw_dodge))
 	GLOB.round_statistics.runner_evasions++
 	SSblackbox.record_feedback(FEEDBACK_TALLY, "round_statistics", 1, "runner_evasions")
 
@@ -176,7 +198,7 @@
  * Called when the owner is hit by a flamethrower projectile.
  * Reduces evasion stacks based on the damage received.
 */
-/datum/action/ability/xeno_action/evasion/proc/evasion_flamer_hit(datum/source, obj/projectile/proj)
+/datum/action/ability/xeno_action/evasion/proc/evasion_flamer_hit(datum/source, atom/movable/projectile/proj)
 	SIGNAL_HANDLER
 	if(!(proj.ammo.ammo_behavior_flags & AMMO_FLAME))
 		return
@@ -209,12 +231,18 @@
 		COMSIG_LIVING_STATUS_STAGGER,
 		COMSIG_LIVING_IGNITED,
 		COMSIG_XENO_PROJECTILE_HIT,
-		COMSIG_LIVING_PRE_THROW_IMPACT,
+		COMSIG_PRE_MOVABLE_IMPACT,
 		COMSIG_ATOM_BULLET_ACT,
 	))
 	evade_active = FALSE
 	evasion_stacks = 0
 	evasion_duration = 0
+	if(has_passthrough)
+		xeno_owner.allow_pass_flags &= ~PASS_MOB
+		xeno_owner.remove_pass_flags(PASS_MOB, type)
+		has_passthrough = FALSE
+		touched_humans.Cut()
+		UnregisterSignal(xeno_owner, COMSIG_MOVABLE_MOVED)
 	xeno_owner.balloon_alert(xeno_owner, "Evasion ended")
 	xeno_owner.playsound_local(xeno_owner, 'sound/voice/alien/hiss8.ogg', 50)
 	hud_set_evasion(evasion_duration)
@@ -230,10 +258,10 @@
 		var/obj/item/I = proj
 		evasion_stacks += I.throwforce //Add to evasion stacks for the purposes of determining whether or not our cooldown refreshes equal to the thrown force
 	evasion_dodge_fx(proj)
-	return COMPONENT_PRE_THROW_IMPACT_HIT
+	return COMPONENT_PRE_MOVABLE_IMPACT_DODGED
 
 /// This is where the dodgy magic happens
-/datum/action/ability/xeno_action/evasion/proc/evasion_dodge(datum/source, obj/projectile/proj, cardinal_move, uncrossing)
+/datum/action/ability/xeno_action/evasion/proc/evasion_dodge(datum/source, atom/movable/projectile/proj, cardinal_move, uncrossing)
 	SIGNAL_HANDLER
 	if(!evade_active) //If evasion is not active we don't dodge
 		return FALSE
@@ -257,7 +285,7 @@
 	xeno_owner.add_filter("runner_evasion", 2, gauss_blur_filter(5))
 	addtimer(CALLBACK(xeno_owner, TYPE_PROC_REF(/datum, remove_filter), "runner_evasion"), 0.5 SECONDS)
 	xeno_owner.do_jitter_animation(4000)
-	if(evasion_stacks >= RUNNER_EVASION_COOLDOWN_REFRESH_THRESHOLD && cooldown_remaining()) //We have more evasion stacks than needed to refresh our cooldown, while being on cooldown.
+	if(evasion_stacks >= RUNNER_EVASION_COOLDOWN_REFRESH_THRESHOLD && cooldown_remaining() && auto_evasion_togglable) // We have more evasion stacks than needed to refresh our cooldown, while being on cooldown.
 		clear_cooldown()
 		if(auto_evasion && xeno_owner.plasma_stored >= ability_cost)
 			action_activate()
@@ -268,6 +296,13 @@
 		after_image = new /obj/effect/temp_visual/after_image(current_turf, owner) //Create the after image.
 		after_image.pixel_x = pick(randfloat(xeno_owner.pixel_x * 3, xeno_owner.pixel_x * 1.5), rand(0, xeno_owner.pixel_x * -1)) //Variation on the X position
 
+/datum/action/ability/xeno_action/evasion/proc/on_passthrough_move()
+	SIGNAL_HANDLER
+	for(var/mob/living/carbon/human/human_right_here in get_turf(xeno_owner))
+		if(human_right_here in touched_humans)
+			continue
+		touched_humans += human_right_here
+		human_right_here.AdjustConfused(passthrough_confusion_length)
 
 // ***************************************
 // *********** Snatch

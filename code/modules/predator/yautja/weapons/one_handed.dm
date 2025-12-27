@@ -214,7 +214,7 @@
 	var/throwforce_base = 32
 	var/throwforce_storage = 5
 
-/obj/item/weapon/yautja/combistick/Initialize()
+/obj/item/weapon/yautja/combistick/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_PRE_THROW, PROC_REF(try_to_throw))
 
@@ -402,7 +402,7 @@
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	resistance_flags = UNACIDABLE
 
-/obj/item/weapon/yautja/knife/Initialize()
+/obj/item/weapon/yautja/knife/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/shrapnel_removal, 4 SECONDS, 0, TRUE)
 

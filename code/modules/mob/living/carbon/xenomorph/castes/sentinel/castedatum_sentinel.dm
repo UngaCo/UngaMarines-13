@@ -17,11 +17,13 @@
 	speed = -0.9
 
 	// *** Plasma *** //
-	plasma_max = 650
-	plasma_gain = 21
+	plasma_max = 600
+	plasma_gain = 20
+
+// Шадоу нерф (Просто статы с оффов), мутации слишком имба
 
 	// *** Health *** //
-	max_health = 400
+	max_health = 370
 
 	// *** Evolution *** //
 	evolution_threshold = 100
@@ -32,7 +34,7 @@
 	caste_traits = list(TRAIT_CAN_VENTCRAWL)
 
 	// *** Defense *** //
-	soft_armor = list(MELEE = 25, BULLET = 20, LASER = 20, ENERGY = 25, BOMB = 0, BIO = 25, FIRE = 5, ACID = 25)
+	soft_armor = list(MELEE = 30, BULLET = 30, LASER = 30, ENERGY = 30, BOMB = 10, BIO = 30, FIRE = 30, ACID = 30)
 
 	// *** Ranged Attack *** //
 	spit_delay = 1.0 SECONDS

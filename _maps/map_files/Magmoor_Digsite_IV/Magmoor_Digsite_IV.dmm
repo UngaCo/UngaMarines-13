@@ -32127,7 +32127,7 @@
 	dir = 4
 	},
 /obj/structure/cable,
-/obj/structure/sign/double/barsign/carp{
+/obj/machinery/barsign/thedrunkcarp{
 	dir = 1
 	},
 /turf/open/floor/plating/ground/concrete/lines{

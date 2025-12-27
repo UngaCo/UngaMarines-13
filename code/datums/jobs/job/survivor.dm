@@ -6,6 +6,8 @@
 	display_order = JOB_DISPLAY_ORDER_SURVIVOR
 	skills_type = /datum/skills/civilian/survivor
 	faction = FACTION_TERRAGOV
+	job_category = JOB_CAT_CIVILIAN
+	selection_color = "#ffeedd"
 
 /datum/job/survivor/after_spawn(mob/living/carbon/C, mob/M, latejoin = FALSE)
 	. = ..()
@@ -139,7 +141,12 @@ Good luck, but do not expect to survive."})
 
 // Rambo Survivor - pretty overpowered, pls spawn with caution
 /datum/job/survivor/rambo
-	title = "Rambo Survivor"
+	title = SURVIVOR
 	skills_type = /datum/skills/civilian/survivor/master
 	outfit = /datum/outfit/job/survivor/rambo
-	job_flags = JOB_FLAG_ROUNDSTARTJOINABLE|JOB_FLAG_OVERRIDELATEJOINSPAWN|JOB_FLAG_LATEJOINABLE
+	job_flags = JOB_FLAG_ROUNDSTARTJOINABLE
+	html_description = {"
+		<b>Difficulty</b>: Astonishing<br /><br />
+		<b>Gamemode Availability</b>: Distress Signal, Nuclear War<br /><br /><br />
+		<b>Duty</b>: Survive with the resources you have against the swarms of xenomorphs intil help arrives.
+	"}

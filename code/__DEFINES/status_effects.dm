@@ -13,51 +13,44 @@
 // BUFFS //
 ///////////
 
+//Carapace
+#define STATUS_EFFECT_CARAPACE /datum/status_effect/carapace
+#define STATUS_EFFECT_CARAPACE_TWO /datum/status_effect/carapace/tier2
+#define STATUS_EFFECT_CARAPACE_THREE /datum/status_effect/carapace/tier3
+
+//Regeneration
+#define STATUS_EFFECT_REGENERATION /datum/status_effect/regeneration
+#define STATUS_EFFECT_REGENERATION_TWO /datum/status_effect/regeneration/tier2
+
+//Vampirism
+#define STATUS_EFFECT_VAMPIRISM /datum/status_effect/vampirism
+#define STATUS_EFFECT_VAMPIRISM_TWO /datum/status_effect/vampirism/tier2
+
+//Celerity
+#define STATUS_EFFECT_CELERITY /datum/status_effect/celerity
+
+//Ionize
+#define STATUS_EFFECT_IONIZE /datum/status_effect/ionize
+#define STATUS_EFFECT_IONIZE_TWO /datum/status_effect/ionize/tier2
+
+//Crush
+#define STATUS_EFFECT_CRUSH /datum/status_effect/crush
+
 #define STATUS_EFFECT_GUN_SKILL_ACCURACY_BUFF /datum/status_effect/stacking/gun_skill/accuracy/buff // Increases the accuracy of the mob
-
 #define STATUS_EFFECT_GUN_SKILL_SCATTER_BUFF /datum/status_effect/stacking/gun_skill/scatter/buff // Increases the scatter of the mob
-
 #define STATUS_EFFECT_XENO_ESSENCE_LINK /datum/status_effect/stacking/essence_link
-
+#define STATUS_EFFECT_XENO_ESSENCE_LINK_REVENGE /datum/status_effect/essence_link_revenge
 #define STATUS_EFFECT_XENO_SALVE_REGEN /datum/status_effect/salve_regen
-
 #define STATUS_EFFECT_XENO_ENHANCEMENT /datum/status_effect/drone_enhancement
-
 #define STATUS_EFFECT_XENO_REJUVENATE /datum/status_effect/xeno_rejuvenate
-
 #define STATUS_EFFECT_XENO_PSYCHIC_LINK /datum/status_effect/xeno_psychic_link
-
 #define STATUS_EFFECT_XENO_CARNAGE /datum/status_effect/xeno_carnage
-
 #define STATUS_EFFECT_XENO_FEAST /datum/status_effect/xeno_feast
-
 #define STATUS_EFFECT_XENO_BATONPASS /datum/status_effect/baton_pass
-
 #define STATUS_EFFECT_RESIN_JELLY_COATING /datum/status_effect/resin_jelly_coating
-
 #define STATUS_EFFECT_PLASMA_SURGE /datum/status_effect/plasma_surge
-
 #define STATUS_EFFECT_HEALING_INFUSION /datum/status_effect/healing_infusion
-
 #define STATUS_EFFECT_DRAIN_SURGE /datum/status_effect/drain_surge
-
-#define STATUS_EFFECT_UPGRADE_CARAPACE /datum/status_effect/upgrade_carapace
-
-#define STATUS_EFFECT_UPGRADE_REGENERATION /datum/status_effect/upgrade_regeneration
-
-#define STATUS_EFFECT_UPGRADE_VAMPIRISM /datum/status_effect/upgrade_vampirism
-
-#define STATUS_EFFECT_UPGRADE_CELERITY /datum/status_effect/upgrade_celerity
-
-#define STATUS_EFFECT_UPGRADE_ADRENALINE /datum/status_effect/upgrade_adrenaline
-
-#define STATUS_EFFECT_UPGRADE_CRUSH /datum/status_effect/upgrade_crush
-
-#define STATUS_EFFECT_UPGRADE_TOXIN /datum/status_effect/upgrade_toxin
-
-#define STATUS_EFFECT_UPGRADE_PHERO /datum/status_effect/upgrade_pheromones
-
-#define STATUS_EFFECT_UPGRADE_TRAIL /datum/status_effect/upgrade_trail
 
 #define STATUS_EFFECT_MINDMEND /datum/status_effect/mindmeld
 

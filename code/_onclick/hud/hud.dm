@@ -25,6 +25,7 @@
 	var/atom/movable/screen/alien_plasma_display
 	var/atom/movable/screen/alien_evolve_display
 	var/atom/movable/screen/alien_sunder_display
+	var/atom/movable/screen/alien_biomass_display
 
 	var/atom/movable/screen/locate_leader
 	var/atom/movable/screen/SL_locator

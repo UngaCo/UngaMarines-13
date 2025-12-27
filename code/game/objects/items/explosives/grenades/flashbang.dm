@@ -5,6 +5,7 @@
 	worn_icon_state = "flashbang2"
 	hud_state = "flashbang"
 	arm_sound = 'sound/weapons/armbombpin_2.ogg'
+	overlay_type = "blue"
 	///This is a cluster weapon, or part of one
 	var/banglet = FALSE
 	///The range where the maximum effects are applied
@@ -107,6 +108,7 @@
 	inner_range = 3
 	det_time = 2 SECONDS
 	mp_only = FALSE
+	overlay_type = "blue"
 
 /obj/item/explosive/grenade/flashbang/stun/base_effect(turf/T , mob/living/carbon/M, ear_safety)
 	if(M.ear_damage >= 15)

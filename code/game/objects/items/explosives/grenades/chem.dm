@@ -9,6 +9,7 @@
 	worn_icon_state = "flashbang"
 	w_class = WEIGHT_CLASS_SMALL
 	force = 2
+	overlay_type = null
 	var/stage = CG_EMPTY
 	var/display_timer = FALSE
 	var/list/obj/item/reagent_containers/glass/beakers = list()
@@ -245,6 +246,7 @@
 	hud_state = "grenade_razor"
 	stage = CG_READY
 	icon_state_mini = "grenade_chem_yellow"
+	overlay_type = "yellow"
 
 
 /obj/item/explosive/grenade/chem_grenade/razorburn_small/Initialize(mapload, ...)
@@ -265,6 +267,7 @@
 	icon_state = "grenade_large_razorburn"
 	stage = CG_READY
 	icon_state_mini = "grenade_chem_yellow"
+	overlay_type = "yellow"
 
 
 /obj/item/explosive/grenade/chem_grenade/razorburn_large/Initialize(mapload, ...)

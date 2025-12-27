@@ -940,7 +940,7 @@
 /turf/open/floor/plating/ground/mars/dirttosand,
 /area/centcom/valhalla)
 "ldg" = (
-/obj/structure/sign/double/barsign/carp{
+/obj/machinery/barsign/thedrunkcarp{
 	dir = 1
 	},
 /turf/open/floor/wood,

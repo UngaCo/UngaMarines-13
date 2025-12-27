@@ -435,7 +435,7 @@
 	if(is_equipment_controller(user))
 		swivel_turret(null, direction)
 
-/obj/vehicle/sealed/armored/projectile_hit(obj/projectile/proj, cardinal_move, uncrossing)
+/obj/vehicle/sealed/armored/projectile_hit(atom/movable/projectile/proj, cardinal_move, uncrossing)
 	for(var/mob/living/carbon/human/crew AS in occupants)
 		if(crew.wear_id?.iff_signal & proj.iff_signal)
 			return FALSE

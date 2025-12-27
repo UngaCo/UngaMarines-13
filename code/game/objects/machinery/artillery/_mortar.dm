@@ -263,7 +263,7 @@
 
 	playsound(loc, fire_sound, GUN_FIRE_SOUND_VOLUME, 0)
 	flick(icon_state + "_fire", src)
-	var/obj/projectile/shell = new /obj/projectile(loc)
+	var/atom/movable/projectile/shell = new /atom/movable/projectile(loc)
 	var/datum/ammo/ammo = GLOB.ammo_list[arty_shell.ammo_type]
 	shell.generate_bullet(ammo)
 	var/shell_range = min(get_dist_euclidean(src, target), ammo.max_range)
@@ -305,7 +305,7 @@
 		impact_cam.forceMove(src)
 
 ///Begins fall animation for projectile and plays fall sound
-/obj/machinery/deployable/mortar/proc/falling(turf/T, obj/projectile/shell)
+/obj/machinery/deployable/mortar/proc/falling(turf/T, atom/movable/projectile/shell)
 	flick(shell.icon_state + "_falling", shell)
 	playsound(T, fall_sound, 75, 1)
 

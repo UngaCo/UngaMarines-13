@@ -14,7 +14,7 @@
 /datum/ammo/mortar/drop_nade(turf/target_turf)
 	cell_explosion(target_turf, 90, 30)
 
-/datum/ammo/mortar/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/mortar/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf)
 
 /datum/ammo/mortar/incend/drop_nade(turf/target_turf)
@@ -162,7 +162,7 @@
 	penetration = 10
 	sundering = 1.5
 
-/datum/ammo/bullet/atgun_spread/incendiary/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/atgun_spread/incendiary/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	return
 
 /datum/ammo/bullet/atgun_spread/incendiary/drop_flame(turf/target_turf)
@@ -170,7 +170,7 @@
 		return
 	target_turf.ignite(5, 10)
 
-/datum/ammo/bullet/atgun_spread/incendiary/on_leave_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/atgun_spread/incendiary/on_leave_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_flame(target_turf)
 
 /datum/ammo/ags_shrapnel
@@ -194,22 +194,22 @@
 	bonus_projectiles_scatter = 20
 	var/bonus_projectile_quantity = 15
 
-/datum/ammo/ags_shrapnel/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/ags_shrapnel/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	var/turf/det_turf = get_step_towards(target_mob, proj)
 	playsound(det_turf, SFX_EXPLOSION_MICRO, 30, falloff = 5)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_mob), loc_override = det_turf)
 
-/datum/ammo/ags_shrapnel/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/ags_shrapnel/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	var/turf/det_turf = get_turf(target_object)
 	playsound(det_turf, SFX_EXPLOSION_MICRO, 30, falloff = 5)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_object), loc_override = det_turf)
 
-/datum/ammo/ags_shrapnel/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/ags_shrapnel/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	var/turf/det_turf = get_turf(target_turf)
 	playsound(det_turf, SFX_EXPLOSION_MICRO, 30, falloff = 5)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_turf), loc_override = det_turf)
 
-/datum/ammo/ags_shrapnel/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/ags_shrapnel/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	var/turf/det_turf = get_turf(target_turf)
 	playsound(det_turf, SFX_EXPLOSION_MICRO, 30, falloff = 5)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_turf), loc_override = det_turf)
@@ -238,16 +238,16 @@
 	sundering = 1.5
 	damage_falloff = 0
 
-/datum/ammo/bullet/ags_spread/incendiary/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/ags_spread/incendiary/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	drop_flame(get_turf(target_mob))
 
-/datum/ammo/bullet/ags_spread/incendiary/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/bullet/ags_spread/incendiary/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	drop_flame(get_turf(target_object))
 
-/datum/ammo/bullet/ags_spread/incendiary/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/ags_spread/incendiary/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_flame(get_turf(target_turf))
 
-/datum/ammo/bullet/ags_spread/incendiary/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/ags_spread/incendiary/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_flame(get_turf(target_turf))
 
 /datum/ammo/bullet/ags_spread/incendiary/drop_flame(turf/target_turf)
@@ -266,16 +266,16 @@
 	accuracy = 15
 	max_range = 10
 
-/datum/ammo/grenade_container/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/grenade_container/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	drop_nade(get_turf(proj))
 
-/datum/ammo/grenade_container/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/grenade_container/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	drop_nade(target_object.density ? proj.loc : target_object.loc)
 
-/datum/ammo/grenade_container/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/grenade_container/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? proj.loc : target_turf)
 
-/datum/ammo/grenade_container/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/grenade_container/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? proj.loc : target_turf)
 
 /datum/ammo/grenade_container/drop_nade(turf/target_turf)

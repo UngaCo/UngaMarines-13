@@ -331,6 +331,8 @@ as having entered the turf.
 			return 0
 
 /atom/movable/proc/explosion_throw(severity, direction)
+	if(QDELETED(src))
+		return
 	if(anchored || !isturf(loc))
 		return
 

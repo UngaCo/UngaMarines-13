@@ -38,7 +38,7 @@
 	sundering = 15
 	airburst_multiplier = 0.5
 
-/datum/ammo/bullet/sniper/flak/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/sniper/flak/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj,  max_range = 30)
 	airburst(target_mob, proj)
 
@@ -58,7 +58,7 @@
 	///shatter effection duration when hitting mobs
 	var/shatter_duration = 8 SECONDS
 
-/datum/ammo/bullet/sniper/svd/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/sniper/svd/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(!isliving(target_mob))
 		return
 
@@ -77,7 +77,7 @@
 	sundering = 0
 	accurate_range_min = 0
 
-/datum/ammo/bullet/sniper/martini/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/sniper/martini/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, paralyze = 0.5 SECONDS, stagger = 1 SECONDS, knockback = 2, slowdown = 0.5, max_range = 12)
 
 /datum/ammo/bullet/sniper/martini/white
@@ -85,7 +85,7 @@
 	///shatter effection duration when hitting mobs
 	var/shatter_duration = 8 SECONDS
 
-/datum/ammo/bullet/sniper/martini/white/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/sniper/martini/white/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(!isliving(target_mob))
 		return
 
@@ -112,7 +112,7 @@
 	damage_falloff = 0.25
 	matter_cost = 12
 
-/datum/ammo/bullet/sniper/pfc/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/sniper/pfc/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, slowdown = 1, max_range = 17)
 
 /datum/ammo/bullet/sniper/pfc/flak
@@ -126,7 +126,7 @@
 	damage_falloff = 0.25
 	matter_cost = 0
 
-/datum/ammo/bullet/sniper/pfc/flak/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/sniper/pfc/flak/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, knockback = 4, slowdown = 1.5, stagger = 2 SECONDS, max_range = 17)
 
 /datum/ammo/bullet/sniper/auto
@@ -163,7 +163,7 @@
 	accurate_range_min = 2
 	reload_delay = 8 SECONDS
 
-/datum/ammo/bullet/sniper/musket/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/sniper/musket/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(!isliving(target_mob))
 		return
 

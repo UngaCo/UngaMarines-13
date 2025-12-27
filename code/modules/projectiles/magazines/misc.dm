@@ -307,7 +307,7 @@
 	max_rounds = 50
 	used_casings = 5
 
-/obj/item/ammo_magazine/packet/t312/Initialize()
+/obj/item/ammo_magazine/packet/t312/Initialize(mapload)
 	. = ..()
 	if(prob(1))
 		icon_state = "boxt500_ke"

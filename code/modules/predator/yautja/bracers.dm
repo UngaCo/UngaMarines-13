@@ -521,7 +521,7 @@
 		anim(M.loc,M,'icons/mob/mob.dmi',,"cloak",,M.dir)
 
 //Any projectile can decloak a predator. It does defeat one free bullet though.
-/obj/item/clothing/gloves/yautja/proc/bullet_act_sim(mob/living/carbon/human/H, obj/projectile/proj)
+/obj/item/clothing/gloves/yautja/proc/bullet_act_sim(mob/living/carbon/human/H, atom/movable/projectile/proj)
 	var/ammo_flags = proj.ammo.ammo_behavior_flags
 	if(ammo_flags & (AMMO_SNIPER|AMMO_ENERGY|AMMO_XENO)) //<--- These will auto uncloak.
 		decloak(H) //Continue on to damage.

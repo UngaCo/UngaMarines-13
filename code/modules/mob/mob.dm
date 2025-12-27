@@ -31,6 +31,11 @@
 		last_damage_source = null
 	return ..()
 
+/mob/New()
+	// This needs to happen IMMEDIATELY. I'm sorry :(
+	GenerateTag()
+	return ..()
+
 /mob/Initialize(mapload)
 	GLOB.mob_list += src
 	if(stat == DEAD)
@@ -53,6 +58,15 @@
 	update_movespeed(TRUE)
 	log_mob_tag("\[[tag]\] CREATED: [key_name(src)]")
 	become_hearing_sensitive()
+
+/**
+ * Generate the tag for this mob
+ *
+ * This is simply "mob_"+ a global incrementing counter that goes up for every mob
+ */
+/mob/GenerateTag()
+	. = ..()
+	tag = "mob_[next_mob_id++]"
 
 /mob/proc/show_message(msg, type, alt_msg, alt_type, avoid_highlight)
 	if(!client)
@@ -552,9 +566,6 @@
 	var/mob/living/L = seat
 	if(L.mob_size <= MOB_SIZE_SMALL) //being on top of a small mob doesn't put you very high.
 		return 0
-
-/mob/GenerateTag()
-	tag = "mob_[next_mob_id++]"
 
 /mob/serialize_list(list/options, list/semvers)
 	. = ..()

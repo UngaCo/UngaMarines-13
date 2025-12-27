@@ -58,7 +58,7 @@
 // *********** Front Armor
 // ***************************************
 
-/mob/living/carbon/xenomorph/defender/steel_crest/projectile_hit(obj/projectile/proj, cardinal_move, uncrossing)
+/mob/living/carbon/xenomorph/defender/steel_crest/projectile_hit(atom/movable/projectile/proj, cardinal_move, uncrossing)
 	if(SEND_SIGNAL(src, COMSIG_XENO_PROJECTILE_HIT, proj, cardinal_move, uncrossing) & COMPONENT_PROJECTILE_DODGE)
 		return FALSE
 	if(proj.ammo.ammo_behavior_flags & AMMO_SKIPS_ALIENS)

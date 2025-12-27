@@ -265,7 +265,7 @@
 
 	RegisterSignal(xeno_owner, COMSIG_MOVABLE_MOVED, PROC_REF(handle_evasion))
 	RegisterSignal(xeno_owner, COMSIG_XENO_PROJECTILE_HIT, PROC_REF(evasion_dodge)) //This is where we actually check to see if we dodge the projectile.
-	RegisterSignal(xeno_owner, COMSIG_LIVING_PRE_THROW_IMPACT, PROC_REF(evasion_throw_dodge)) //Register status effects and fire which impact evasion.
+	RegisterSignal(xeno_owner, COMSIG_PRE_MOVABLE_IMPACT, PROC_REF(evasion_throw_dodge)) //Register status effects and fire which impact evasion.
 	RegisterSignal(xeno_owner, COMSIG_LIVING_HANDLE_VENTCRAWL, PROC_REF(evasion_deactivate))
 
 	set_toggle(TRUE)
@@ -314,7 +314,7 @@
 		COMSIG_LIVING_STATUS_STAGGER,
 		COMSIG_XENO_PROJECTILE_HIT,
 		COMSIG_LIVING_IGNITED,
-		COMSIG_LIVING_PRE_THROW_IMPACT,
+		COMSIG_PRE_MOVABLE_IMPACT,
 		COMSIG_LIVING_HANDLE_VENTCRAWL,
 	))
 
@@ -348,10 +348,10 @@
 
 	evasion_dodge_sfx(proj)
 
-	return COMPONENT_PRE_THROW_IMPACT_HIT
+	return COMPONENT_PRE_MOVABLE_IMPACT_DODGED
 
 ///This is where the dodgy magic happens
-/datum/action/ability/xeno_action/evasive_maneuvers/proc/evasion_dodge(datum/source, obj/projectile/proj, cardinal_move, uncrossing)
+/datum/action/ability/xeno_action/evasive_maneuvers/proc/evasion_dodge(datum/source, atom/movable/projectile/proj, cardinal_move, uncrossing)
 	SIGNAL_HANDLER
 
 	if(!evade_active) //If evasion is not active we don't dodge

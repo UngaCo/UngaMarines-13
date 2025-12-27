@@ -42,18 +42,18 @@
 	///Bonus flat damage to walls, balanced around resin walls.
 	var/autocannon_wall_bonus = 20
 
-/datum/ammo/bullet/auto_cannon/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/auto_cannon/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	proj.proj_max_range -= 20
 
 	if(istype(target_turf, /turf/closed/wall))
 		var/turf/closed/wall/wall_victim = target_turf
 		wall_victim.take_damage(autocannon_wall_bonus, proj.damtype, proj.armor_type)
 
-/datum/ammo/bullet/auto_cannon/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/auto_cannon/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	proj.proj_max_range -= 5
 	staggerstun(target_mob, proj, max_range = 20, slowdown = 1)
 
-/datum/ammo/bullet/auto_cannon/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/bullet/auto_cannon/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	proj.proj_max_range -= 5
 
 /datum/ammo/bullet/auto_cannon/flak
@@ -67,10 +67,10 @@
 	airburst_multiplier = 1
 	autocannon_wall_bonus = 5
 
-/datum/ammo/bullet/auto_cannon/flak/on_hit_mob(mob/victim, obj/projectile/proj)
+/datum/ammo/bullet/auto_cannon/flak/on_hit_mob(mob/victim, atom/movable/projectile/proj)
 	airburst(victim, proj)
 
-/datum/ammo/bullet/auto_cannon/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/auto_cannon/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	airburst(target_turf, proj)
 
 /datum/ammo/bullet/smart_minigun
@@ -85,7 +85,7 @@
 	damage_falloff = 0.1
 	var/shatter_duration = 3 SECONDS
 
-/datum/ammo/bullet/smart_minigun/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/smart_minigun/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(!isliving(target_mob))
 		return
 

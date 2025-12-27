@@ -48,7 +48,7 @@
 	ammo_behavior_flags = AMMO_ENERGY
 	var/stun_time = 2.5 SECONDS
 
-/datum/ammo/energy/yautja/caster/stun/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/energy/yautja/caster/stun/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	var/mob/living/carbon/C = target_mob
 	if(istype(C))
 		if(isyautja(C) || ispredalien(C))
@@ -83,7 +83,7 @@
 	damage = 0
 	ammo_behavior_flags = AMMO_ENERGY
 
-/datum/ammo/energy/yautja/caster/bolt/stun/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/energy/yautja/caster/bolt/stun/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	var/mob/living/carbon/C = target_mob
 	if(istype(C))
 		if(isyautja(C) || ispredalien(C))
@@ -111,19 +111,19 @@
 	var/stun_range = 4
 	var/stun_time = 3 SECONDS
 
-/datum/ammo/energy/yautja/caster/sphere/stun/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/energy/yautja/caster/sphere/stun/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	do_area_stun(proj)
 
-/datum/ammo/energy/yautja/caster/sphere/stun/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/energy/yautja/caster/sphere/stun/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	do_area_stun(proj)
 
-/datum/ammo/energy/yautja/caster/sphere/stun/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/energy/yautja/caster/sphere/stun/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	do_area_stun(proj)
 
-/datum/ammo/energy/yautja/caster/sphere/stun/do_at_max_range(obj/projectile/proj)
+/datum/ammo/energy/yautja/caster/sphere/stun/do_at_max_range(atom/movable/projectile/proj)
 	do_area_stun(proj)
 
-/datum/ammo/energy/yautja/caster/sphere/stun/proc/do_area_stun(obj/projectile/proj)
+/datum/ammo/energy/yautja/caster/sphere/stun/proc/do_area_stun(atom/movable/projectile/proj)
 	playsound(proj, 'sound/weapons/wave.ogg', 75, 1, 25)
 	for(var/mob/living/carbon/target_mob in view(stun_range, get_turf(proj)))
 		var/f_stun_time = stun_time

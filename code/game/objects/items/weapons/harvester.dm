@@ -149,7 +149,7 @@
 	var/wielded_slowdown = 0.5 //Slowdown in hands, wielded
 	var/wield_delay = 0.8 SECONDS
 
-/obj/item/weapon/twohanded/glaive/halberd/harvester/Initialize()
+/obj/item/weapon/twohanded/glaive/halberd/harvester/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/harvester)
 

@@ -29,7 +29,7 @@
 			break
 
 	for(var/i = 0; i < shrapnel_number; i++) // this is done in such way so angle increases with each shrapnel fired
-		var/obj/projectile/our_shrapnel = new(epicenter)
+		var/atom/movable/projectile/our_shrapnel = new(epicenter)
 		our_shrapnel.generate_bullet(new shrapnel_type)
 
 		if(epicenter_mob && prob(on_hit_coefficient))

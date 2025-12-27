@@ -16,5 +16,6 @@
 			SSmapping.z_trait_levels[trait] += list(new_z)
 	else // in case a single trait is passed in
 		SSmapping.z_trait_levels[new_traits] += list(new_z)
+	
 	//Lazy Init value, will be hopefully changed by SSmapping
 	bounds = list(1, 1, z_value, world.maxx, world.maxy, z_value)

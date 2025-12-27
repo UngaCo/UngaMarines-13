@@ -66,10 +66,6 @@
 	as it allows them to go into low pressure environments for more than few seconds without overhating. It runs off energy provided by internal power cell. \
 	Remember to turn it on by clicking it when it's your in your hand before you put it on."
 
-/datum/codex_entry/barsign
-	associated_paths = list(/obj/structure/sign/double/barsign)
-	mechanics_text = "If your ID has bar access, you may swipe it on this sign to alter its display."
-
 /datum/codex_entry/utility_belt
 	display_name = "M276 pattern toolbelt rig"
 	mechanics_text = "It's a belt for holding your tools"

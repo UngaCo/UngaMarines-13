@@ -96,7 +96,7 @@
 	id = "Yautja Armory"
 	resistance_flags = RESIST_ALL
 
-/obj/machinery/door/poddoor/shutters/almayer/yautja/Initialize()
+/obj/machinery/door/poddoor/shutters/almayer/yautja/Initialize(mapload)
 	. = ..()
 	RegisterSignal(SSdcs, COMSIG_GLOB_YAUTJA_ARMORY_OPENED, PROC_REF(open))
 

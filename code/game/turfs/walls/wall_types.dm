@@ -257,7 +257,8 @@
 
 //todo this should be using immediate instead of New()
 INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
-/turf/closed/wall/indestructible/splashscreen/New()
+/turf/closed/wall/indestructible/splashscreen/Initialize(mapload, ...)
+	. = ..()
 	var/prefix = "icons/misc/lobby_art/"
 	var/list/lobby_art = flist(prefix)
 	if(!length(lobby_art))
@@ -348,8 +349,8 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 /turf/closed/wall/vault
 	icon_state = "rockvault"
 
-/turf/closed/wall/vault/New(location,type)
-	..()
+/turf/closed/wall/vault/Initialize(mapload, type)
+	. = ..()
 	icon_state = "[type]vault"
 
 /turf/closed/wall/desertcavewall

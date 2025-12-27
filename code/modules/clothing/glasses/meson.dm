@@ -54,7 +54,7 @@
 	lighting_cutoff = LIGHTING_CUTOFF_HIGH
 	actions_types = null
 
-/obj/item/clothing/glasses/meson/yautja/Initialize()
+/obj/item/clothing/glasses/meson/yautja/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, TRAIT_GENERIC)
 

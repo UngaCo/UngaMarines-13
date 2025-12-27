@@ -1,0 +1,4 @@
+author: "Helg2"
+delete-after: True
+changes:
+  - code_imp: "Поменял New() и пустые Initialize() на Initialize(mapload, ...)."

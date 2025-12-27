@@ -4631,7 +4631,7 @@
 /obj/machinery/atmospherics/pipe/simple/green/hidden{
 	dir = 4
 	},
-/obj/structure/sign/double/barsign{
+/obj/machinery/barsign{
 	dir = 1
 	},
 /turf/open/floor/marking/asteroidwarning{

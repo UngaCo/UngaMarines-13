@@ -450,7 +450,7 @@
 	icon_opened = "marine_open"
 	var/squad // to which squad this closet belongs to
 
-/obj/structure/closet/marine/Initialize()
+/obj/structure/closet/marine/Initialize(mapload)
 	. = ..()
 	if(squad)
 		icon_state = "[squad]_closed"

@@ -150,6 +150,22 @@ GLOBAL_LIST_INIT(xeno_ai_spawnable, list(
 	/mob/living/carbon/xenomorph/baneling/ai = 1,
 ))
 
+///Heals a xeno, respecting different types of damage
+#define HEAL_XENO_DAMAGE(xeno, amount, passive) do { \
+	var/fire_loss = xeno.get_fire_loss(); \
+	if(fire_loss) { \
+		var/fire_heal = min(fire_loss, amount); \
+		amount -= fire_heal;\
+		xeno.adjust_fire_loss(-fire_heal, TRUE, passive); \
+	} \
+	var/brute_loss = xeno.get_brute_loss(); \
+	if(brute_loss) { \
+		var/brute_heal = min(brute_loss, amount); \
+		amount -= brute_heal; \
+		xeno.adjust_brute_loss(-brute_heal, TRUE, passive); \
+	} \
+} while(FALSE)
+
 /// Used by the is_valid_for_resin_structure proc.
 /// 0 is considered valid , anything thats not 0 is false
 /// Simply not allowed by the area to build
@@ -173,24 +189,6 @@ GLOBAL_LIST_INIT(xeno_ai_spawnable, list(
 #define XENO_HUD_ICON_BUCKETS 16
 
 #define PRIMAL_WRATH_GAIN_MULTIPLIER 0.5
-
-GLOBAL_LIST_INIT(xeno_survival_upgrades, list(
-	/datum/status_effect/upgrade_carapace,
-	/datum/status_effect/upgrade_regeneration,
-	/datum/status_effect/upgrade_vampirism,
-))
-
-GLOBAL_LIST_INIT(xeno_attack_upgrades, list(
-	/datum/status_effect/upgrade_celerity,
-	/datum/status_effect/upgrade_adrenaline,
-	/datum/status_effect/upgrade_crush,
-))
-
-GLOBAL_LIST_INIT(xeno_utility_upgrades, list(
-	/datum/status_effect/upgrade_toxin,
-	/datum/status_effect/upgrade_pheromones,
-	/datum/status_effect/upgrade_trail,
-))
 
 #define	XENO_UPGRADE_COST 25
 

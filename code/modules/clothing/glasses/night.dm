@@ -116,7 +116,7 @@
 	)
 	actions_types = null
 
-/obj/item/clothing/glasses/night/yautja/Initialize()
+/obj/item/clothing/glasses/night/yautja/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, TRAIT_GENERIC)
 

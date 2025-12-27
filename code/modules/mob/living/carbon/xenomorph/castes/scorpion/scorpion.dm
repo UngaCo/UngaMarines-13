@@ -5,6 +5,10 @@
 	icon = 'icons/Xeno/castes/scorpion/basic.dmi'
 	icon_state = "Scorpion Walking"
 	effects_icon = 'icons/Xeno/castes/scorpion/effects.dmi'
+	skins = list(
+		/datum/xenomorph_skin/scorpion,
+		/datum/xenomorph_skin/scorpion/crab,
+	)
 	health = 200
 	maxHealth = 200
 	plasma_stored = 50

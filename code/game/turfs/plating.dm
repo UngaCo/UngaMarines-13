@@ -68,7 +68,10 @@
 /turf/open/floor/plating/icefloor/warnplate/corner
 	icon_state = "warnplatecorner"
 
-/turf/open/floor/plating/ironsand/New()
+/turf/open/floor/plating/ironsand
+	name = "Iron Sand"
+
+/turf/open/floor/plating/ironsand/Initialize(mapload)
 	. = ..()
 	name = "Iron Sand"
 	icon_state = "ironsand[rand(1,15)]"

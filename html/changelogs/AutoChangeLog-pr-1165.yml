@@ -1,0 +1,4 @@
+author: "Helg2"
+delete-after: True
+changes:
+  - code_imp: "Проджектайлы изменены с /obj до /atom/movable"

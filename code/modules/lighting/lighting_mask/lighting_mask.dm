@@ -129,10 +129,6 @@
 	SIGNAL_HANDLER
 	rotate(dir2angle(new_direction) - 180)
 
-///Flickering lighting mask
-/atom/movable/lighting_mask/flicker
-	icon_state = "light_flicker"
-
 ///Conical Light mask
 /atom/movable/lighting_mask/conical
 	icon_state = "light_conical"

@@ -28,15 +28,15 @@
 	on_pierce_multiplier = 0.85
 	barricade_clear_distance = 4
 
-/datum/ammo/bullet/tank_apfds/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/tank_apfds/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	proj.proj_max_range -= 10
 
-/datum/ammo/bullet/tank_apfds/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/tank_apfds/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	proj.proj_max_range -= 2
 	if(ishuman(target_mob) && !(target_mob.status_flags & GODMODE) &&  prob(35))
 		target_mob.gib()
 
-/datum/ammo/bullet/tank_apfds/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/bullet/tank_apfds/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	if(!isvehicle(target_object) && !ishitbox(target_object))
 		proj.proj_max_range -= 5
 		return
@@ -58,7 +58,7 @@
 /datum/ammo/rocket/homing/drop_nade(turf/target_turf)
 	cell_explosion(target_turf, 165, 45)
 
-/datum/ammo/rocket/homing/ammo_process(obj/projectile/proj, damage)
+/datum/ammo/rocket/homing/ammo_process(atom/movable/projectile/proj, damage)
 	if(QDELETED(proj.original_target))
 		return
 	var/angle_to_target = Get_Angle(get_turf(proj), get_turf(proj.original_target)) //angle uses pixel offsets so we check turfs instead
@@ -120,7 +120,7 @@
 	damage_falloff = 1
 	shrapnel_chance = 15
 
-/datum/ammo/bullet/tx54_spread/tank_cannister/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/tx54_spread/tank_cannister/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, max_range = 4, stagger = 2 SECONDS, slowdown = 0.2)
 
 /datum/ammo/bullet/minigun/ltaap
@@ -197,7 +197,7 @@
 /datum/ammo/rocket/coilgun/high/drop_nade(turf/target_turf)
 	cell_explosion(target_turf, 350, 75)
 
-/datum/ammo/rocket/coilgun/high/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/rocket/coilgun/high/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(ishuman(target_mob) && !(target_mob.status_flags & GODMODE) &&  prob(50))
 		target_mob.gib()
 		proj.proj_max_range -= 5
@@ -252,16 +252,16 @@
 /datum/ammo/bullet/sarden/high_explosive/drop_nade(turf/T)
 	cell_explosion(T, 50, 25)
 
-/datum/ammo/bullet/sarden/high_explosive/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/sarden/high_explosive/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	drop_nade(get_turf(target_mob))
 
-/datum/ammo/bullet/sarden/high_explosive/on_hit_obj(obj/target_obj, obj/projectile/proj)
+/datum/ammo/bullet/sarden/high_explosive/on_hit_obj(obj/target_obj, atom/movable/projectile/proj)
 	drop_nade(target_obj.density ? get_step_towards(target_obj, proj) : target_obj.loc)
 
-/datum/ammo/bullet/sarden/high_explosive/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/sarden/high_explosive/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf)
 
-/datum/ammo/bullet/sarden/high_explosive/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/sarden/high_explosive/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf)
 
 /datum/ammo/energy/volkite/heavy
@@ -288,13 +288,13 @@
 	on_pierce_multiplier = 0.95
 	barricade_clear_distance = 4
 
-/datum/ammo/energy/particle_lance/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/energy/particle_lance/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(!isliving(target_mob))
 		return
 	var/mob/living/living_victim = target_mob
 	living_victim.apply_radiation(living_victim.modify_by_armor(15, BIO, 25), 3)
 
-/datum/ammo/energy/particle_lance/on_hit_obj(obj/target_obj, obj/projectile/proj)
+/datum/ammo/energy/particle_lance/on_hit_obj(obj/target_obj, atom/movable/projectile/proj)
 	if(ishitbox(target_obj)) //yes this is annoying.
 		var/obj/hitbox/hitbox = target_obj
 		target_obj = hitbox.root
@@ -322,7 +322,7 @@
 	max_range = 20
 	bullet_color = COLOR_PALE_GREEN_GRAY
 
-/datum/ammo/energy/bfg/ammo_process(obj/projectile/proj, damage)
+/datum/ammo/energy/bfg/ammo_process(atom/movable/projectile/proj, damage)
 	if(proj.distance_travelled <= 2)
 		return
 	// range expands as it flies to avoid hitting the shooter and tank riders
@@ -338,16 +338,16 @@
 	if(proj.distance_travelled % sound_delay_time)
 		playsound(proj, 'sound/weapons/guns/misc/bfg_fly.ogg', 30, FALSE)
 
-/datum/ammo/energy/bfg/on_hit_obj(obj/target_obj, obj/projectile/proj)
+/datum/ammo/energy/bfg/on_hit_obj(obj/target_obj, atom/movable/projectile/proj)
 	proj.proj_max_range -= 2
 
-/datum/ammo/energy/bfg/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/energy/bfg/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	proj.proj_max_range -= 2
 
 /datum/ammo/energy/bfg/drop_nade(turf/target_turf)
 	cell_explosion(target_turf, 200, 50)
 
-/datum/ammo/energy/bfg/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/energy/bfg/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf)
 
 /datum/ammo/bullet/tank_autocannon
@@ -371,7 +371,7 @@
 	sundering = 1.5
 	matter_cost = 0
 
-/datum/ammo/rocket/tank_autocannon/on_hit_mob(mob/target_mob, obj/projectile/proj) // This is so it doesn't knock back on hit.
+/datum/ammo/rocket/tank_autocannon/on_hit_mob(mob/target_mob, atom/movable/projectile/proj) // This is so it doesn't knock back on hit.
 	var/target_turf = get_turf(target_mob)
 	drop_nade(target_turf)
 

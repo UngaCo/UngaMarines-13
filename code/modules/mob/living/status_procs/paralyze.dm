@@ -1,3 +1,7 @@
+///Returns if paralyzed
+/mob/living/proc/IsParalyzed()
+	return has_status_effect(STATUS_EFFECT_PARALYZED)
+
 ///Returns remaining paralyzed duration
 /mob/living/proc/AmountParalyzed()
 	var/datum/status_effect/incapacitating/paralyzed/current_paralyzed = has_status_effect(STATUS_EFFECT_PARALYZED)

@@ -1,3 +1,10 @@
+/// Fire alarm missing circuit
+#define FIRE_ALARM_BUILD_NO_CIRCUIT 0
+/// Fire alarm has circuit but is missing wires
+#define FIRE_ALARM_BUILD_NO_WIRES 1
+/// Fire alarm has all components but isn't completed
+#define FIRE_ALARM_BUILD_SECURED 2
+
 /obj/machinery/firealarm
 	name = "fire alarm"
 	desc = "<i>\"Pull this in case of emergency\"</i>. Thus, keep pulling it forever."
@@ -12,17 +19,17 @@
 	active_power_usage = 6
 	power_channel = ENVIRON
 	mouse_over_pointer = MOUSE_HAND_POINTER
-
-	var/detecting = 1
-	var/working = 1
-	var/time = 10
-	var/timing = 0
-	var/lockdownbyai = 0
-	var/obj/item/circuitboard/firealarm/electronics = null
-	var/last_process = 0
-	var/wiresexposed = 0
+	///Does the fire alarm trigger by fire? Toggled by multitool
+	var/detecting = TRUE
+	///Are the wires exposed? Toggled by screwdriver
+	var/wiresexposed = FALSE
 	/// 2 = complete, 1 = no wires,  0 = circuit gone
-	var/buildstage = 2
+	var/buildstage = FIRE_ALARM_BUILD_SECURED
+
+//whoever made these the sprites on these inverted I will find you, fix this shit and change the offset
+// todo: actually replace all of these in maps
+// also remove the 	switch(dir) when you do
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, (-32))
 
 /obj/machinery/firealarm/Initialize(mapload, direction, building)
 	. = ..()
@@ -31,7 +38,7 @@
 		setDir(direction)
 
 	if(building)
-		buildstage = 0
+		buildstage = FIRE_ALARM_BUILD_NO_CIRCUIT
 		wiresexposed = TRUE
 
 	switch(dir)
@@ -61,7 +68,7 @@
 		return
 
 	var/area/A = get_area(src)
-	if(A.alarm_state_flags & ALARM_WARNING_FIRE)
+	if(A.fire_alarm)
 		set_light_color(LIGHT_COLOR_EMISSIVE_ORANGE)
 	else
 		set_light_color(SSsecurity_level?.current_security_level?.fire_alarm_light_color || LIGHT_COLOR_WHITE)
@@ -71,7 +78,7 @@
 /obj/machinery/firealarm/update_icon_state()
 	. = ..()
 	var/area/A = get_area(src)
-	icon_state = "fire[!CHECK_BITFIELD(A.alarm_state_flags, ALARM_WARNING_FIRE)]"
+	icon_state = "fire[!A.fire_alarm]"
 
 /obj/machinery/firealarm/update_overlays()
 	. = ..()
@@ -83,7 +90,7 @@
 	. += emissive_appearance(icon, "fire_o[(is_mainship_level(z)) ? SSsecurity_level.get_current_level_as_text() : "green"]", src)
 	. += mutable_appearance(icon, "fire_o[(is_mainship_level(z)) ? SSsecurity_level.get_current_level_as_text() : "green"]")
 	var/area/A = get_area(src)
-	if(A.alarm_state_flags & ALARM_WARNING_FIRE)
+	if(A.fire_alarm)
 		. += mutable_appearance(icon, "fire_o1")
 
 /obj/machinery/firealarm/fire_act(burn_level, flame_color)
@@ -98,7 +105,7 @@
 
 /obj/machinery/firealarm/screwdriver_act(mob/living/user, obj/item/I)
 	. = ..()
-	if(buildstage != 2)
+	if(buildstage != FIRE_ALARM_BUILD_SECURED)
 		return
 	wiresexposed = !wiresexposed
 	update_icon()
@@ -107,7 +114,7 @@
 	. = ..()
 	if(!wiresexposed)
 		return
-	if(buildstage != 2)
+	if(buildstage != FIRE_ALARM_BUILD_SECURED)
 		return
 	detecting = !detecting
 	if(detecting)
@@ -119,33 +126,32 @@
 	. = ..()
 	if(!wiresexposed)
 		return
-	if(buildstage != 2)
+	if(buildstage != FIRE_ALARM_BUILD_SECURED)
 		return
 	user.visible_message(span_warning("[user] has cut the wires inside \the [src]!"), "You have cut the wires inside \the [src].")
 	playsound(loc, 'sound/items/wirecutter.ogg', 25, 1)
-	buildstage = 1
+	buildstage = FIRE_ALARM_BUILD_NO_WIRES
 	update_icon()
 
 /obj/machinery/firealarm/crowbar_act(mob/living/user, obj/item/I)
 	. = ..()
 	if(!wiresexposed)
 		return
-	if(buildstage != 1)
+	if(buildstage != FIRE_ALARM_BUILD_NO_WIRES)
 		return
 	to_chat(user, "You start prying out the circuit!")
 	playsound(loc, 'sound/items/crowbar.ogg', 25, 1)
 	if(!do_after(user, 2 SECONDS, NONE, src, BUSY_ICON_BUILD))
 		return
 	new /obj/item/circuitboard/firealarm(loc)
-	electronics = null
-	buildstage = 0
+	buildstage = FIRE_ALARM_BUILD_NO_CIRCUIT
 	update_icon()
 
 /obj/machinery/firealarm/wrench_act(mob/living/user, obj/item/I)
 	. = ..()
 	if(!wiresexposed)
 		return
-	if(buildstage != 0)
+	if(buildstage != FIRE_ALARM_BUILD_NO_CIRCUIT)
 		return
 	to_chat(user, "You remove the fire alarm assembly from the wall!")
 	var/obj/item/frame/fire_alarm/frame = new /obj/item/frame/fire_alarm
@@ -162,22 +168,21 @@
 		return
 
 	switch(buildstage)
-		if(1)
+		if(FIRE_ALARM_BUILD_NO_WIRES)
 			if(iscablecoil(I))
 				var/obj/item/stack/cable_coil/C = I
 				if(C.use(5))
 					to_chat(user, span_notice("You wire \the [src]."))
-					buildstage = 2
+					buildstage = FIRE_ALARM_BUILD_SECURED
 					return
 				else
 					to_chat(user, span_warning("You need 5 pieces of cable to do wire \the [src]."))
 					return
-		if(0)
+		if(FIRE_ALARM_BUILD_NO_CIRCUIT)
 			if(istype(I, /obj/item/circuitboard/firealarm))
 				to_chat(user, "You insert the circuit!")
-				electronics = I
 				qdel(I)
-				buildstage = 1
+				buildstage = FIRE_ALARM_BUILD_NO_WIRES
 				update_icon()
 
 /obj/machinery/firealarm/can_interact(mob/user)
@@ -185,69 +190,42 @@
 	if(!.)
 		return FALSE
 
-	if(buildstage != 2)
+	if(buildstage != FIRE_ALARM_BUILD_SECURED)
 		return FALSE
 
 	return TRUE
 
-/obj/machinery/firealarm/interact(mob/user)
+/obj/machinery/firealarm/attack_hand(mob/user)
 	. = ..()
-	if(.)
-		return
+	if(. || buildstage != FIRE_ALARM_BUILD_SECURED)
+		return .
+	add_fingerprint(user, "firealarm set")
+	alarm(user)
 
-	var/area/A = get_area(src)
-	var/d1
-	var/d2
-
-	if (A.alarm_state_flags & ALARM_WARNING_FIRE)
-		d1 = "<A href='byond://?src=[text_ref(src)];reset=1'>Reset - Lockdown</A>"
-	else
-		d1 = "<A href='byond://?src=[text_ref(src)];alarm=1'>Alarm - Lockdown</A>"
-	if(timing)
-		d2 = "<A href='byond://?src=[text_ref(src)];time=0'>Stop Time Lock</A>"
-	else
-		d2 = "<A href='byond://?src=[text_ref(src)];time=1'>Initiate Time Lock</A>"
-	var/second = round(time) % 60
-	var/minute = (round(time) - second) / 60
-	var/dat = "<B>Fire alarm</B> [d1]\n<HR>The current alert level is: [SSsecurity_level.get_current_level_as_text()]</b><br><br>\nTimer System: [d2]<BR>\nTime Left: [(minute ? "[minute]:" : null)][second] <A href='byond://?src=[text_ref(src)];tp=-30'>-</A> <A href='byond://?src=[text_ref(src)];tp=-1'>-</A> <A href='byond://?src=[text_ref(src)];tp=1'>+</A> <A href='byond://?src=[text_ref(src)];tp=30'>+</A>"
-
-	var/datum/browser/popup = new(user, "firealarm", "<div align='center'>Fire alarm</div>")
-	popup.set_content(dat)
-	popup.open()
-
-/obj/machinery/firealarm/Topic(href, href_list)
+/obj/machinery/firealarm/attack_hand_alternate(mob/user)
 	. = ..()
-	if(.)
-		return
+	if(. || buildstage != FIRE_ALARM_BUILD_SECURED)
+		return .
+	add_fingerprint(user, "firealarm reset")
+	reset(user)
 
-	if(href_list["reset"])
-		reset()
-
-	else if(href_list["alarm"])
-		alarm()
-
-	else if(href_list["time"])
-		timing = text2num(href_list["time"])
-		last_process = world.time
-
-	else if(href_list["tp"])
-		var/tp = text2num(href_list["tp"])
-		time += tp
-		time = clamp(time, 0, 120)
-
-	updateUsrDialog()
-
-/obj/machinery/firealarm/proc/reset()
-	if (!working)
-		return
+/obj/machinery/firealarm/attack_ai(mob/user)
 	var/area/A = get_area(src)
-	A?.firereset()
-	update_icon()
+	if(A.fire_alarm)
+		return reset()
+	alarm()
 
-/obj/machinery/firealarm/proc/alarm()
-	if (!working)
-		return
+/obj/machinery/firealarm/proc/alarm(mob/user, silent = FALSE)
 	var/area/A = get_area(src)
-	A?.firealert()
+	A?.fire_alert()
 	update_icon()
-	playsound(src.loc, 'sound/ambience/signal.ogg', 50, 0)
+	if(user && !silent)
+		balloon_alert(user, "triggered alarm!")
+	playsound(loc, 'sound/ambience/signal.ogg', 50, 0)
+
+/obj/machinery/firealarm/proc/reset(mob/user, silent = FALSE)
+	var/area/A = get_area(src)
+	A?.fire_reset()
+	update_icon()
+	if(user && !silent)
+		balloon_alert(user, "reset alarm")

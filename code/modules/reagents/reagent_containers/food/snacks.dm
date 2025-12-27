@@ -1250,7 +1250,7 @@
 	icon_state = "xenomeat"
 	filling_color = "#43DE18"
 
-/obj/item/reagent_containers/food/snacks/meat/xenomeat/Initialize()
+/obj/item/reagent_containers/food/snacks/meat/xenomeat/Initialize(mapload)
 	. = ..()
 	reagents.add_reagent(/datum/reagent/toxin/acid, 3)
 	src.bitesize = 6

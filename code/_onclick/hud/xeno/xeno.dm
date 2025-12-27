@@ -65,6 +65,11 @@
 	icon_state = "sunder0"
 	screen_loc = ui_sunderhud
 
+/atom/movable/screen/alien/biomassdisplay
+	name = "biomass stored"
+	icon_state = "biomass_0"
+	screen_loc = ui_alienbiomassdisplay
+
 /datum/hud/alien/New(mob/living/carbon/xenomorph/owner, ui_style, ui_color, ui_alpha = 230)
 	. = ..()
 	var/atom/movable/screen/using
@@ -148,6 +153,10 @@
 	alien_sunder_display = new /atom/movable/screen/alien/sunderhud()
 	alien_sunder_display.alpha = ui_alpha
 	infodisplay += alien_sunder_display
+
+	alien_biomass_display = new /atom/movable/screen/alien/biomassdisplay(null, src)
+	alien_biomass_display.alpha = ui_alpha
+	infodisplay += alien_biomass_display
 
 	pull_icon = new /atom/movable/screen/pull(null, src)
 	pull_icon.icon = 'icons/mob/screen/alien.dmi'

@@ -10,7 +10,7 @@
 	var/growth_time = 300 SECONDS
 	var/structure = "wall"
 
-/obj/alien/resin/resin_growth/Initialize()
+/obj/alien/resin/resin_growth/Initialize(mapload)
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(on_growth)), growth_time, TIMER_DELETE_ME)
 	var/static/list/connections = list(

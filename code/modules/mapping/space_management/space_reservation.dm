@@ -37,6 +37,9 @@
 	/// The turf type the reservation is initially made with
 	var/turf_type = /turf/open/space
 
+	/// Do we override baseturfs with turf_type?
+	var/turf_type_is_baseturf = TRUE
+
 	///Distance away from the cordon where we can put a "sort-cordon" and run some extra code (see make_repel). 0 makes nothing happen
 	var/pre_cordon_distance = 0
 
@@ -89,15 +92,59 @@
 /datum/turf_reservation/proc/generate_cordon()
 	for(var/turf/cordon_turf as anything in cordon_turfs)
 		var/area/misc/cordon/cordon_area = GLOB.areas_by_type[/area/misc/cordon] || new
+		var/area/old_area = cordon_turf.loc
+
+		LISTASSERTLEN(old_area.turfs_to_uncontain_by_zlevel, cordon_turf.z, list())
+		LISTASSERTLEN(cordon_area.turfs_by_zlevel, cordon_turf.z, list())
+		old_area.turfs_to_uncontain_by_zlevel[cordon_turf.z] += cordon_turf
+		cordon_area.turfs_by_zlevel[cordon_turf.z] += cordon_turf
 		cordon_area.contents += cordon_turf
+
 		// Its no longer unused, but its also not "used"
 		cordon_turf.turf_flags &= ~UNUSED_RESERVATION_TURF
-		cordon_turf.change_turf(CORDON_TURF_TYPE, CORDON_TURF_TYPE)
+		cordon_turf.empty(/turf/cordon, /turf/cordon)
 		SSmapping.unused_turfs["[cordon_turf.z]"] -= cordon_turf
 		// still gets linked to us though
 		SSmapping.used_turfs[cordon_turf] = src
 
 	//swap the area with the pre-cordoning area
+	for(var/turf/pre_cordon_turf as anything in pre_cordon_turfs)
+		make_repel(pre_cordon_turf)
+
+///Register signals in the cordon "danger zone" to do something with whoever trespasses
+/datum/turf_reservation/proc/make_repel(turf/pre_cordon_turf)
+	SHOULD_CALL_PARENT(TRUE)
+	//Okay so hear me out. If we place a special turf IN the reserved area, it will be overwritten, so we can't do that
+	//But signals are preserved even between turf changes, so even if we register a signal now it will stay even if that turf is overriden by the template
+	RegisterSignals(pre_cordon_turf, list(COMSIG_QDELETING, COMSIG_TURF_RESERVATION_RELEASED), PROC_REF(on_stop_repel))
+
+/datum/turf_reservation/proc/on_stop_repel(turf/pre_cordon_turf)
+	SHOULD_CALL_PARENT(TRUE)
+	SIGNAL_HANDLER
+
+	stop_repel(pre_cordon_turf)
+
+///Unregister all the signals we added in RegisterRepelSignals
+/datum/turf_reservation/proc/stop_repel(turf/pre_cordon_turf)
+	UnregisterSignal(pre_cordon_turf, list(COMSIG_QDELETING, COMSIG_TURF_RESERVATION_RELEASED))
+
+/datum/turf_reservation/transit/make_repel(turf/pre_cordon_turf)
+	..()
+
+	RegisterSignal(pre_cordon_turf, COMSIG_ATOM_ENTERED, PROC_REF(space_dump))
+
+/datum/turf_reservation/transit/stop_repel(turf/pre_cordon_turf)
+	..()
+
+	UnregisterSignal(pre_cordon_turf, COMSIG_ATOM_ENTERED)
+
+/datum/turf_reservation/transit/proc/space_dump(atom/source, atom/movable/enterer, oldloc, oldlocs)
+	SIGNAL_HANDLER
+
+	dump_in_space(enterer)
+
+/datum/turf_reservation/turf_not_baseturf
+	turf_type_is_baseturf = FALSE
 
 /// Internal proc which handles reserving the area for the reservation.
 /datum/turf_reservation/proc/_reserve_area(width, height, zlevel)
@@ -136,17 +183,16 @@
 		break
 	if(!passing || !istype(BL) || !istype(TR))
 		return FALSE
-	bottom_left_turfs = list(BL.x, BL.y, BL.z)
-	top_right_turfs = list(TR.x, TR.y, TR.z)
 	for(var/i in final)
 		var/turf/T = i
 		reserved_turfs |= T
-		T.turf_flags &= ~UNUSED_RESERVATION_TURF
 		SSmapping.unused_turfs["[T.z]"] -= T
 		SSmapping.used_turfs[T] = src
 		T.turf_flags = (T.turf_flags | RESERVATION_TURF) & ~UNUSED_RESERVATION_TURF
 		T.change_turf(turf_type, turf_type)
 
+	bottom_left_turfs += BL
+	top_right_turfs += TR
 	return TRUE
 
 /datum/turf_reservation/proc/reserve(width, height, z_size, z_reservation)
@@ -225,14 +271,6 @@
 	var/turf/bottom_left = bottom_left_turfs[z_idx - 1]
 	return locate(bottom_left.x + offset_x, bottom_left.y + offset_y, bottom_left.z)
 
-///Change the turf type of all tiles that are belonging to the turf reservation
-/datum/turf_reservation/proc/set_turf_type(new_turf_type)
-	for(var/turf/T AS in reserved_turfs)
-		if(!(istype(T, turf_type)))
-			continue
-		T.change_turf(new_turf_type, new_turf_type)
-	turf_type = new_turf_type
-
 /datum/turf_reservation/New()
 	LAZYADD(SSmapping.turf_reservations, src)
 
@@ -240,3 +278,11 @@
 	Release()
 	LAZYREMOVE(SSmapping.turf_reservations, src)
 	return ..()
+
+///Change the turf type of all tiles that are belonging to the turf reservation
+/datum/turf_reservation/proc/set_turf_type(new_turf_type)
+	for(var/turf/T AS in reserved_turfs)
+		if(!(istype(T, turf_type)))
+			continue
+		T.change_turf(new_turf_type, new_turf_type)
+	turf_type = new_turf_type

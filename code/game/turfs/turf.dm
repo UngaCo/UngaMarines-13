@@ -64,14 +64,14 @@
 	if(SSmapping.max_plane_offset)
 		if(!SSmapping.plane_offset_blacklist["[plane]"])
 			plane = plane - (PLANE_RANGE * SSmapping.z_level_to_plane_offset[z])
-/*
+
 		var/turf/T = GET_TURF_ABOVE(src)
 		if(T)
 			T.multiz_turf_new(src, DOWN)
 		T = GET_TURF_BELOW(src)
 		if(T)
 			T.multiz_turf_new(src, UP)
-*/
+
 	// by default, vis_contents is inherited from the turf that was here before.
 	// Checking length(vis_contents) in a proc this hot has huge wins for performance.
 	if(length(vis_contents))
@@ -374,6 +374,12 @@
 				L.Add(t)
 	return L
 
+/turf/proc/multiz_turf_del(turf/T, dir)
+	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_DEL, T, dir)
+
+/turf/proc/multiz_turf_new(turf/T, dir)
+	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_NEW, T, dir)
+
 /turf/proc/Distance(turf/t)
 	if(get_dist(src,t) == 1)
 		var/cost = (src.x - t.x) * (src.x - t.x) + (src.y - t.y) * (src.y - t.y)
@@ -404,6 +410,9 @@
 
 /turf/proc/can_lay_cable()
 	return can_have_cabling() & !intact_tile
+
+/turf/proc/burn_tile()
+	return
 
 /turf/proc/ceiling_debris_check(size = 1)
 	return

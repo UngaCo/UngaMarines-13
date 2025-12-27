@@ -25,7 +25,7 @@
 	)
 	blacklist_ground_maps = list(MAP_BIG_RED, MAP_DELTA_STATION, MAP_PRISON_STATION, MAP_LV_624, MAP_WHISKEY_OUTPOST, MAP_OSCAR_OUTPOST, MAP_LAST_STAND)
 
-	restricted_castes = list(/datum/xeno_caste/ravager, /datum/xeno_caste/hivemind)
+	restricted_castes = list(/datum/xeno_caste/ravager, /datum/xeno_caste/hivemind, /datum/xeno_caste/chimera)
 
 	bioscan_interval = 0
 	// Round end conditions

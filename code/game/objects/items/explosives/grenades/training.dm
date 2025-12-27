@@ -6,6 +6,7 @@
 	hud_state = "grenade_dummy"
 	dangerous = FALSE
 	icon_state_mini = "grenade_white"
+	overlay_type = "white"
 
 /obj/item/explosive/grenade/training/prime()
 	playsound(loc, 'sound/items/detector.ogg', 80, 0, 7)

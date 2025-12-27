@@ -190,14 +190,6 @@
 /obj/machinery/power/apc/AICtrlClick(mob/living/silicon/ai/user) // turns off/on APCs.
 	toggle_breaker(user)
 
-/* Firealarm */
-/obj/machinery/firealarm/AICtrlClick(mob/living/silicon/ai/user) // toggle the fire alarm
-	var/area/A = get_area(src)
-	if(A.alarm_state_flags & ALARM_WARNING_FIRE)
-		reset()
-	else
-		alarm()
-
 /* Weeds */
 /obj/alien/weeds/node/AICtrlShiftClick(mob/living/silicon/ai/user)
 	var/turf/firedturf = get_turf(src)

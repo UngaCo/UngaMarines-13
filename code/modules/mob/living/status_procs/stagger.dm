@@ -1,3 +1,7 @@
+///Returns if staggered
+/mob/living/proc/IsStaggered()
+	return has_status_effect(STATUS_EFFECT_STAGGER)
+
 ///Returns remaining stagger duration
 /mob/living/proc/AmountStaggered()
 	var/datum/status_effect/incapacitating/stagger/current_stagger = has_status_effect(STATUS_EFFECT_STAGGER)

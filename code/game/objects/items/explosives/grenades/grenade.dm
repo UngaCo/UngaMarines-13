@@ -22,10 +22,22 @@
 	var/det_time = 4 SECONDS
 	///Does it make a danger overlay for humans? Can synths use it?
 	var/dangerous = TRUE
-	var/arm_sound = 'sound/weapons/grenade/grenade_pinout.ogg'
+	///Будет ли проигрываться звук удара об пол (groundhit_sound)
+	var/groundhit_sound_is_playable = TRUE
+	///Звук чеки у гранаты
+	var/list/arm_sound = list(
+		'sound/weapons/grenade/grenade_pinout1.ogg',
+		'sound/weapons/grenade/grenade_pinout2.ogg'
+	)
 	var/hud_state = "grenade_he"
 	var/hud_state_empty = "grenade_empty"
-	var/G_throw_sound = 'sound/weapons/grenade/grenade_throw.ogg'
+	///Звук броска гранаты
+	var/throw_sound = 'sound/weapons/grenade/grenade_throw.ogg'
+	///Звук удара гранаты об любой турф
+	var/list/groundhit_sound = list(
+		'sound/weapons/grenade/grenade_hit1.ogg',
+		'sound/weapons/grenade/grenade_hit2.ogg'
+	)
 	/// Power of the explosion
 	var/power = 105
 	/// Falloff of our explosion, aka distance, by the formula of power / falloff
@@ -88,7 +100,7 @@
 
 	icon_state = initial(icon_state) + "_active"
 	active = TRUE
-	playsound(loc, arm_sound, 30, 1, 6)
+	playsound(loc, pick(arm_sound), 30, 1, 6)
 	if(dangerous)
 		GLOB.round_statistics.grenades_thrown++
 		SSblackbox.record_feedback(FEEDBACK_TALLY, "round_statistics", 1, "grenades_thrown")
@@ -122,4 +134,9 @@
 
 /obj/item/explosive/grenade/throw_at(target, range, speed, thrower, spin, flying, targetted_throw)
 	. = ..()
-	playsound(thrower, G_throw_sound, 25, 1, 6)
+	playsound(thrower, throw_sound, 25, 1, 6)
+
+/obj/item/explosive/grenade/throw_impact(atom/hit_atom, speed, bounce)
+	. = ..()
+	if(groundhit_sound_is_playable)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), src, pick(groundhit_sound), 20, 1, 9), 0.1 SECONDS)

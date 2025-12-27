@@ -162,7 +162,7 @@
 	overlay.pixel_y = 6
 	add_overlay(overlay)
 
-/obj/structure/reagent_dispensers/fueltank/bullet_act(obj/projectile/proj)
+/obj/structure/reagent_dispensers/fueltank/bullet_act(atom/movable/projectile/proj)
 	if(exploding)
 		return FALSE
 	. = ..()

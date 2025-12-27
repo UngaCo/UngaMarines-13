@@ -33,7 +33,7 @@
 	///Applies the actual bonus points for the dropship for each sale, even much more than miners
 	var/dropship_bonus = 40
 
-/obj/structure/sensor_tower_infestation/Initialize()
+/obj/structure/sensor_tower_infestation/Initialize(mapload)
 	. = ..()
 	name += " " + num2text(id)
 	towerid = id

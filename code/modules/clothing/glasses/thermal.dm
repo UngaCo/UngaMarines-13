@@ -31,7 +31,7 @@
 		slot_glasses_str = 'icons/mob/hunter/pred_gear.dmi'
 	)
 
-/obj/item/clothing/glasses/thermal/yautja/Initialize()
+/obj/item/clothing/glasses/thermal/yautja/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, TRAIT_GENERIC)
 

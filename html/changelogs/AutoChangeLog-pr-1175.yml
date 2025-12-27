@@ -1,0 +1,4 @@
+author: "Helg2"
+delete-after: True
+changes:
+  - bugfix: "Исправил то что ксено структуры орали на дружественных ксеносов."

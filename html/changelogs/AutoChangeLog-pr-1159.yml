@@ -1,0 +1,4 @@
+author: "Tatarla"
+delete-after: True
+changes:
+  - rscdel: "Убрал возможность выбрать нейроплевок у претора"

@@ -248,7 +248,7 @@
 
 	ammo_datum_type = GLOB.ammo_list[/datum/ammo/energy/yautja/rifle/bolt]
 	rounds -= charge_cost
-	var/obj/projectile/proj = get_ammo_object()
+	var/atom/movable/projectile/proj = get_ammo_object()
 	in_chamber = proj
 	return in_chamber
 
@@ -312,7 +312,7 @@
 /obj/item/weapon/gun/energy/yautja/plasmapistol/cycle()
 	if(rounds < charge_cost)
 		return
-	var/obj/projectile/proj = get_ammo_object()
+	var/atom/movable/projectile/proj = get_ammo_object()
 	in_chamber = proj
 	rounds -= charge_cost
 	return in_chamber

@@ -285,7 +285,7 @@
 	xeno_reagent.overlays.Cut()
 	xeno_reagent.icon_state = ""
 
-	if(stat == DEAD)
+	if(stat == DEAD || SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_STEALTH) & COMPONENT_HIDE_HEALTH)
 		return FALSE
 
 	var/static/image/neurotox_image = image('icons/mob/hud/reagent.dmi', icon_state = "neurotoxin")

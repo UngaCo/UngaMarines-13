@@ -33,7 +33,7 @@
 	damage_type = STAMINA
 	matter_cost = 0
 
-/datum/ammo/bullet/pistol/tranq/on_hit_mob(mob/victim, obj/projectile/proj)
+/datum/ammo/bullet/pistol/tranq/on_hit_mob(mob/victim, atom/movable/projectile/proj)
 	if(iscarbon(victim))
 		var/mob/living/carbon/carbon_victim = victim
 		carbon_victim.reagents.add_reagent(/datum/reagent/toxin/potassium_chlorophoride, 1)
@@ -47,7 +47,7 @@
 	additional_xeno_penetration = 30
 	matter_cost = 0
 
-/datum/ammo/bullet/pistol/hollow/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/pistol/hollow/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, stagger = 2 SECONDS, slowdown = 0.5, knockback = 1)
 
 /datum/ammo/bullet/pistol/ap
@@ -80,7 +80,7 @@
 	damage_falloff = 0.75
 	matter_cost = 0
 
-/datum/ammo/bullet/pistol/superheavy/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/pistol/superheavy/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, stagger = 0.5 SECONDS, slowdown = 0.5, knockback = 1)
 
 /datum/ammo/bullet/pistol/superheavy/derringer
@@ -88,7 +88,7 @@
 	handful_icon_state = "derringer"
 	matter_cost = 0
 
-/datum/ammo/bullet/pistol/superheavy/derringer/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/pistol/superheavy/derringer/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, slowdown = 0.5)
 
 /datum/ammo/bullet/pistol/incendiary
@@ -124,7 +124,7 @@
 	damage = 15
 	matter_cost = 0
 
-/datum/ammo/bullet/pistol/mankey/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/pistol/mankey/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(!target_mob.stat && !ismonkey(target_mob))
 		proj.visible_message(span_danger("The [src] chimpers furiously!"))
 		new /mob/living/carbon/human/species/monkey(proj.loc)

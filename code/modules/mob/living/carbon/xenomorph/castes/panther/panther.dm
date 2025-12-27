@@ -23,7 +23,7 @@
 		/datum/xenomorph_skin/panther/rouny,
 	)
 
-/mob/living/carbon/xenomorph/panther/Initialize()
+/mob/living/carbon/xenomorph/panther/Initialize(mapload)
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(adrenalin)), 1 SECONDS, TIMER_LOOP)
 

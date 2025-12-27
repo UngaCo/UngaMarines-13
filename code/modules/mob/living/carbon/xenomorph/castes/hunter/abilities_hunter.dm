@@ -281,6 +281,10 @@
 	var/pounce_range = HUNTER_POUNCE_RANGE
 	///pass_flags given when leaping
 	var/leap_pass_flags = PASS_LOW_STRUCTURE|PASS_FIRE|PASS_XENO
+	/// The stun duration (inflicted to mob) on successful tackle.
+	var/stun_duration = XENO_POUNCE_STUN_DURATION
+	/// The immobilize duration (inflicted to self) on successful tackle.
+	var/self_immobilize_duration = XENO_POUNCE_STANDBY_DURATION
 
 /datum/action/ability/activable/xeno/pounce/on_cooldown_finish()
 	owner.balloon_alert(owner, "Pounce ready")
@@ -337,9 +341,10 @@
 ///Triggers the effect of a successful pounce on the target.
 /datum/action/ability/activable/xeno/pounce/proc/trigger_pounce_effect(mob/living/living_target)
 	playsound(get_turf(living_target), 'sound/voice/alien/pounce.ogg', 25, TRUE)
+	xeno_owner.Immobilize(self_immobilize_duration)
 	xeno_owner.set_throwing(FALSE)
 	xeno_owner.forceMove(get_turf(living_target))
-	living_target.Knockdown(XENO_POUNCE_STUN_DURATION)
+	living_target.Knockdown(stun_duration)
 
 /datum/action/ability/activable/xeno/pounce/proc/pounce_complete()
 	SIGNAL_HANDLER

@@ -34,7 +34,6 @@
 	var/explosion_block = 0
 
 	var/datum/component/orbiter/orbiters
-	var/datum/proximity_monitor/proximity_monitor
 
 	var/datum/wires/wires = null
 
@@ -334,9 +333,6 @@ directive is properly returned.
 /atom/proc/psi_act(psi_power, mob/living/user)
 	return
 
-/atom/proc/GenerateTag()
-	return
-
 /atom/proc/prevent_content_explosion()
 	return FALSE
 
@@ -351,12 +347,18 @@ directive is properly returned.
 	SHOULD_CALL_PARENT(TRUE)
 	SEND_SIGNAL(src, COMSIG_ATOM_CONTENTS_DEL, A)
 
+/**
+ * Called when an atom is created in byond (built in engine proc)
+ *
+ * Not a lot happens here in SS13 code, as we offload most of the work to the
+ * [Initialization][/atom/proc/Initialize] proc, mostly we run the preloader
+ * if the preloader is being used and then call [InitAtom][/datum/controller/subsystem/atoms/proc/InitAtom] of which the ultimate
+ * result is that the Initialize proc is called.
+ *
+ */
 /atom/New(loc, ...)
 	if(GLOB.use_preloader && (src.type == GLOB._preloader_path))//in case the instanciated atom is creating other atoms in New()
 		world.preloader_load(src)
-
-	if(datum_flags & DF_USE_TAG)
-		GenerateTag()
 
 	var/do_initialize = SSatoms.initialized
 	if(do_initialize != INITIALIZATION_INSSATOMS)

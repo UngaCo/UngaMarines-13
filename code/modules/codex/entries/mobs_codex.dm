@@ -21,6 +21,16 @@
 
 	xeno_strings += "Name: '[xeno_caste.caste_name]'"
 	xeno_strings += "Tier: [GLOB.tier_as_number[tier]]"
+
+	if(length(purchased_mutations))
+		xeno_strings += "Mutations:"
+		for(var/mutation_name in purchased_mutations)
+			var/datum/xeno_mutation/mutation = get_xeno_mutation_by_name(mutation_name)
+			if(mutation)
+				xeno_strings += "  • [mutation.name]"
+	else
+		xeno_strings += "Mutations: None"
+
 	xeno_strings += "Melee slash damage: [xeno_caste.melee_damage * xeno_melee_damage_modifier]"
 	switch(mob_size)
 		if(MOB_SIZE_BIG)

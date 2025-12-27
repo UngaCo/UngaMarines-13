@@ -20,7 +20,7 @@
 	plasma_gain = 25
 
 	// *** Health *** //
-	max_health = 350
+	max_health = 400
 
 	// *** Flags *** //
 	caste_flags = CASTE_EVOLUTION_ALLOWED
@@ -42,10 +42,10 @@
 		/datum/action/ability/xeno_action/watch_xeno,
 		/datum/action/ability/activable/xeno/psydrain,
 		/datum/action/ability/activable/xeno/blink,
-		/datum/action/ability/xeno_action/phantom,
 		/datum/action/ability/activable/xeno/pounce/abduction,
 		/datum/action/ability/activable/xeno/body_swap,
 		/datum/action/ability/xeno_action/warp_blast,
+		/datum/action/ability/xeno_action/crippling_strike,
 	)
 
 /datum/xeno_caste/chimera/normal
@@ -81,8 +81,8 @@
 	tier = XENO_TIER_MINION
 	upgrade = XENO_UPGRADE_BASETYPE
 
-	max_health = 150
+	max_health = 200
 
-	soft_armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	soft_armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 15, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
 	actions = null

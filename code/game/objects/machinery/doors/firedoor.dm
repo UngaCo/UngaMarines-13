@@ -46,25 +46,20 @@
 /obj/machinery/door/firedoor/Initialize(mapload)
 	. = ..()
 	for(var/obj/machinery/door/firedoor/F in loc)
-		if(F != src)
-			atom_flags |= INITIALIZED
-			return INITIALIZE_HINT_QDEL
+		if(F == src)
+			continue
+		atom_flags |= INITIALIZED
+		return INITIALIZE_HINT_QDEL
 	var/area/A = get_area(src)
-	ASSERT(istype(A))
+	RegisterSignal(A, COMSIG_AREA_FIRE_ALARM_SET, PROC_REF(on_fire_alarm))
 
-	LAZYADD(A.all_fire_doors, src)
+	ASSERT(istype(A))
 	areas_added = list(A)
 
-	for(var/direction in GLOB.cardinals)
+	for(var/direction as anything in GLOB.cardinals)
 		A = get_area(get_step(src,direction))
 		if(istype(A) && !(A in areas_added))
-			LAZYADD(A.all_fire_doors, src)
 			areas_added += A
-
-/obj/machinery/door/firedoor/Destroy()
-	for(var/area/A in areas_added)
-		LAZYREMOVE(A.all_fire_doors, src)
-	return ..()
 
 /obj/machinery/door/firedoor/examine(mob/user) // todo remove the shitty o vars
 	. = ..()
@@ -158,14 +153,11 @@
 
 	var/alarmed = lockdown
 	//Checks if there are fire alarms in any areas associated with that firedoor
-	for(var/area/A in areas_added)
-		if(A.alarm_state_flags & ALARM_WARNING_FIRE || A.air_doors_activated)
-			alarmed = TRUE
+	for(var/area/A as anything in areas_added)
+		if(!A.fire_alarm)
+			continue
+		alarmed = TRUE
 
-	var/answer = tgui_alert(user, "Would you like to [density ? "open" : "close"] this [src.name]?[ alarmed && density ? "\nNote that by doing so, you acknowledge any damages from opening this\n[src.name] as being your own fault, and you will be held accountable under the law." : ""]",\
-	"\The [src]", list("Yes, [density ? "open" : "close"]", "No"))
-	if(answer == "No" || !answer)
-		return
 	if(user.incapacitated() || (!user.canmove && !isAI(user)) || (get_dist(src, user) > 1  && !isAI(user)))
 		to_chat(user, "Sorry, you must remain able bodied and close to \the [src] in order to use it.")
 		return
@@ -178,8 +170,8 @@
 		return
 	else
 		user.visible_message(span_notice("\The [src] [density ? "open" : "close"]s for \the [user]."),\
-		"\The [src] [density ? "open" : "close"]s.",\
-		"You hear a beep, and a door opening.")
+		span_warning("\The [src] [density ? "opens" : "closes"]."),\
+		span_hear("You hear a beep, and a door opening."))
 
 	var/needs_to_close = FALSE
 	if(density)
@@ -196,9 +188,10 @@
 
 /obj/machinery/door/firedoor/proc/closing_process()
 	var/alarmed = FALSE
-	for(var/area/A in areas_added) // Just in case a fire alarm is turned off while the firedoor is going through an autoclose cycle
-		if(A.alarm_state_flags & ALARM_WARNING_FIRE || A.air_doors_activated)
-			alarmed = TRUE
+	for(var/area/A as anything in areas_added) // Just in case a fire alarm is turned off while the firedoor is going through an autoclose cycle
+		if(!A.fire_alarm)
+			continue
+		alarmed = TRUE
 	if(alarmed)
 		nextstate = FIREDOOR_CLOSED
 		close()
@@ -320,6 +313,23 @@
 		to_chat(user, span_warning("The firelock is welded shut."))
 		return
 	return ..()
+
+/obj/machinery/door/firedoor/proc/on_fire_alarm(datum/source, turned_on)
+	SIGNAL_HANDLER
+	if(blocked)
+		return
+	if(turned_on)
+		if(operating)
+			nextstate = FIREDOOR_CLOSED
+			return
+		if(!density)
+			close()
+		return
+	if(operating)
+		nextstate = OPEN
+		return
+	if(density)
+		open()
 
 /obj/machinery/door/firedoor/mainship
 	name = "\improper Emergency Shutter"

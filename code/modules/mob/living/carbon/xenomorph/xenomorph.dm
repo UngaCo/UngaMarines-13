@@ -367,6 +367,7 @@
 	med_hud_set_health()
 	hud_set_plasma()
 	hud_set_pheromone()
+	hud_set_enhancement()
 	//and display them
 	add_to_all_mob_huds()
 

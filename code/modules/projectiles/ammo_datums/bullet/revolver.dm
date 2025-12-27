@@ -9,7 +9,7 @@
 	additional_xeno_penetration = 20
 	matter_cost = 0
 
-/datum/ammo/bullet/revolver/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/revolver/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, stagger = 2 SECONDS, slowdown = 0.5, knockback = 1)
 
 /datum/ammo/bullet/revolver/rifle
@@ -23,7 +23,7 @@
 	shell_speed = 3.5
 	matter_cost = 16
 
-/datum/ammo/bullet/revolver/rifle/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/revolver/rifle/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, slowdown = 0.5, knockback = 1)
 
 /datum/ammo/bullet/revolver/t500
@@ -37,21 +37,21 @@
 	additional_xeno_penetration = 0
 	matter_cost = 0
 
-/datum/ammo/bullet/revolver/t500/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/revolver/t500/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, stagger = 0, slowdown = 0, knockback = 2)
 
 /datum/ammo/bullet/revolver/t500/slavs
 	name = ".500 'Slavs' revolver bullet"
 	handful_icon_state = "nigro_sv"
 
-/datum/ammo/bullet/revolver/t500/slavs/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/revolver/t500/slavs/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, paralyze = 2 SECONDS, knockback = 1)
 
 /datum/ammo/bullet/revolver/t500/qk
 	name = ".500 'Queen Killer' revolver bullet"
 	handful_icon_state = "nigro_qk"
 
-/datum/ammo/bullet/revolver/t500/qk/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/revolver/t500/qk/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	if(isxenoqueen(target_mob))
 		var/mob/living/carbon/xenomorph/X = target_mob
 		X.apply_damage(40)
@@ -70,7 +70,7 @@
 	additional_xeno_penetration = 0
 	matter_cost = 0
 
-/datum/ammo/bullet/revolver/t312/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/revolver/t312/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, knockback = 1)
 
 /datum/ammo/bullet/revolver/t312/med
@@ -83,7 +83,7 @@
 	ammo_behavior_flags = AMMO_BALLISTIC|AMMO_SKIPS_ALIENS
 	matter_cost = 0
 
-/datum/ammo/bullet/revolver/t312/med/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/revolver/t312/med/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	return
 
 /datum/ammo/bullet/revolver/t312/med/adrenaline
@@ -91,7 +91,7 @@
 	handful_icon_state = "nigro_adr"
 	hud_state = "t312_adr"
 
-/datum/ammo/bullet/revolver/t312/med/adrenaline/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/revolver/t312/med/adrenaline/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(!ishuman(target_mob))
 		return
 	target_mob.reagents.add_reagent(/datum/reagent/medicine/adrenaline, 2)
@@ -102,7 +102,7 @@
 	handful_icon_state = "nigro_rr"
 	hud_state = "t312_rr"
 
-/datum/ammo/bullet/revolver/t312/med/rr/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/revolver/t312/med/rr/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(!ishuman(target_mob))
 		return
 	target_mob.reagents.add_reagent(/datum/reagent/medicine/russian_red, 5)
@@ -112,7 +112,7 @@
 	handful_icon_state = "nigro_md"
 	hud_state = "t312_md"
 
-/datum/ammo/bullet/revolver/t312/med/md/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/revolver/t312/med/md/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(!ishuman(target_mob))
 		return
 	target_mob.reagents.add_reagent(/datum/reagent/medicine/meralyne, 2.5)
@@ -123,7 +123,7 @@
 	handful_icon_state = "nigro_neu"
 	hud_state = "t312_neu"
 
-/datum/ammo/bullet/revolver/t312/med/neu/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/revolver/t312/med/neu/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(!ishuman(target_mob))
 		return
 	target_mob.reagents.add_reagent(/datum/reagent/medicine/neuraline, 3.1)
@@ -136,7 +136,7 @@
 	additional_xeno_penetration = 10
 	matter_cost = 8
 
-/datum/ammo/bullet/revolver/r44/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/revolver/r44/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, knockback = 1)
 
 /datum/ammo/bullet/revolver/small
@@ -145,7 +145,7 @@
 	damage = 30
 	matter_cost = 0
 
-/datum/ammo/bullet/revolver/small/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/revolver/small/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, slowdown = 0.5)
 
 /datum/ammo/bullet/revolver/marksman
@@ -194,7 +194,7 @@
 	additional_xeno_penetration = 15
 	matter_cost = 0
 
-/datum/ammo/bullet/revolver/t76/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/revolver/t76/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, paralyze = 2 SECONDS, stagger = 0.5, slowdown = 1)
 
 /datum/ammo/bullet/revolver/highimpact
@@ -206,7 +206,7 @@
 	additional_xeno_penetration = 15
 	matter_cost = 0
 
-/datum/ammo/bullet/revolver/highimpact/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/revolver/highimpact/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, paralyze = 2 SECONDS, stagger = 2 SECONDS, slowdown = 1, knockback = 1)
 
 /datum/ammo/bullet/revolver/ricochet
@@ -226,8 +226,8 @@
 /datum/ammo/bullet/revolver/ricochet/four
 	bonus_projectiles_type = /datum/ammo/bullet/revolver/ricochet/three
 
-/datum/ammo/bullet/revolver/ricochet/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/revolver/ricochet/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, slowdown = 0.5)
 
-/datum/ammo/bullet/revolver/ricochet/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/revolver/ricochet/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	reflect(target_turf, proj, 10)

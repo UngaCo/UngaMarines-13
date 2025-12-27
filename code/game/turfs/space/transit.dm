@@ -7,6 +7,22 @@
 	///The number of icon state available
 	var/available_icon_state_amounts = 15
 
+/turf/open/space/transit/Initialize(mapload)
+	. = ..()
+	update_appearance()
+	RegisterSignal(src, COMSIG_ATOM_ENTERED, GLOBAL_PROC_REF(dump_in_space))
+
+/turf/open/space/transit/Destroy()
+	//Signals are NOT removed from turfs upon replacement, and we get replaced ALOT, so unregister our signal
+	UnregisterSignal(src, COMSIG_ATOM_ENTERED)
+	return ..()
+
+/turf/open/space/transit/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	. = ..()
+	if(plane != FLOOR_PLANE) // snowflake behaviour e.g clouds
+		underlay_appearance.icon_state = "speedspace_ns_[get_transit_state(asking_turf)]"
+		underlay_appearance.transform = turn(matrix(), get_transit_angle(asking_turf))
+
 /turf/open/space/transit/atmos
 	name = "\proper high atmosphere"
 	baseturfs = /turf/open/space/transit/atmos
@@ -29,35 +45,25 @@
 /turf/open/space/transit/east
 	dir = EAST
 
-/turf/open/space/transit/Entered(atom/movable/crosser, atom/old_loc, list/atom/old_locs)
-	. = ..()
-
-	if(isobserver(crosser) || crosser.anchored || isxenohivemind(crosser))
+/proc/dump_in_space(datum/source, atom/movable/crosser, oldloc, oldlocs)
+	if(isspaceturf(oldloc))
 		return
-
 	if(!isobj(crosser) && !isliving(crosser))
 		return
-
-	if(!isspaceturf(old_loc))
-		var/direction = dir
-		if(crosser.dir == REVERSE_DIR(dir)) // if mobs step in the reversed from transit turf direction, they will otherwise get smacked 2 times in a row.
-			direction = crosser.dir
-		var/turf/projected = get_ranged_target_turf(crosser.loc, direction, 10)
-		INVOKE_ASYNC(crosser, TYPE_PROC_REF(/atom/movable, throw_at), projected, 50, 2, null, TRUE, targetted_throw = TRUE)
-		addtimer(CALLBACK(src, PROC_REF(handle_crosser), crosser), 0.5 SECONDS)
-
-/turf/open/space/transit/proc/handle_crosser(atom/movable/crosser)
-	if(QDELETED(crosser))
+	if(isxenohivemind(crosser))
 		return
 
-	// you just jumped out of a dropship, have fun living on the way down!
-	var/list/ground_z_levels = SSmapping.levels_by_trait(ZTRAIT_GROUND)
-	if(!length(ground_z_levels))
-		return qdel(crosser)
+	var/throw_direction = pick(GLOB.alldirs)
+	if(crosser.dir == REVERSE_DIR(throw_direction)) // if mobs step in the reversed from transit turf direction, they will otherwise get smacked 2 times in a row.
+		throw_direction = crosser.dir
+	var/turf/projected = get_ranged_target_turf(crosser.loc, throw_direction, 10)
+	INVOKE_ASYNC(crosser, TYPE_PROC_REF(/atom/movable, throw_at), projected, 5, 2, null, TRUE, TRUE, TRUE)
+	addtimer(CALLBACK(crosser, GLOBAL_PROC_REF(handle_crosser), crosser), 0.5 SECONDS, TIMER_UNIQUE)
 
+/proc/handle_crosser(atom/movable/crosser)
 	//find a random spot to drop them
-	var/list/area/potential_areas = shuffle(SSmapping.areas_in_z["[ground_z_levels[1]]"])
-	for(var/area/potential_area in potential_areas)
+	var/list/area/potential_areas = shuffle(SSmapping.areas_in_z["[SSmapping.levels_by_trait(ZTRAIT_GROUND)[1]]"])
+	for(var/area/potential_area as anything in potential_areas)
 		if(potential_area.area_flags & NO_DROPPOD || !potential_area.outside) // no dropping inside the caves and etc.
 			continue
 		if(isspacearea(potential_area)) // make sure its not space, just in case
@@ -77,6 +83,7 @@
 		// we found a good turf, lets drop em
 		INVOKE_ASYNC(crosser, TYPE_PROC_REF(/atom/movable, handle_airdrop), possible_turf)
 		return
+	stack_trace("[crosser] has failed to find potential_area for dropping from space and was qdeleted.")
 	return qdel(crosser)
 
 /atom/movable/proc/handle_airdrop(turf/target_turf)
@@ -146,10 +153,6 @@
 	if(istype(wear_suit, /obj/item/clothing/suit/storage/marine/boomvest))
 		var/obj/item/clothing/suit/storage/marine/boomvest/vest = wear_suit
 		vest.boom(src)
-
-/turf/open/space/transit/Initialize(mapload)
-	. = ..()
-	update_icon()
 
 /turf/open/space/transit/update_icon()
 	. = ..()

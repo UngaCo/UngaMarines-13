@@ -554,6 +554,24 @@
 	. = ..()
 	flame_radius(fire_range, impact)
 
+/obj/structure/ship_ammo/cas/minirocket/phosphorus
+	name = "MGA-110B phosphorus"
+	desc = "A pack of incendiary phosphorus mini-rockets. Moving this will require some sort of lifter."
+	icon_state = "minirocket_inc_phos"
+	point_cost = 350
+	travelling_time = 4 SECONDS
+	fire_range = 4
+	prediction_type = CAS_AMMO_INCENDIARY
+	cas_effect = /obj/effect/overlay/blinking_laser/phosphorus // Enemies must know that something serious is coming at them
+	var/datum/effect_system/smoke_spread/phosphorus/smoke
+
+/obj/structure/ship_ammo/cas/minirocket/phosphorus/detonate_on(turf/impact, attackdir = NORTH)
+	. = ..()
+	playsound(loc, 'sound/effects/smoke.ogg', 25, 1, 4)
+	smoke.set_up(6, impact, 7)
+	smoke.start()
+	flame_radius(fire_range, impact, burn_intensity = 75, burn_duration = 45, burn_damage = 15, fire_stacks = 75, colour = "blue")
+
 /obj/structure/ship_ammo/cas/minirocket/smoke
 	name = "MGA-108C smoke"
 	desc = "A pack of screening smoke mini-rockets. Moving this will require some sort of lifter."
@@ -575,7 +593,7 @@
 	name = "MGA-106D tangle"
 	desc = "A pack of mini-rockets loaded with plasma-draining Tanglefoot gas. Moving this will require some sort of lifter."
 	icon_state = "minirocket_tfoot"
-	point_cost = 125
+	point_cost = 150
 	travelling_time = 6 SECONDS
 	explosion_power = 30
 	explosion_falloff = 15

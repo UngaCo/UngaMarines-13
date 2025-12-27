@@ -53,7 +53,7 @@
 	penetration = 20
 	damage_falloff = 1
 
-/datum/ammo/bullet/turret/buckshot/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/turret/buckshot/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, knockback = 1, max_range = 4)
 
 /datum/ammo/bullet/turret/spread
@@ -99,23 +99,23 @@
 	projectile_greyscale_config = /datum/greyscale_config/projectile
 	projectile_greyscale_colors = COLOR_AMMO_AIRBURST
 
-/datum/ammo/tx54/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/tx54/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	var/turf/det_turf = get_step_towards(target_mob, proj)
 	staggerstun(target_mob, proj, max_range, slowdown = 0.5, knockback = 1)
 	playsound(det_turf, SFX_EXPLOSION_MICRO, 30, falloff = 5)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_mob), loc_override = det_turf)
 
-/datum/ammo/tx54/on_hit_obj(obj/target_obj, obj/projectile/proj)
+/datum/ammo/tx54/on_hit_obj(obj/target_obj, atom/movable/projectile/proj)
 	var/turf/det_turf = get_step_towards(target_obj, proj)
 	playsound(det_turf, SFX_EXPLOSION_MICRO, 30, falloff = 5)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_obj), loc_override = det_turf)
 
-/datum/ammo/tx54/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/tx54/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	var/turf/det_turf = get_step_towards(target_turf, proj)
 	playsound(det_turf, SFX_EXPLOSION_MICRO, 30, falloff = 5)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_turf), loc_override = det_turf)
 
-/datum/ammo/tx54/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/tx54/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	var/turf/det_turf = get_step_towards(target_turf, proj)
 	playsound(det_turf, SFX_EXPLOSION_MICRO, 30, falloff = 5)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_turf), loc_override = det_turf)
@@ -171,16 +171,16 @@
 /datum/ammo/tx54/he/drop_nade(turf/target_turf)
 	cell_explosion(target_turf, 45, 25)
 
-/datum/ammo/tx54/he/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/tx54/he/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	drop_nade(get_turf(target_mob))
 
-/datum/ammo/tx54/he/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/tx54/he/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	drop_nade(get_turf(target_object))
 
-/datum/ammo/tx54/he/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/tx54/he/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? proj.loc : target_turf)
 
-/datum/ammo/tx54/he/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/tx54/he/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? proj.loc : target_turf)
 
 //The secondary projectiles
@@ -196,7 +196,7 @@
 	penetration = 40
 	damage_falloff = 0
 
-/datum/ammo/bullet/tx54_spread/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/tx54_spread/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, max_range = 3, stagger = 0.6 SECONDS, slowdown = 0.3)
 
 /datum/ammo/bullet/tx54_spread/incendiary
@@ -205,7 +205,7 @@
 	damage = 15
 	penetration = 10
 
-/datum/ammo/bullet/tx54_spread/incendiary/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/tx54_spread/incendiary/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	return
 
 /datum/ammo/bullet/tx54_spread/incendiary/drop_flame(turf/target_turf)
@@ -213,7 +213,7 @@
 		return
 	target_turf.ignite(5, 10)
 
-/datum/ammo/bullet/tx54_spread/incendiary/on_leave_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/tx54_spread/incendiary/on_leave_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_flame(target_turf)
 
 /datum/ammo/bullet/tx54_spread/smoke
@@ -236,10 +236,10 @@
 		QDEL_NULL(trail_spread_system)
 	return ..()
 
-/datum/ammo/bullet/tx54_spread/smoke/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/tx54_spread/smoke/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	return
 
-/datum/ammo/bullet/tx54_spread/smoke/on_leave_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/tx54_spread/smoke/on_leave_turf(turf/target_turf, atom/movable/projectile/proj)
 	trail_spread_system.set_up(0, target_turf)
 	trail_spread_system.start()
 
@@ -274,10 +274,10 @@
 		QDEL_NULL(chemical_payload)
 	return ..()
 
-/datum/ammo/bullet/tx54_spread/razor/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/tx54_spread/razor/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	return
 
-/datum/ammo/bullet/tx54_spread/razor/on_leave_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/tx54_spread/razor/on_leave_turf(turf/target_turf, atom/movable/projectile/proj)
 	chemical_payload.set_up(0, target_turf, reagent_list, RAZOR_FOAM)
 	chemical_payload.start()
 
@@ -294,7 +294,7 @@
 	///How many bonus projectiles to generate. New var so it doesn't trigger on firing
 	var/bonus_projectile_quantity = 5
 
-/datum/ammo/bullet/micro_rail/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/micro_rail/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	var/turf/det_turf = target_turf.density ? get_step_towards(target_turf, proj) : target_turf
 	playsound(det_turf, SFX_EXPLOSION_MICRO, 30, falloff = 5)
 	var/datum/effect_system/smoke_spread/smoke = new
@@ -353,7 +353,7 @@
 	max_range = 7
 	shell_speed = 3
 
-/datum/ammo/bullet/micro_rail_spread/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/micro_rail_spread/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, stagger = 1 SECONDS, slowdown = 0.5)
 
 /datum/ammo/bullet/micro_rail_spread/incendiary
@@ -364,7 +364,7 @@
 	sundering = 1.5
 	max_range = 6
 
-/datum/ammo/bullet/micro_rail_spread/incendiary/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/micro_rail_spread/incendiary/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, stagger = 0.4 SECONDS, slowdown = 0.2)
 
 /datum/ammo/bullet/micro_rail_spread/incendiary/drop_flame(turf/target_turf)
@@ -372,7 +372,7 @@
 		return
 	target_turf.ignite(5, 10)
 
-/datum/ammo/bullet/micro_rail_spread/incendiary/on_leave_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/micro_rail_spread/incendiary/on_leave_turf(turf/target_turf, atom/movable/projectile/proj)
 	if(prob(40))
 		drop_flame(target_turf)
 
@@ -402,7 +402,7 @@
 	var/explosion_range = 2
 
 ///handles the actual bomblet detonation
-/datum/ammo/micro_rail_cluster/proc/detonate(turf/target_turf, obj/projectile/proj)
+/datum/ammo/micro_rail_cluster/proc/detonate(turf/target_turf, atom/movable/projectile/proj)
 	playsound(target_turf, SFX_EXPLOSION_MICRO, 30, falloff = 5)
 	var/datum/effect_system/smoke_spread/smoke = new smoketype()
 	smoke.set_up(0, target_turf, rand(1,2))
@@ -422,22 +422,22 @@
 				var/obj/obj_victim = target
 				obj_victim.take_damage(explosion_damage, BRUTE, BOMB)
 
-/datum/ammo/micro_rail_cluster/on_leave_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/micro_rail_cluster/on_leave_turf(turf/target_turf, atom/movable/projectile/proj)
 	///chance to detonate early, scales with distance and capped, to avoid lots of immediate detonations, and nothing reach max range respectively.
 	var/detonate_probability = min(proj.distance_travelled * 4, 16)
 	if(prob(detonate_probability))
 		proj.proj_max_range = proj.distance_travelled
 
-/datum/ammo/micro_rail_cluster/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/micro_rail_cluster/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	detonate(get_turf(proj), proj)
 
-/datum/ammo/micro_rail_cluster/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/micro_rail_cluster/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	detonate(get_turf(proj), proj)
 
-/datum/ammo/micro_rail_cluster/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/micro_rail_cluster/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	detonate(target_turf.density ? proj.loc : target_turf, proj)
 
-/datum/ammo/micro_rail_cluster/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/micro_rail_cluster/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	detonate(target_turf.density ? proj.loc : target_turf, proj)
 
 /datum/ammo/smoke_burst
@@ -464,16 +464,16 @@
 	smoke.set_up(smokeradius, target_turf, rand(5,9))
 	smoke.start()
 
-/datum/ammo/smoke_burst/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/smoke_burst/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	drop_nade(get_turf(proj))
 
-/datum/ammo/smoke_burst/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/smoke_burst/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	drop_nade(target_object.allow_pass_flags & PASS_PROJECTILE ? get_step_towards(target_object, proj) : get_turf(target_object))
 
-/datum/ammo/smoke_burst/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/smoke_burst/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf)
 
-/datum/ammo/smoke_burst/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/smoke_burst/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf)
 
 /datum/ammo/smoke_burst/tank
@@ -503,7 +503,7 @@
 	///Flat plasma to drain, unaffected by caste plasma amount.
 	var/plasma_drain = 25
 
-/datum/ammo/bullet/pepperball/on_hit_mob(mob/living/victim, obj/projectile/proj)
+/datum/ammo/bullet/pepperball/on_hit_mob(mob/living/victim, atom/movable/projectile/proj)
 	if(isxeno(victim))
 		var/mob/living/carbon/xenomorph/X = victim
 		X.use_plasma(drain_multiplier * X.xeno_caste.plasma_max * X.xeno_caste.plasma_regen_limit)

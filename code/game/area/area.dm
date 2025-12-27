@@ -21,7 +21,8 @@
 	/// This uses the same nested list format as turfs_by_zlevel
 	var/list/list/turf/turfs_to_uncontain_by_zlevel = list()
 
-	var/alarm_state_flags = NONE
+	///Does the area has fire alarm?
+	var/fire_alarm = FALSE
 
 	var/unique = TRUE
 
@@ -58,9 +59,6 @@
 	var/area_flags = NONE
 	///Cameras in this area
 	var/list/cameras
-	///Keeps a lit of adjacent firelocks, used for alarms/ZAS
-	var/list/all_fire_doors
-	var/air_doors_activated = FALSE
 	var/list/ambience = list('sound/ambience/ambigen1.ogg', 'sound/ambience/ambigen3.ogg', 'sound/ambience/ambigen4.ogg', \
 		'sound/ambience/ambigen5.ogg', 'sound/ambience/ambigen6.ogg', 'sound/ambience/ambigen7.ogg', 'sound/ambience/ambigen8.ogg',\
 		'sound/ambience/ambigen9.ogg', 'sound/ambience/ambigen10.ogg', 'sound/ambience/ambigen11.ogg', 'sound/ambience/ambigen12.ogg',\
@@ -233,92 +231,39 @@
 /area/proc/PlaceOnTopReact(list/new_baseturfs, turf/fake_turf_type, flags)
 	return flags
 
-/area/proc/poweralert(state, obj/source)
+/area/proc/power_alert(state, obj/source)
 	if(state == poweralm)
 		return
 
 	poweralm = state
 
-	for(var/i in GLOB.alert_consoles)
-		var/obj/machinery/computer/station_alert/SA = i
-		if(SA.z != source.z)
+	for(var/obj/machinery/computer/station_alert/alert_computer as anything in GLOB.alert_consoles)
+		if(alert_computer.z != source.z)
 			continue
 		if(state == 1)
-			SA.cancelAlarm("Power", src, source)
+			alert_computer.cancelAlarm("Power", src, source)
 		else
-			SA.triggerAlarm("Power", src, null, source)
+			alert_computer.triggerAlarm("Power", src, null, source)
 
-/area/proc/air_doors_close()
-	for(var/obj/machinery/door/firedoor/E in all_fire_doors)
-		if(E.blocked)
-			continue
-
-		if(E.operating)
-			E.nextstate = OPEN
-		else if(!E.density)
-			E.close()
-
-/area/proc/air_doors_open()
-	for(var/obj/machinery/door/firedoor/E in all_fire_doors)
-		if(E.blocked)
-			continue
-
-		if(E.operating)
-			E.nextstate = OPEN
-		else if(E.density)
-			E.open()
-
-/area/proc/firealert()
+/area/proc/fire_alert()
 	if(name == "Space") //no fire alarms in space
 		return
-	if(!(alarm_state_flags & ALARM_WARNING_FIRE))
-		alarm_state_flags |= ALARM_WARNING_FIRE
-		update_icon()
-		mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-		for(var/obj/machinery/door/firedoor/D in all_fire_doors)
-			if(!D.blocked)
-				if(D.operating)
-					D.nextstate = FIREDOOR_CLOSED
-				else if(!D.density)
-					D.close()
-		var/list/cameras = list()
-		for (var/obj/machinery/computer/station_alert/a in GLOB.machines)
-			a.triggerAlarm("Fire", src, cameras, src)
+	if(fire_alarm)
+		return
+	fire_alarm = TRUE
+	var/list/cameras = list() // what does it even do?
+	for(var/obj/machinery/computer/station_alert/alert_computer as anything in GLOB.alert_consoles)
+		alert_computer.triggerAlarm("Fire", src, cameras, src)
+	SEND_SIGNAL(src, COMSIG_AREA_FIRE_ALARM_SET, TRUE)
 
-/area/proc/firereset()
-	if(alarm_state_flags & ALARM_WARNING_FIRE)
-		alarm_state_flags &= ~ALARM_WARNING_FIRE
-		mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-		update_icon()
+/area/proc/fire_reset()
+	if(!fire_alarm)
+		return
+	fire_alarm = FALSE
 
-		for(var/obj/machinery/door/firedoor/D in all_fire_doors)
-			if(!D.blocked)
-				if(D.operating)
-					D.nextstate = OPEN
-				else if(D.density)
-					D.open()
-
-		for(var/obj/machinery/computer/station_alert/a in GLOB.machines)
-			a.cancelAlarm("Fire", src, src)
-
-
-/area/update_icon_state()
-	. = ..()
-	var/I //More important == bottom. Fire normally takes priority over everything.
-	if(alarm_state_flags && (!requires_power || power_environ)) //It either doesn't require power or the environment is powered. And there is an alarm.
-		if(alarm_state_flags & ALARM_WARNING_READY)
-			I = "alarm_ready" //Area is ready for something.
-		if(alarm_state_flags & ALARM_WARNING_EVAC)
-			I = "alarm_evac" //Evacuation happening.
-		if(alarm_state_flags & ALARM_WARNING_ATMOS)
-			I = "alarm_atmos"	//Atmos breach.
-		if(alarm_state_flags & ALARM_WARNING_FIRE)
-			I = "alarm_fire" //Fire happening.
-		if(alarm_state_flags & ALARM_WARNING_DOWN)
-			I = "alarm_down" //Area is shut down.
-
-	if(icon_state != I)
-		icon_state = I //If the icon state changed, change it. Otherwise do nothing.
+	for(var/obj/machinery/computer/station_alert/alert_computer as anything in GLOB.alert_consoles)
+		alert_computer.cancelAlarm("Fire", src, src)
+	SEND_SIGNAL(src, COMSIG_AREA_FIRE_ALARM_SET, FALSE)
 
 /area/proc/powered(chan)
 	if(!requires_power)

@@ -200,7 +200,7 @@
 		update_minimap_icon()
 		return
 	face_atom(hostile)
-	var/obj/projectile/newshot = new(loc)
+	var/atom/movable/projectile/newshot = new(loc)
 	newshot.generate_bullet(ammo)
 	newshot.def_zone = pick(GLOB.base_miss_chance)
 	newshot.fire_at(hostile, null, src, ammo.max_range, ammo.shell_speed)
@@ -217,7 +217,7 @@
 
 /obj/structure/xeno/turret/sticky/on_destruction()
 	for(var/i in 1 to 20) // maybe a bit laggy
-		var/obj/projectile/new_proj = new(src)
+		var/atom/movable/projectile/new_proj = new(src)
 		new_proj.generate_bullet(ammo)
 		new_proj.fire_at(null, null, src, range = rand(1, 4), angle = rand(1, 360), recursivity = TRUE)
 
@@ -239,7 +239,7 @@
 		update_minimap_icon()
 		return
 	face_atom(hostile)
-	var/obj/projectile/newshot = new(loc)
+	var/atom/movable/projectile/newshot = new(loc)
 	newshot.generate_bullet(ammo)
 	newshot.def_zone = pick(GLOB.base_miss_chance)
 	newshot.fire_at(hostile, null, src, ammo.max_range, ammo.shell_speed)
@@ -251,7 +251,7 @@
 
 /obj/structure/xeno/turret/facehugger/on_destruction()
 	for(var/i in 1 to 5)
-		var/obj/projectile/new_proj = new(src)
+		var/atom/movable/projectile/new_proj = new(src)
 		new_proj.generate_bullet(ammo)
 		new_proj.fire_at(null, src, src, range = rand(1, 3), angle = rand(1, 360), recursivity = TRUE)
 

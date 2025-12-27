@@ -122,7 +122,7 @@
 
 	return level
 
-/datum/map_template/proc/load(turf/T, centered = FALSE, delete = FALSE)
+/datum/map_template/proc/load(turf/T, centered = FALSE)
 	if(centered)
 		T = locate(T.x - round(width * 0.5), T.y - round(height * 0.5), T.z)
 	if(!T)

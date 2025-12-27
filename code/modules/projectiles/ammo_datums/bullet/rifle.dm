@@ -52,7 +52,7 @@
 	additional_xeno_penetration = 2.5
 	matter_cost = 8
 
-/datum/ammo/bullet/rifle/repeater/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/rifle/repeater/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, max_range = 3, slowdown = 2, stagger = 1 SECONDS)
 
 /datum/ammo/bullet/rifle/incendiary
@@ -80,7 +80,7 @@
 	additional_xeno_penetration = 12.5
 	matter_cost = 0
 
-/datum/ammo/bullet/rifle/som_machinegun/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/rifle/som_machinegun/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, max_range = 20, slowdown = 0.5)
 
 /datum/ammo/bullet/rifle/som_big
@@ -95,7 +95,7 @@
 	sundering = 2
 	matter_cost = 0
 
-/datum/ammo/bullet/rifle/som_big/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/rifle/som_big/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, max_range = 9, slowdown = 0.75)
 
 /datum/ammo/bullet/rifle/som_big/incendiary
@@ -108,7 +108,7 @@
 	bullet_color = LIGHT_COLOR_FIRE
 	matter_cost = 0
 
-/datum/ammo/bullet/rifle/som_big/incendiary/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/rifle/som_big/incendiary/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	return
 
 /datum/ammo/bullet/rifle/som_big/anti_armour
@@ -122,11 +122,11 @@
 	on_pierce_multiplier = 0.8
 	matter_cost = 0
 
-/datum/ammo/bullet/rifle/som_big/anti_armour/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/rifle/som_big/anti_armour/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, max_range = 9, slowdown = 1, stagger = 0.5 SECONDS)
 	proj.proj_max_range = 0
 
-/datum/ammo/bullet/rifle/som_big/anti_armour/on_hit_obj(obj/target_obj, obj/projectile/proj)
+/datum/ammo/bullet/rifle/som_big/anti_armour/on_hit_obj(obj/target_obj, atom/movable/projectile/proj)
 	if(!isvehicle(target_obj))
 		proj.proj_max_range -= 20 //can shoot through 1 piece of cover
 		return
@@ -164,7 +164,7 @@
 	additional_xeno_penetration = 45
 	matter_cost = 0
 
-/datum/ammo/bullet/rifle/tx8/impact/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/rifle/tx8/impact/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, max_range = 14, slowdown = 1, knockback = 1)
 
 /datum/ammo/bullet/rifle/mpi_km
@@ -260,7 +260,7 @@
 	damage = 10
 	sundering = 0.5
 
-/datum/ammo/bullet/sg153/highimpact/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/sg153/highimpact/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, stagger = 1 SECONDS, slowdown = 1, max_range = 12)
 
 /datum/ammo/bullet/sg153/heavyrubber
@@ -269,7 +269,7 @@
 	damage = 10
 	sundering = 0.5
 
-/datum/ammo/bullet/sg153/heavyrubber/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/sg153/heavyrubber/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, slowdown = 3, max_range = 12)
 
 /datum/ammo/bullet/sg153/plasmaloss
@@ -280,7 +280,7 @@
 	matter_cost = 0
 	var/datum/effect_system/smoke_spread/smoke_system
 
-/datum/ammo/bullet/sg153/plasmaloss/on_hit_mob(mob/living/victim, obj/projectile/proj)
+/datum/ammo/bullet/sg153/plasmaloss/on_hit_mob(mob/living/victim, atom/movable/projectile/proj)
 	if(isxeno(victim))
 		var/mob/living/carbon/xenomorph/X = victim
 		X.use_plasma(20 + 0.2 * X.xeno_caste.plasma_max * X.xeno_caste.plasma_regen_limit) // This is draining 20%+20 flat per hit.
@@ -288,14 +288,14 @@
 	S.set_up(0, victim, 3)
 	S.start()
 
-/datum/ammo/bullet/sg153/plasmaloss/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/bullet/sg153/plasmaloss/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	var/turf/target_turf = get_turf(target_object)
 	drop_tg_smoke(target_turf.density ? proj.loc : target_turf)
 
-/datum/ammo/bullet/sg153/plasmaloss/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/sg153/plasmaloss/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_tg_smoke(target_turf.density ? proj.loc : target_turf)
 
-/datum/ammo/bullet/sg153/plasmaloss/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/bullet/sg153/plasmaloss/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_tg_smoke(target_turf.density ? proj.loc : target_turf)
 
 /datum/ammo/bullet/sg153/plasmaloss/set_smoke()
@@ -316,7 +316,7 @@
 	damage = 10
 	sundering = 0.5
 
-/datum/ammo/bullet/sg153/tungsten/on_hit_mob(mob/target_mob,obj/projectile/proj)
+/datum/ammo/bullet/sg153/tungsten/on_hit_mob(mob/target_mob,atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, paralyze = 2 SECONDS, stagger = 0.5 SECONDS, knockback = 1, max_range = 12)
 
 /datum/ammo/bullet/sg153/flak
@@ -326,7 +326,7 @@
 	sundering = 0.5
 	airburst_multiplier = 0.5
 
-/datum/ammo/bullet/sg153/flak/on_hit_mob(mob/victim, obj/projectile/proj)
+/datum/ammo/bullet/sg153/flak/on_hit_mob(mob/victim, atom/movable/projectile/proj)
 	airburst(victim, proj)
 
 /datum/ammo/bullet/sg153/incendiary
@@ -351,7 +351,7 @@
 	on_pierce_multiplier = 0.85
 	matter_cost = 0
 
-/datum/ammo/bullet/railgun/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/railgun/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, paralyze = 2 SECONDS, stagger = 4 SECONDS, slowdown = 2, knockback = 2)
 
 /datum/ammo/bullet/railgun/hvap
@@ -364,7 +364,7 @@
 	sundering = 50
 	matter_cost = 0
 
-/datum/ammo/bullet/railgun/hvap/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/railgun/hvap/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, stagger = 2 SECONDS, knockback = 3)
 
 /datum/ammo/bullet/railgun/smart
@@ -376,7 +376,7 @@
 	sundering = 20
 	matter_cost = 0
 
-/datum/ammo/bullet/railgun/smart/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/railgun/smart/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, stagger = 3 SECONDS, slowdown = 3)
 
 /datum/ammo/bullet/coilgun
@@ -393,5 +393,5 @@
 	on_pierce_multiplier = 0.85
 	matter_cost = 0
 
-/datum/ammo/bullet/coilgun/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/bullet/coilgun/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	staggerstun(target_mob, proj, paralyze = 0.2 SECONDS, slowdown = 1, knockback = 3)

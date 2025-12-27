@@ -60,6 +60,7 @@
 	icon_state = "lattice[dir_sum]"
 
 /obj/structure/catwalk
+	desc = "You can walk on this, even if you're not a cat."
 	icon = 'icons/obj/smooth_objects/catwalk.dmi'
 	icon_state = "catwalk-icon"
 	base_icon_state = "catwalk"

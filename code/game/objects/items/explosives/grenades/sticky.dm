@@ -5,9 +5,9 @@
 	worn_icon_state = "grenade_sticky"
 	det_time = 5 SECONDS
 	icon_state_mini = "grenade_sticky"
-	arm_sound = 'sound/weapons/grenade/grenade_pinout4.ogg'
 	power = 90
 	falloff = 40
+	overlay_type = "yellow"
 	///Current atom this grenade is attached to, used to remove the overlay.
 	var/atom/stuck_to
 	///Current image overlay applied to stuck_to, used to remove the overlay after detonation.
@@ -68,6 +68,7 @@
 	det_time = 5 SECONDS
 	self_sticky = TRUE
 	icon_state_mini = "grenade_trailblazer"
+	overlay_type = "orange"
 	var/fire_level = 25
 	var/burn_level = 25
 	var/fire_color = "red"

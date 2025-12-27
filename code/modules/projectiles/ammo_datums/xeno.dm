@@ -60,7 +60,7 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 /datum/ammo/xeno/toxin/proc/set_reagents()
 	spit_reagents = list(/datum/reagent/toxin/xeno_transvitox = reagent_transfer_amount)
 
-/datum/ammo/xeno/toxin/on_hit_mob(mob/living/carbon/carbon_victim, obj/projectile/proj)
+/datum/ammo/xeno/toxin/on_hit_mob(mob/living/carbon/carbon_victim, atom/movable/projectile/proj)
 	drop_transvitox_smoke(get_turf(carbon_victim))
 
 	if(!istype(carbon_victim) || carbon_victim.stat == DEAD || carbon_victim.issamexenohive(proj.firer) )
@@ -80,14 +80,14 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 
 	return ..()
 
-/datum/ammo/xeno/toxin/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/xeno/toxin/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	var/turf/target_turf = get_turf(target_object)
 	drop_transvitox_smoke(target_turf.density ? proj.loc : target_turf)
 
-/datum/ammo/xeno/toxin/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/toxin/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_transvitox_smoke(target_turf.density ? proj.loc : target_turf)
 
-/datum/ammo/xeno/toxin/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/toxin/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_transvitox_smoke(target_turf.density ? proj.loc : target_turf)
 
 /datum/ammo/xeno/toxin/set_smoke()
@@ -145,7 +145,7 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	bullet_color = COLOR_LIGHT_ORANGE
 	var/toxin_damage = 10
 
-/datum/ammo/xeno/tox_loss/on_hit_mob(mob/living/carbon/carbon_victim, obj/projectile/proj)
+/datum/ammo/xeno/tox_loss/on_hit_mob(mob/living/carbon/carbon_victim, atom/movable/projectile/proj)
 	carbon_victim.apply_damage(toxin_damage, TOX, proj.def_zone, armor_type, updating_health = TRUE)
 	return ..()
 
@@ -172,7 +172,7 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	stagger_duration = 1 SECONDS
 	slowdown_stacks = 3
 
-/datum/ammo/xeno/sticky/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/xeno/sticky/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	drop_resin(get_turf(target_mob))
 	if(istype(target_mob, /mob/living/carbon))
 		var/mob/living/carbon/C = target_mob
@@ -181,17 +181,17 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 		C.adjust_stagger(stagger_duration) //stagger briefly; useful for support
 		C.add_slowdown(slowdown_stacks) //slow em down
 
-/datum/ammo/xeno/sticky/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/xeno/sticky/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	if(isarmoredvehicle(target_object))
 		var/obj/vehicle/sealed/armored/tank = target_object
 		COOLDOWN_START(tank, cooldown_vehicle_move, tank.move_delay)
 	var/turf/target_turf = get_turf(target_object)
 	drop_resin(target_turf.density ? proj.loc : target_turf)
 
-/datum/ammo/xeno/sticky/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/sticky/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_resin(target_turf.density ? proj.loc : target_turf)
 
-/datum/ammo/xeno/sticky/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/sticky/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_resin(target_turf.density ? proj.loc : target_turf)
 
 /datum/ammo/xeno/sticky/proc/drop_resin(turf/target_turf)
@@ -223,22 +223,22 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	max_range = 3
 	shell_speed = 1
 
-/datum/ammo/xeno/sticky/globe/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/xeno/sticky/globe/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	var/turf/det_turf = target_object.allow_pass_flags & PASS_PROJECTILE ? get_step_towards(target_object, proj) : target_object.loc
 	drop_resin(det_turf)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_object), loc_override = det_turf)
 
-/datum/ammo/xeno/sticky/globe/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/sticky/globe/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	var/turf/det_turf = target_turf.density ? get_step_towards(target_turf, proj) : target_turf
 	drop_resin(det_turf)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_turf), loc_override = det_turf)
 
-/datum/ammo/xeno/sticky/globe/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/xeno/sticky/globe/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	var/turf/det_turf = get_turf(target_mob)
 	drop_resin(det_turf)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_mob), loc_override = det_turf)
 
-/datum/ammo/xeno/sticky/globe/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/sticky/globe/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	var/turf/det_turf = target_turf.density ? get_step_towards(target_turf, proj) : target_turf
 	drop_resin(det_turf)
 	fire_directionalburst(proj, proj.firer, proj.shot_from, bonus_projectile_quantity, Get_Angle(proj.starting_turf, target_turf), loc_override = det_turf)
@@ -261,7 +261,7 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	///Damage dealt by acid puddles
 	var/puddle_acid_damage = XENO_DEFAULT_ACID_PUDDLE_DAMAGE
 
-/datum/ammo/xeno/acid/on_shield_block(mob/victim, obj/projectile/proj)
+/datum/ammo/xeno/acid/on_shield_block(mob/victim, atom/movable/projectile/proj)
 	airburst(victim, proj)
 
 /datum/ammo/xeno/acid/drop_nade(turf/target_turf) //Leaves behind an acid pool; defaults to 1-3 seconds.
@@ -292,16 +292,16 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	added_spit_delay = 0
 	ammo_behavior_flags = AMMO_XENO|AMMO_TARGET_TURF|AMMO_SKIPS_ALIENS
 
-/datum/ammo/xeno/acid/auto/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/xeno/acid/auto/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	drop_nade(get_turf(target_mob), proj)
 
-/datum/ammo/xeno/acid/auto/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/xeno/acid/auto/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	drop_nade(target_object.density ? get_step_towards(target_object, proj) : get_turf(target_object))
 
-/datum/ammo/xeno/acid/auto/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/acid/auto/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : get_turf(target_turf))
 
-/datum/ammo/xeno/acid/auto/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/acid/auto/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : get_turf(target_turf))
 
 /datum/ammo/xeno/acid/passthrough
@@ -338,17 +338,17 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 		return
 	new /obj/effect/xenomorph/spray/weak(target_turf, puddle_duration, puddle_acid_damage)
 
-/datum/ammo/xeno/acid/heavy/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/xeno/acid/heavy/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	var/turf/target_turf = get_turf(target_mob)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf)
 
-/datum/ammo/xeno/acid/heavy/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/xeno/acid/heavy/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	drop_nade(target_object.density ? get_step_towards(target_object, proj) : get_turf(target_object))
 
-/datum/ammo/xeno/acid/heavy/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/acid/heavy/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf)
 
-/datum/ammo/xeno/acid/heavy/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/acid/heavy/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf)
 
 ///For the Spitter's Scatterspit ability
@@ -406,7 +406,7 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	///We're going to reuse one smoke spread system repeatedly to cut down on processing.
 	var/datum/effect_system/smoke_spread/xeno/trail_spread_system
 
-/datum/ammo/xeno/boiler_gas/on_leave_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/boiler_gas/on_leave_turf(turf/target_turf, atom/movable/projectile/proj)
 	if(isxeno(proj.firer))
 		var/mob/living/carbon/xenomorph/X = proj.firer
 		trail_spread_system.strength = X.xeno_caste.bomb_strength
@@ -443,7 +443,7 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 /datum/ammo/xeno/boiler_gas/proc/set_reagents()
 	spit_reagents = list(/datum/reagent/toxin/xeno_neurotoxin = reagent_transfer_amount)
 
-/datum/ammo/xeno/boiler_gas/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/xeno/boiler_gas/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	drop_nade(get_turf(target_mob), proj.firer)
 	if(target_mob.stat == DEAD || !ishuman(target_mob))
 		return
@@ -462,16 +462,16 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 
 	human_victim.reagents.add_reagent_list(spit_reagents)
 
-/datum/ammo/xeno/boiler_gas/on_hit_obj(obj/target_obj, obj/projectile/proj)
+/datum/ammo/xeno/boiler_gas/on_hit_obj(obj/target_obj, atom/movable/projectile/proj)
 	if(ismecha(target_obj))
 		proj.damage *= 7 //Globs deal much higher damage to mechs.
 	var/turf/target_turf = get_turf(target_obj)
 	drop_nade(target_obj.density ? get_step_towards(target_obj, proj) : target_turf, proj.firer)
 
-/datum/ammo/xeno/boiler_gas/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/boiler_gas/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf, proj.firer) //we don't want the gas globs to land on dense turfs, they block smoke expansion.
 
-/datum/ammo/xeno/boiler_gas/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/boiler_gas/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf, proj.firer)
 
 /datum/ammo/xeno/boiler_gas/set_smoke()
@@ -515,7 +515,7 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	trap.smoke.set_up(1, get_turf(trap))
 	return TRUE
 
-/datum/ammo/xeno/boiler_gas/corrosive/on_shield_block(mob/victim, obj/projectile/proj)
+/datum/ammo/xeno/boiler_gas/corrosive/on_shield_block(mob/victim, atom/movable/projectile/proj)
 	airburst(victim, proj)
 
 /datum/ammo/xeno/boiler_gas/corrosive/set_smoke()
@@ -572,19 +572,19 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	///The type of hugger thrown
 	var/obj/item/clothing/mask/facehugger/hugger_type = /obj/item/clothing/mask/facehugger
 
-/datum/ammo/xeno/hugger/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/xeno/hugger/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	var/obj/item/clothing/mask/facehugger/hugger = new hugger_type(get_turf(target_mob), hivenumber)
 	hugger.try_attach(target_mob)
 
-/datum/ammo/xeno/hugger/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/xeno/hugger/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	var/obj/item/clothing/mask/facehugger/hugger = new hugger_type(get_turf(target_object), hivenumber)
 	hugger.go_active()
 
-/datum/ammo/xeno/hugger/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/hugger/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	var/obj/item/clothing/mask/facehugger/hugger = new hugger_type(target_turf.density ? proj.loc : target_turf, hivenumber)
 	hugger.go_active()
 
-/datum/ammo/xeno/hugger/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/hugger/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	var/obj/item/clothing/mask/facehugger/hugger = new hugger_type(target_turf.density ? proj.loc : target_turf, hivenumber)
 	hugger.go_idle()
 
@@ -622,20 +622,20 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	accurate_range = 8
 	max_range = 8
 
-/datum/ammo/xeno/leash_ball/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/leash_ball/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_leashball(target_turf.density ? proj.loc : target_turf)
 
-/datum/ammo/xeno/leash_ball/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/xeno/leash_ball/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	var/turf/target_turf = get_turf(target_mob)
 	drop_leashball(target_turf.density ? proj.loc : target_turf, proj.firer)
 
-/datum/ammo/xeno/leash_ball/on_hit_obj(obj/target_obj, obj/projectile/proj)
+/datum/ammo/xeno/leash_ball/on_hit_obj(obj/target_obj, atom/movable/projectile/proj)
 	var/turf/target_turf = get_turf(target_obj)
 	if(target_turf.density || (target_obj.density && !(target_obj.allow_pass_flags & PASS_PROJECTILE)))
 		target_turf = get_turf(proj)
 	drop_leashball(target_turf.density ? proj.loc : target_turf, proj.firer)
 
-/datum/ammo/xeno/leash_ball/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/xeno/leash_ball/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_leashball(target_turf.density ? proj.loc : target_turf)
 
 /// This spawns a leash ball and checks if the turf is dense before doing so
@@ -656,7 +656,7 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	///How long the victim will be KO'd
 	var/hit_weaken = 2 SECONDS
 
-/datum/ammo/xeno/web_projectile/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/xeno/web_projectile/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	. = ..()
 	if(!ishuman(target_mob))
 		return
@@ -689,7 +689,7 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	///The AOE for drop_nade
 	var/aoe_range = 2
 
-/datum/ammo/energy/xeno/psy_blast/drop_nade(turf/target_turf, obj/projectile/proj)
+/datum/ammo/energy/xeno/psy_blast/drop_nade(turf/target_turf, atom/movable/projectile/proj)
 	if(!target_turf || !isturf(target_turf))
 		return
 	playsound(target_turf, 'sound/effects/EMPulse.ogg', 50)
@@ -726,16 +726,16 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 
 	new /obj/effect/temp_visual/shockwave(target_turf, aoe_range + 2)
 
-/datum/ammo/energy/xeno/psy_blast/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/energy/xeno/psy_blast/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	drop_nade(get_turf(target_mob), proj)
 
-/datum/ammo/energy/xeno/psy_blast/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/energy/xeno/psy_blast/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	drop_nade(target_object.density ? get_step_towards(target_object, proj) : target_object, proj)
 
-/datum/ammo/energy/xeno/psy_blast/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/energy/xeno/psy_blast/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf, proj)
 
-/datum/ammo/energy/xeno/psy_blast/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/energy/xeno/psy_blast/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	drop_nade(target_turf.density ? get_step_towards(target_turf, proj) : target_turf, proj)
 
 /datum/ammo/energy/xeno/psy_blast/psy_lance
@@ -752,19 +752,19 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(
 	channel_particle = /particles/warlock_charge/psy_blast/psy_lance
 	glow_color = "#CB0166"
 
-/datum/ammo/energy/xeno/psy_blast/psy_lance/on_hit_obj(obj/target_object, obj/projectile/proj)
+/datum/ammo/energy/xeno/psy_blast/psy_lance/on_hit_obj(obj/target_object, atom/movable/projectile/proj)
 	if(ismecha(target_object))
 		proj.damage *= 3
 	else if(ishitbox(target_object) || isvehicle(target_object))
 		proj.damage *= 1.5
 
-/datum/ammo/energy/xeno/psy_blast/psy_lance/on_hit_mob(mob/target_mob, obj/projectile/proj)
+/datum/ammo/energy/xeno/psy_blast/psy_lance/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
 	if(isxeno(target_mob))
 		return
 	staggerstun(target_mob, proj, 9, stagger = 4 SECONDS, slowdown = 2, knockback = 1)
 
-/datum/ammo/energy/xeno/psy_blast/psy_lance/on_hit_turf(turf/target_turf, obj/projectile/proj)
+/datum/ammo/energy/xeno/psy_blast/psy_lance/on_hit_turf(turf/target_turf, atom/movable/projectile/proj)
 	return
 
-/datum/ammo/energy/xeno/psy_blast/psy_lance/do_at_max_range(turf/target_turf, obj/projectile/proj)
+/datum/ammo/energy/xeno/psy_blast/psy_lance/do_at_max_range(turf/target_turf, atom/movable/projectile/proj)
 	return

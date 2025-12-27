@@ -1,3 +1,7 @@
+///Returns if stunned
+/mob/living/proc/IsStun()
+	return has_status_effect(STATUS_EFFECT_STUN)
+
 ///Returns remaining stun duration
 /mob/living/proc/AmountStun()
 	var/datum/status_effect/incapacitating/stun/current_stun = has_status_effect(STATUS_EFFECT_STUN)

@@ -1,3 +1,7 @@
+///Returns if knockeddown
+/mob/living/proc/IsKnockdown()
+	return has_status_effect(STATUS_EFFECT_KNOCKDOWN)
+
 ///Returns remaining knockdown duration
 /mob/living/proc/AmountKnockdown()
 	var/datum/status_effect/incapacitating/knockdown/current_knockdown = has_status_effect(STATUS_EFFECT_KNOCKDOWN)

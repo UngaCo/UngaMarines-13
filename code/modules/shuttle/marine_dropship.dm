@@ -7,7 +7,7 @@
 	width = 11
 	height = 21
 
-/obj/docking_port/stationary/marine_dropship/Initialize()
+/obj/docking_port/stationary/marine_dropship/Initialize(mapload)
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 

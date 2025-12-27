@@ -4995,9 +4995,11 @@
 /turf/open/floor/freezer,
 /area/slumbridge/inside/colony/kitchen)
 "dKE" = (
-/obj/structure/sign/double/barsign/carp,
-/turf/closed/wall,
-/area/slumbridge/inside/colony/bar)
+/obj/machinery/barsign/thedrunkcarp{
+	dir = 1
+	},
+/turf/open/floor/plating/ground/snow,
+/area/slumbridge/outside/southwest)
 "dLe" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/tile/yellow{
@@ -44052,8 +44054,8 @@ nCP
 tWt
 twh
 oRE
+sHO
 dKE
-bYo
 bYo
 evR
 evR

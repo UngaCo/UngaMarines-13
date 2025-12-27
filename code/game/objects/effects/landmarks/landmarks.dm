@@ -83,7 +83,7 @@
 	icon_state = "marine_spawn_late"
 	var/squad
 
-/obj/effect/landmark/start/latejoin_squad/Initialize()
+/obj/effect/landmark/start/latejoin_squad/Initialize(mapload)
 	. = ..()
 	if(!(squad in GLOB.latejoin_squad_landmarks_list))
 		GLOB.latejoin_squad_landmarks_list[squad] = list()

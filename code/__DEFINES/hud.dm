@@ -71,6 +71,7 @@
 #define ui_alien_health_larva "EAST-1:28,8:13"
 #define ui_queen_locator "EAST-1:28,6:13"
 #define ui_alienplasmadisplay "EAST-1:45,8:13"
+#define ui_alienbiomassdisplay "EAST-1:45,10:13"
 #define ui_evolvehud "EAST-1:28,6:13"
 #define ui_sunderhud "EAST-1:28,10:13"
 

@@ -13,6 +13,16 @@
 	keybinding_signals = list(
 		KEYBINDING_NORMAL = COMSIG_XENOABILITY_TAIL_SWEEP,
 	)
+	/// How far does it knockback?
+	var/knockback_distance = 1
+	/// How long does it stagger?
+	var/stagger_duration = 0 SECONDS
+	/// How long does it paralyze?
+	var/paralyze_duration = 0.5 SECONDS
+	/// If this deals damage, what type of damage is it?
+	var/damage_type = BRUTE
+	/// The multiplier of the damage to be applied.
+	var/damage_multiplier = 1
 
 /datum/action/ability/xeno_action/tail_sweep/can_use_action(silent, override_flags)
 	. = ..()
@@ -51,10 +61,14 @@
 		var/affecting = H.get_limb(ran_zone(null, 0))
 		if(!affecting) //Still nothing??
 			affecting = H.get_limb("chest") //Gotta have a torso?!
-		H.knockback(xeno_owner, sweep_range, 4)
-		H.apply_damage(damage, BRUTE, affecting, MELEE)
-		H.apply_damage(damage, STAMINA, updating_health = TRUE)
-		H.Paralyze(0.5 SECONDS) //trip and go
+		if(damage_multiplier > 0)
+			H.apply_damage(damage * damage_multiplier, damage_type, updating_health = TRUE)
+		if(knockback_distance >= 1)
+			H.knockback(xeno_owner, knockback_distance, 4)
+		if(stagger_duration)
+			H.adjust_stagger(stagger_duration)
+		if(paralyze_duration)
+			H.Paralyze(paralyze_duration)
 		GLOB.round_statistics.defender_tail_sweep_hits++
 		SSblackbox.record_feedback(FEEDBACK_TALLY, "round_statistics", 1, "defender_tail_sweep_hits")
 		shake_camera(H, 2, 1)

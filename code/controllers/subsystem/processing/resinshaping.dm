@@ -14,10 +14,15 @@ SUBSYSTEM_DEF(resinshaping)
 	var/total_structures_refunded = 0
 	/// Whether or not quickbuild is enabled. Set to FALSE when the game starts.
 	var/active = TRUE
+	/// Track biomass gained from quickbuild per player (max 15)
+	var/list/quickbuild_biomass_gained = list()
 
 /datum/controller/subsystem/resinshaping/stat_entry()
 	if(SSticker.mode?.round_type_flags & MODE_ALLOW_XENO_QUICKBUILD)
-		return "BUILT=[total_structures_built] REFUNDED=[total_structures_refunded]"
+		var/total_quickbuild_biomass = 0
+		for(var/player_key in quickbuild_biomass_gained)
+			total_quickbuild_biomass += quickbuild_biomass_gained[player_key]
+		return "BUILT=[total_structures_built] REFUNDED=[total_structures_refunded] BIOMASS=[total_quickbuild_biomass]"
 	return "OFFLINE"
 
 /datum/controller/subsystem/resinshaping/proc/toggle_off()
@@ -43,8 +48,21 @@ SUBSYSTEM_DEF(resinshaping)
 	var/player_key = "[the_builder.client?.ckey]"
 	if(!player_key)
 		return
+
+	// Check if we should give biomass (before incrementing counter)
+	var/should_give_biomass = active && CHECK_BITFIELD(SSticker.mode?.round_type_flags, MODE_ALLOW_XENO_QUICKBUILD) && get_building_points(the_builder) > 0
+
 	xeno_builds_counter[player_key]++
 	total_structures_built++
+
+	// Give biomass for quickbuild structures (only while quickbuild is active and had points)
+	if(should_give_biomass)
+		// Check if player hasn't reached the quickbuild biomass limit (15 max)
+		var/current_quickbuild_biomass = quickbuild_biomass_gained[player_key] || 0
+		if(current_quickbuild_biomass < 15)
+			var/biomass_to_give = min(0.025, 15 - current_quickbuild_biomass)
+			the_builder.biomass = min(the_builder.biomass + biomass_to_give, 50)
+			quickbuild_biomass_gained[player_key] = current_quickbuild_biomass + biomass_to_give
 
 /// Decrements a mob buildings count , using their ckey.
 /datum/controller/subsystem/resinshaping/proc/decrement_build_counter(mob/living/carbon/xenomorph/the_builder)

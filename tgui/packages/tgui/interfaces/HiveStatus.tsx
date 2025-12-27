@@ -15,6 +15,68 @@ import { round } from 'tgui-core/math';
 import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
+// Component to display mutation counts with colored categories
+const MutationsDisplay = (props: { mutations: string }) => {
+  const { mutations } = props;
+
+  if (!mutations || mutations === 'None') {
+    return <Box textColor="label">None</Box>;
+  }
+
+  // Parse mutations string like "0 S; 1 O; 0 C; 2 E"
+  const parts = mutations.split(';').map((part) => part.trim());
+  const mutationElements = parts.map((part, index) => {
+    const [count, category] = part.split(' ');
+    let color = 'label';
+
+    // Set colors based on category
+    switch (category) {
+      case 'S': // Survival
+        color = 'good';
+        break;
+      case 'O': // Offensive
+        color = 'average';
+        break;
+      case 'C': // Construction
+        color = 'blue';
+        break;
+      case 'E': // Enhancement
+        color = 'purple';
+        break;
+    }
+
+    return (
+      <Box
+        key={index}
+        textColor={color}
+        style={{ display: 'inline', verticalAlign: 'baseline' }}
+      >
+        {count} {category}
+        {index < parts.length - 1 && (
+          <Box as="span" style={{ color: 'white', margin: '0 4px' }}>
+            |
+          </Box>
+        )}
+      </Box>
+    );
+  });
+
+  return (
+    <Box
+      nowrap
+      style={{
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        lineHeight: '1.2em',
+        display: 'flex',
+        alignItems: 'baseline',
+      }}
+    >
+      {mutationElements}
+    </Box>
+  );
+};
+
 type InputPack = {
   // ------- Hive info --------
   hive_name: string;
@@ -44,6 +106,8 @@ type InputPack = {
   user_queen: boolean;
   user_watched_xeno: string;
   user_evolution: number;
+  user_biomass: number;
+  user_max_biomass: number;
   user_purchase_perms: boolean;
   user_tracked: string;
   user_show_compact: boolean;
@@ -60,6 +124,7 @@ type XenoData = {
   location: string;
   health: number;
   plasma: number;
+  mutations: string; // Mutation counts by category (e.g., "0 S; 1 O; 0 C; 2 E")
   can_be_leader: boolean;
   is_leader: number; // boolean but is used in bitwise ops.
   is_ssd: boolean;
@@ -251,6 +316,9 @@ const GeneralInfo = (_props: any) => {
         <Flex.Item>
           <EvolutionBar />
         </Flex.Item>
+        <Flex.Item mt={1}>
+          <BiomassBar />
+        </Flex.Item>
         <DeadXenoTimerCountdowns hive_death_timers={hive_death_timers} />
         <Flex.Item>
           <XenoCountdownBar
@@ -346,6 +414,33 @@ const LarvaBar = (_props: any) => {
         </Flex.Item>
       </Flex>
     </Tooltip>
+  );
+};
+
+const BiomassBar = (_props: any) => {
+  const { act, data } = useBackend<InputPack>();
+  const { user_ref, user_xeno, user_biomass, user_max_biomass } = data;
+
+  if (!user_xeno || user_max_biomass === 0) {
+    return <Box />; // Empty.
+  }
+
+  return (
+    <Flex>
+      <Flex.Item mr={2} width={bar_text_width}>
+        <Button
+          tooltip="Open Mutations Menu"
+          onClick={() => act('Mutations', { xeno: user_ref })}
+        >
+          Total Biomass:
+        </Button>
+      </Flex.Item>
+      <Flex.Item grow>
+        <ProgressBar color="good" value={user_biomass / user_max_biomass}>
+          {round(user_biomass, 1)} / {user_max_biomass}
+        </ProgressBar>
+      </Flex.Item>
+    </Flex>
   );
 };
 
@@ -603,6 +698,7 @@ const PopulationPyramid = (_props: any) => {
 const caste = 'Caste (Name)';
 const health = 'HP';
 const plasma = 'PL';
+const mutations = 'Mutations';
 const location = 'Location';
 
 type sort_by = {
@@ -682,6 +778,7 @@ const XenoList = (_props: any) => {
   const minimap_mr = '6px';
   const name_width = '33%';
   const status_width = '60px';
+  const mutations_width = '140px';
 
   const sorting_direction = sortingBy.down ? 'column-reverse' : 'column';
 
@@ -718,6 +815,9 @@ const XenoList = (_props: any) => {
             <Flex.Item width={status_width}>
               <SortingButton text={plasma} tip="Plasma" />
             </Flex.Item>
+            <Flex.Item width={mutations_width}>
+              <SortingButton text={mutations} tip="Mutations" />
+            </Flex.Item>
             <Flex.Item grow>
               <SortingButton text={location} />
             </Flex.Item>
@@ -740,6 +840,9 @@ const XenoList = (_props: any) => {
               break;
             case plasma:
               order = entry.plasma;
+              break;
+            case mutations:
+              order = 0; // Sorted by mutations string
               break;
             case location:
               order = 0; // Sorted by xeno_info.sort()
@@ -860,6 +963,10 @@ const XenoList = (_props: any) => {
                   ) : (
                     <Box textColor="good">{entry.plasma}%</Box>
                   )}
+                </Flex.Item>
+                {/* Mutations */}
+                <Flex.Item width={mutations_width}>
+                  <MutationsDisplay mutations={entry.mutations} />
                 </Flex.Item>
                 {/* Area name */}
                 <Flex.Item

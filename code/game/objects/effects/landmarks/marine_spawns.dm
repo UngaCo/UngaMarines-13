@@ -117,7 +117,7 @@
 	var/title
 	var/squad
 
-/obj/effect/landmark/start/squad/Initialize()
+/obj/effect/landmark/start/squad/Initialize(mapload)
 	. = ..()
 	if(!(squad in GLOB.start_squad_landmarks_list))
 		GLOB.start_squad_landmarks_list[squad] = list()

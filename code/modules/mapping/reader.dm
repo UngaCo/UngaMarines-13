@@ -95,6 +95,8 @@
 	///any turf in this list is skipped inside of build_coordinate. Lazy assoc list
 	var/list/turf_blacklist
 
+	// raw strings used to represent regexes more accurately
+	// '' used to avoid confusing syntax highlighting
 	var/static/regex/dmm_regex = new(@'"([a-zA-Z]+)" = (?:\(\n|\()((?:.|\n)*?)\)\n(?!\t)|\((\d+),(\d+),(\d+)\) = \{"([a-zA-Z\n]*)"\}', "g")
 	/// Matches key formats in TMG (IE: newline after the \()
 	var/static/regex/matches_tgm = new(@'^"[A-z]*"[\s]*=[\s]*\([\s]*\n', "m")
@@ -126,9 +128,6 @@
 	newfriend.bounds = parsed_bounds.Copy()
 	newfriend.turf_blacklist = turf_blacklist?.Copy()
 	return newfriend
-
-//text trimming (both directions) helper macro
-#define TRIM_TEXT(text) (trim_reduced(text))
 
 /**
  * Helper and recommened way to load a map file
@@ -322,7 +321,7 @@
 		} \
 	}
 
-// Do not call except via load() above.
+/// Do not call except via load() above.
 /datum/parsed_map/proc/_load_impl(x_offset, y_offset, z_offset, crop_map, no_changeturf, x_lower, x_upper, y_lower, y_upper, z_lower, z_upper, place_on_top, new_z)
 	PRIVATE_PROC(TRUE)
 	// Tell ss atoms that we're doing maploading
@@ -344,13 +343,18 @@
 	SSatoms.map_loader_stop(REF(src))
 	loading = FALSE
 
+	if(new_z)
+		for(var/z_index in bounds[MAP_MINZ] to bounds[MAP_MAXZ])
+			SSmapping.build_area_turfs(z_index)
+
 	if(!no_changeturf)
 		var/list/turfs = block(
-			locate(bounds[MAP_MINX], bounds[MAP_MINY], bounds[MAP_MINZ]),
-			locate(bounds[MAP_MAXX], bounds[MAP_MAXY], bounds[MAP_MAXZ]))
+			bounds[MAP_MINX], bounds[MAP_MINY], bounds[MAP_MINZ],
+			bounds[MAP_MAXX], bounds[MAP_MAXY], bounds[MAP_MAXZ]
+		)
 		for(var/turf/T as anything in turfs)
 			//we do this after we load everything in. if we don't, we'll have weird atmos bugs regarding atmos adjacent turfs
-			T.AfterChange()
+			T.AfterChange(CHANGETURF_IGNORE_AIR)
 
 	if(expanded_x || expanded_y)
 		SEND_GLOBAL_SIGNAL(COMSIG_GLOB_EXPANDED_WORLD_BOUNDS, expanded_x, expanded_y)
@@ -388,7 +392,11 @@
 	var/highest_y = relative_y + y_relative_to_absolute
 
 	if(!crop_map && highest_y > world.maxy)
-		world.increase_max_y(highest_y)
+		if(new_z)
+			// Need to avoid improperly loaded area/turf_contents
+			world.increase_max_y(highest_y, map_load_z_cutoff = z_offset - 1)
+		else
+			world.increase_max_y(highest_y)
 		expanded_y = TRUE
 
 	// Skip Y coords that are above the smallest of the three params
@@ -420,7 +428,11 @@
 		var/delta = max(final_x - x_delta_with, 0)
 		final_x -= delta
 	if(final_x > world.maxx && !crop_map)
-		world.increase_max_x(final_x)
+		if(new_z)
+			// Need to avoid improperly loaded area/turf_contents
+			world.increase_max_x(final_x, map_load_z_cutoff = z_offset - 1)
+		else
+			world.increase_max_x(final_x)
 		expanded_x = TRUE
 
 	var/lowest_x = max(x_lower, 1 - x_relative_to_absolute)
@@ -551,7 +563,11 @@
 		var/ycrd = relative_y + y_relative_to_absolute
 		var/zcrd = gset.zcrd + grid_z_offset
 		if(!crop_map && ycrd > world.maxy)
-			world.increase_max_y(ycrd)
+			if(new_z)
+				// Need to avoid improperly loaded area/turf_contents
+				world.increase_max_y(ycrd, map_load_z_cutoff = z_offset - 1)
+			else
+				world.increase_max_y(ycrd)
 			expanded_y = TRUE
 		var/zexpansion = zcrd > world.maxz
 		var/no_afterchange = no_changeturf
@@ -563,8 +579,7 @@
 					world.incrementMaxZ()
 			if(!no_changeturf)
 				WARNING("Z-level expansion occurred without no_changeturf set, this may cause problems when /turf/AfterChange is called")
-
-		no_afterchange = TRUE
+				no_afterchange = TRUE
 		// Ok so like. something important
 		// We talk in "relative" coords here, so the coordinate system of the map datum
 		// This is so we can do offsets, but it is NOT the same as positions in game
@@ -604,7 +619,11 @@
 			final_x -= delta
 			x_target = x_step_count * key_len
 		if(final_x > world.maxx && !crop_map)
-			world.increase_max_x(final_x)
+			if(new_z)
+				// Need to avoid improperly loaded area/turf_contents
+				world.increase_max_x(final_x, map_load_z_cutoff = z_offset - 1)
+			else
+				world.increase_max_x(final_x)
 			expanded_x = TRUE
 
 		// We're gonna track the first and last pairs of coords we find
@@ -744,8 +763,11 @@ GLOBAL_LIST_EMPTY(map_model_default)
 							value = apply_text_macros(value)
 						current_attributes[var_edits.group[1]] = value
 						continue // Keep on keeping on brother
+
 					members_attributes += wrapped_default_list // We know this is a path, and we also know it has no vv's. so we'll just set this to the default list
 					path_to_init = line
+
+
 			// Alright, if we've gotten to this point, our string is a path
 			// Oh and we don't trim it, because we require no padding for these
 			// Saves like 1.5 deciseconds
@@ -817,7 +839,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 			if(member_string[length(member_string)] == "}")
 				variables_start = findtext(member_string, "{")
 
-			var/path_text = TRIM_TEXT(copytext(member_string, 1, variables_start))
+			var/path_text = trim(copytext(member_string, 1, variables_start))
 			var/atom_def = text2path(path_text) //path definition, e.g /obj/foo/bar
 
 			if(!ispath(atom_def, /atom)) // Skip the item if the path does not exist.  Fix your crap, mappers!
@@ -826,10 +848,10 @@ GLOBAL_LIST_EMPTY(map_model_default)
 				continue
 			members += atom_def
 
+			//transform the variables in text format into a list (e.g {var1="derp"; var2; var3=7} => list(var1="derp", var2, var3=7))
 			// OF NOTE: this could be made faster by replacing readlist with a progressive regex
 			// I'm just too much of a bum to do it rn, especially since we mandate tgm format for any maps in repo
 			var/list/fields = default_list
-
 			if(variables_start)//if there's any variable
 				member_string = copytext(member_string, variables_start + length(member_string[variables_start]), -length(copytext_char(member_string, -1))) //removing the last '}'
 				fields = list(readlist(member_string, ";"))
@@ -853,8 +875,8 @@ GLOBAL_LIST_EMPTY(map_model_default)
 		// We can skip calling this proc every time we see XXX
 		if(!set_space \
 			&& no_changeturf \
-			&& length(members) == 2 \
-			&& length(members_attributes) == 2 \
+			&& members.len == 2 \
+			&& members_attributes.len == 2 \
 			&& length(members_attributes[1]) == 0 \
 			&& length(members_attributes[2]) == 0 \
 			&& (world.area in members) \
@@ -886,7 +908,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 
 	//The next part of the code assumes there's ALWAYS an /area AND a /turf on a given tile
 	//first instance the /area and remove it from the members list
-	index = length(members)
+	index = members.len
 	var/area/old_area
 	if(members[index] != /area/template_noop)
 		if(members_attributes[index] != default_list)
@@ -909,10 +931,6 @@ GLOBAL_LIST_EMPTY(map_model_default)
 			LISTASSERTLEN(area_instance.turfs_by_zlevel, crds.z, list())
 			old_area.turfs_to_uncontain_by_zlevel[crds.z] += crds
 			area_instance.turfs_by_zlevel[crds.z] += crds
-		area_instance.contents.Add(crds)
-
-		if(!new_z)
-			old_area = crds.loc
 		area_instance.contents.Add(crds)
 
 		if(GLOB.use_preloader)
@@ -991,35 +1009,65 @@ GLOBAL_LIST_EMPTY(map_model_default)
 	if (!text)
 		return
 
-	// If we're using a semi colon, we can do this as splittext rather then constant calls to find_next_delimiter_position
-	// This does make the code a bit harder to read, but saves a good bit of time so suck it up
 	var/position
 	var/old_position = 1
 	while(position != 0)
 		// find next delimiter that is not within  "..."
-		position = find_next_delimiter_position(text,old_position,delimiter)
+		position = find_next_delimiter_position(text, old_position, delimiter)
 
 		// check if this is a simple variable (as in list(var1, var2)) or an associative one (as in list(var1="foo",var2=7))
-		var/equal_position = findtext(text,"=",old_position, position)
-
-		var/trim_left = TRIM_TEXT(copytext(text,old_position,(equal_position ? equal_position : position)))
-		var/left_constant = parse_constant(trim_left)
-		if(position)
-			old_position = position + length(text[position])
-		if(!left_constant) // damn newlines man. Exists to provide behavior consistency with the above loop. not a major cost becuase this path is cold
+		var/equal_position = find_next_delimiter_position(text, old_position, "=")
+		var/trim_left = trim(copytext(text, old_position, (equal_position ? equal_position : position)))
+		if(!trim_left) // damn newlines man. Exists to provide behavior consistency with the above loop. not a major cost becuase this path is cold
+			if(position)
+				old_position = position + length(text[position])
 			continue
 
-		if(equal_position && !isnum(left_constant))
+		var/is_simple = TRUE //linear list
+		var/trim_right = trim_left //simple var
+		if(equal_position)
 			// Associative var, so do the association.
 			// Note that numbers cannot be keys - the RHS is dropped if so.
-			var/trim_right = TRIM_TEXT(copytext(text, equal_position + length(text[equal_position]), position))
-			var/right_constant = parse_constant(trim_right)
-			.[left_constant] = right_constant
+			trim_right = trim(copytext(text, equal_position + length(text[equal_position]), position))
+			is_simple = FALSE
 
-		else  // simple var
+		//right value is a list and since we used the delimiter , this text would be incomplete so we need to parse the full string
+		if(copytext(trim_right, 1, 6) == "list(")
+			var/start_index = is_simple ? old_position : equal_position + length(text[equal_position])
+			var/opening_count = 0
+			var/closing_count = 0
+			var/index = start_index
+			var/begin = FALSE
+			while(!begin || (opening_count != closing_count))
+				var/char = text[index]
+				if(char == "(")
+					opening_count += 1
+					begin = TRUE
+				else if(char == ")")
+					closing_count += 1
+				index += length(char)
+			trim_right = trim(copytext(text, start_index, index))
+			if(is_simple)
+				trim_left = trim_right
+			if(index >= length(text)) //stops a wasteful iteration when we reach the end
+				position = 0
+			else
+				old_position = index + length(text[index]) //this moves our pointer past , to the next element
+		else if(position)
+			old_position = position + length(text[position])
+
+		//assign value
+		var/left_constant = parse_constant(trim_left)
+		if(is_simple)
 			. += list(left_constant)
+		else
+			.[left_constant] = parse_constant(trim_right)
 
 /datum/parsed_map/proc/parse_constant(text)
+	// empty text
+	if(!text)
+		return ""
+
 	// number
 	var/num = text2num(text)
 	if(isnum(num))
@@ -1057,7 +1105,7 @@ GLOBAL_LIST_EMPTY(map_model_default)
 	return text
 
 /datum/parsed_map/Destroy()
-	. = ..()
+	..()
 	SSatoms.map_loader_stop(REF(src)) // Just in case, I don't want to double up here
 	if(turf_blacklist)
 		turf_blacklist.Cut()
@@ -1070,5 +1118,4 @@ GLOBAL_LIST_EMPTY(map_model_default)
 #undef MAP_DMM
 #undef MAP_TGM
 #undef MAP_UNKNOWN
-#undef TRIM_TEXT
 #undef MAPLOADING_CHECK_TICK

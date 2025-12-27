@@ -228,7 +228,7 @@
 	soft_armor = list(MELEE = 15, BULLET = 25, LASER = 20, ENERGY = 20, BOMB = 25, BIO = 20, FIRE = 20, ACID = 20)
 	var/thrall = FALSE//Used to affect icon generation.
 
-/obj/item/clothing/shoes/marine/yautja/New(location, boot_number = rand(1,4), armor_material = "ebony")
+/obj/item/clothing/shoes/marine/yautja/Initialize(mapload, boot_number = rand(1,4), armor_material = "ebony")
 	. = ..()
 	if(thrall)
 		return
@@ -685,7 +685,7 @@
 	var/tether_range = 5
 	var/mob/trapped_mob
 
-/obj/item/hunting_trap/Initialize()
+/obj/item/hunting_trap/Initialize(mapload)
 	. = ..()
 	var/static/list/connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_cross),
@@ -884,7 +884,7 @@
 	item_flags = ITEM_PREDATOR
 	paygrade = null
 
-/obj/item/card/id/bracer_chip/Initialize()
+/obj/item/card/id/bracer_chip/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, TRAIT_GENERIC)
 

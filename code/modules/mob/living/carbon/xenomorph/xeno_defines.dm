@@ -276,7 +276,7 @@ GLOBAL_LIST_INIT(strain_list, init_glob_strain_list())
 	appearance_flags = TILE_BOUND|PIXEL_SCALE|KEEP_TOGETHER|LONG_GLIDE
 	see_infrared = TRUE
 	hud_type = /datum/hud/alien
-	hud_possible = list(HEALTH_HUD_XENO, PLASMA_HUD, PHEROMONE_HUD, XENO_RANK_HUD, QUEEN_OVERWATCH_HUD, ARMOR_SUNDER_HUD, XENO_DEBUFF_HUD, XENO_FIRE_HUD, XENO_BANISHED_HUD, XENO_BLESSING_HUD, XENO_EVASION_HUD, XENO_PRIMO_HUD, HUNTER_HUD)
+	hud_possible = list(HEALTH_HUD_XENO, PLASMA_HUD, PHEROMONE_HUD, ENHANCEMENT_HUD, XENO_RANK_HUD, QUEEN_OVERWATCH_HUD, ARMOR_SUNDER_HUD, XENO_DEBUFF_HUD, XENO_FIRE_HUD, XENO_BANISHED_HUD, XENO_BLESSING_HUD, XENO_EVASION_HUD, XENO_PRIMO_HUD, HUNTER_HUD)
 	buckle_flags = NONE
 	faction = FACTION_XENO
 	initial_language_holder = /datum/language_holder/xeno
@@ -338,8 +338,12 @@ GLOBAL_LIST_INIT(strain_list, init_glob_strain_list())
 	var/regen_power = 0
 	///Stored biomass
 	var/biomass = 0
+	///Bonus to passive biomass gain rate (added to base rate)
+	var/biomass_gain_bonus = 0
 	///Stored upgrade effects, so we reapply them on evolve
 	var/list/upgrades_holder = list()
+	///History of purchased mutations (mutation names)
+	var/list/purchased_mutations = list()
 
 	var/zoom_turf = null
 	var/can_walk_zoomed = FALSE
@@ -352,6 +356,10 @@ GLOBAL_LIST_INIT(strain_list, init_glob_strain_list())
 	var/selected_resin = /turf/closed/wall/resin/regenerating
 	///which reagent to slash with using reagent slash
 	var/selected_reagent = /datum/reagent/toxin/xeno_hemodile
+	///which reagent to inject with mutation-based toxin attacks (separate from selected_reagent)
+	var/datum/reagent/toxin/mutation_toxin_reagent = /datum/reagent/toxin/xeno_transvitox
+	///which trail type to leave with mutation-based trail ability
+	var/obj/mutation_trail_type = /obj/effect/xenomorph/spray
 	///which plant to place when we use sow
 	var/obj/structure/xeno/plant/selected_plant = /obj/structure/xeno/plant/heal_fruit
 	///Naming variables
