@@ -307,7 +307,7 @@ GLOBAL_VAR_INIT(refid_filter, TYPEID(filter(type="angular_blur")))
 
 //Gamemode
 #define iscrashgamemode(O) (istype(O, /datum/game_mode/infestation/crash))
-#define isdistrocrashgamemode(O) (istype(O, /datum/game_mode/infestation/distro_crush))
+#define iswarfaregamemode(O) (istype(O, /datum/game_mode/infestation/warfare))
 #define iszombiecrashgamemode(O) (istype(O, /datum/game_mode/infestation/crash/zombie))
 #define isinfestationgamemode(O) (istype(O, /datum/game_mode/infestation))
 #define isexterminationgamemode(O) (istype(O, /datum/game_mode/infestation/distress/extermination))

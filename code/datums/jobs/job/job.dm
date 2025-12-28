@@ -190,7 +190,7 @@ GLOBAL_PROTECT(exp_specialmap)
 				continue
 			if(SSticker.mode?.round_type_flags & MODE_XENO_SPAWN_PROTECT)
 				continue
-			if(isdistrocrashgamemode(SSticker.mode))
+			if(iswarfaregamemode(SSticker.mode))
 				continue
 			GLOB.round_statistics.larva_from_marine_spawning += adjusted_jobworth_list[index] / scaled_job.job_points_needed
 		scaled_job.add_job_points(adjusted_jobworth_list[index])
