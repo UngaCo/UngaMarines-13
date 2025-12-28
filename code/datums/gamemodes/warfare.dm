@@ -185,8 +185,8 @@
 		return
 	last_max_pop += 4
 	//1 to 3 ratio
-	xeno_left = 1 * LIFE_FACTOR
-	marine_left = 3 * LIFE_FACTOR
+	xeno_left += 1 * LIFE_FACTOR
+	marine_left += 3 * LIFE_FACTOR
 
 /// Adds more xeno job slots if needed.
 /datum/game_mode/infestation/warfare/proc/add_xeno()
