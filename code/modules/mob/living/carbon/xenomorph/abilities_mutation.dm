@@ -1,3 +1,13 @@
+/datum/action/ability/xeno_action/mutation_menu
+	name = "Show Mutations Menu"
+	action_icon = 'icons/Xeno/actions/generak.dmi'
+	action_icon_state = "minion_rendez_vous"
+	background_icon = 'icons/Xeno/actions/_actions.dmi'
+
+/datum/action/ability/xeno_action/mutation_menu/action_activate()
+	var/datum/mutation_menu/menu = new(src)
+	menu.ui_interact(src)
+
 /datum/action/ability/xeno_action/mutation/proc/set_mutation_power(tier)
 	return
 
