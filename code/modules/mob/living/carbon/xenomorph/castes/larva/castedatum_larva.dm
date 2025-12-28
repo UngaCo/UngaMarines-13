@@ -41,6 +41,7 @@
 	// *** Abilities *** //
 	actions = list(
 		/datum/action/ability/xeno_action/xeno_resting,
+		/datum/action/ability/xeno_action/mutation_menu,
 		/datum/action/ability/xeno_action/watch_xeno,
 		/datum/action/ability/xeno_action/xenohide,
 	)
@@ -96,6 +97,7 @@
 	// *** Abilities *** //
 	actions = list(
 		/datum/action/ability/xeno_action/xeno_resting,
+		/datum/action/ability/xeno_action/mutation_menu,
 		/datum/action/ability/xeno_action/watch_xeno,
 		/datum/action/ability/xeno_action/xenohide,
 	)
