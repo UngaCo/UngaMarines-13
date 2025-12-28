@@ -54,6 +54,7 @@
 
 	actions = list(
 		/datum/action/ability/xeno_action/xeno_resting,
+		/datum/action/ability/xeno_action/mutation_menu,
 		/datum/action/ability/activable/xeno/psydrain,
 		/datum/action/ability/activable/xeno/cocoon,
 		/datum/action/ability/activable/xeno/plant_weeds,
@@ -83,7 +84,7 @@
 		/datum/action/ability/xeno_action/rally_hive,
 		/datum/action/ability/activable/xeno/command_minions,
 	)
-	
+
 /datum/xeno_caste/queen/young
 	upgrade = XENO_UPGRADE_NORMAL
 
@@ -95,6 +96,7 @@
 
 	actions = list(
 		/datum/action/ability/xeno_action/xeno_resting,
+		/datum/action/ability/xeno_action/mutation_menu,
 		/datum/action/ability/activable/xeno/psydrain,
 		/datum/action/ability/activable/xeno/cocoon,
 		/datum/action/ability/activable/xeno/plant_weeds,

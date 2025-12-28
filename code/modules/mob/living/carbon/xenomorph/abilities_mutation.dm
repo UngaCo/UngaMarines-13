@@ -1,3 +1,15 @@
+/datum/action/ability/xeno_action/mutation_menu
+	name = "Show Mutations Menu"
+	desc = "Show Mutations Menu"
+	action_icon_state = "emit_pheromones"
+	action_icon = 'icons/Xeno/actions/general.dmi'
+	action_icon_state = "minion_rendez_vous"
+	background_icon = 'icons/Xeno/actions/_actions.dmi'
+
+/datum/action/ability/xeno_action/mutation_menu/action_activate()
+	var/datum/mutation_menu/menu = new(usr)
+	menu.ui_interact(usr)
+
 /datum/action/ability/xeno_action/mutation/proc/set_mutation_power(tier)
 	return
 
