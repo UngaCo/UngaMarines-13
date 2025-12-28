@@ -7,7 +7,7 @@
 	background_icon = 'icons/Xeno/actions/_actions.dmi'
 
 /datum/action/ability/xeno_action/mutation_menu/action_activate()
-	var/datum/mutation_menu/menu = new(src)
+	var/datum/mutation_menu/menu = new(usr)
 	menu.ui_interact(usr)
 
 /datum/action/ability/xeno_action/mutation/proc/set_mutation_power(tier)
