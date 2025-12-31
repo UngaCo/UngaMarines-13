@@ -52,7 +52,7 @@
 	desc = "A 10x20mm caseless submachine gun magazine."
 	caliber = CALIBER_10X20_CASELESS
 	icon_state = "t90"
-	max_rounds = 50
+	max_rounds = 80
 	w_class = WEIGHT_CLASS_SMALL
 	icon_state_mini = "mag_t90"
 
