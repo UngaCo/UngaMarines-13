@@ -15,47 +15,47 @@
 /datum/supply_packs/vehicles/ltb_he_shell
 	name = "LTB high explosive tank shell"
 	contains = list(/obj/item/ammo_magazine/tank/ltb_cannon)
-	cost = 50
+	cost = 35
 
 /datum/supply_packs/vehicles/ltb_apfds_shell
 	name = "LTB APFDS tank shell"
 	contains = list(/obj/item/ammo_magazine/tank/ltb_cannon/apfds)
-	cost = 50
+	cost = 20
 
 /datum/supply_packs/vehicles/ltaap_rounds
 	name = "LTAAP tank magazine"
 	contains = list(/obj/item/ammo_magazine/tank/ltaap_chaingun)
-	cost = 50
+	cost = 20
 
 /datum/supply_packs/weapons/ltb_canister_shell
 	name = "LTB canister tank shell"
 	contains = list(/obj/item/ammo_magazine/tank/ltb_cannon/canister)
-	cost = 50
+	cost = 10
 
 /datum/supply_packs/vehicles/autocannon_ap_rounds
 	name = "Bushwhacker Autocannon Armor Piercing ammo box"
 	contains = list(/obj/item/ammo_magazine/tank/autocannon)
-	cost = 50
+	cost = 20
 
 /datum/supply_packs/vehicles/autocannon_he_rounds
 	name = "Bushwhacker Autocannon High Explosive ammo box"
 	contains = list(/obj/item/ammo_magazine/tank/autocannon/high_explosive)
-	cost = 50
+	cost = 30
 
 /datum/supply_packs/vehicles/cupola_rounds
 	name = "Cupola tank magazine"
 	contains = list(/obj/item/ammo_magazine/tank/secondary_cupola)
-	cost = 50
+	cost = 10
 
 /datum/supply_packs/vehicles/secondary_flamer_tank
 	name = "Spray flamer tank"
 	contains = list(/obj/item/ammo_magazine/tank/secondary_flamer_tank)
-	cost = 50
+	cost = 15
 
 /datum/supply_packs/vehicles/tank_glauncher
 	name = "Tank grenade laucnher magazine"
 	contains = list(/obj/item/ammo_magazine/tank/tank_glauncher)
-	cost = 50
+	cost = 10
 
 /datum/supply_packs/vehicles/tow_rocket
 	name = "TOW missile"
@@ -65,7 +65,7 @@
 /datum/supply_packs/vehicles/microrocket_pod
 	name = "Microrocket pod"
 	contains = list(/obj/item/ammo_magazine/tank/microrocket_rack)
-	cost = 50
+	cost = 35
 
 /datum/supply_packs/vehicles/motorbike
 	name = "All-terrain motorbike"
