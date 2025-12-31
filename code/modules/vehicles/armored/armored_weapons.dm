@@ -37,7 +37,7 @@
 	///windup sound played during windup
 	var/windup_sound
 	///windup delay for this object
-	var/windup_delay = 5
+	var/windup_delay = 0
 	///scatter of this weapon. in degrees and modified by arm this is attached to
 	var/variance = 0
 	/// since mech guns only get one firemode this is for all types of shots
