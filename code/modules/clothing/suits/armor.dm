@@ -1,13 +1,15 @@
 /obj/item/clothing/suit/armor
-	inventory_flags = BLOCKSHARPOBJ
-	armor_protection_flags = CHEST|GROIN
-	cold_protection_flags = CHEST|GROIN
-	heat_protection_flags = CHEST|GROIN
+// base object for all armor
+	inventory_flags = BLOCKSHARPOBJ // var, where you can add special effects for armor
+	// for example, BLOCKSHARPOBJ is giving armor effect of protection from syringes, parapens and all that stuff
+	armor_protection_flags = CHEST|GROIN // var, which defines, to which parts of body will be applied armor
+	cold_protection_flags = CHEST|GROIN // same, but about cold, you will not freeze on Ice maps
+	heat_protection_flags = CHEST|GROIN // same, but for heat
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	max_heat_protection_temperature = ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE
-	siemens_coefficient = 0.6
-	w_class = WEIGHT_CLASS_HUGE
-	allowed = list(/obj/item/weapon/gun)//Guns only.
+	siemens_coefficient = 0.6 // defines protection from electrical shock from wires and stuff like thats
+	w_class = WEIGHT_CLASS_HUGE // var about weight, which defines how much space at your bag this item will take and some more stuff
+	allowed = list(/obj/item/weapon/gun)//Guns only. this var defines, what you can wear on your suit slot
 
 /obj/item/clothing/suit/armor/mob_can_equip(mob/user, slot, warning = TRUE, override_nodrop = FALSE, bitslot = FALSE)
 	. = ..()
