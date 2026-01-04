@@ -38,3 +38,15 @@
 	fire_delay = 0.25 SECONDS
 	current_rounds = 300
 	max_rounds = 300
+
+/obj/item/uav_turret/flammer
+	name = "Flammer 'Shmel'"
+	desc = "The Bumblebee flamethrower complex, designed to be mounted on ground and aerial drones for subsequent use on enemy strongholds to minimize casualties among personnel."
+	icon_state = "flammer_obj"
+	ammo_type = /datum/ammo/flamethrower
+	turret_type = TURRET_TYPE_FLAMMER
+	turret_pattern = PATTERN_TRACKED
+	fire_delay = 2 SECONDS
+	current_rounds = 50
+	max_rounds = 50
+	magazine_type = /obj/item/ammo_magazine/flamer_tank
