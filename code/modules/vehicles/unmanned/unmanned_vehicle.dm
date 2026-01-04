@@ -110,6 +110,8 @@
 			. += image('icons/obj/unmanned_vehicles.dmi', src, "bomb")
 		if(TURRET_TYPE_DROIDLASER)
 			. += image('icons/obj/unmanned_vehicles.dmi', src, "droidlaser")
+		if(TURRET_TYPE_FLAMMER)
+			. += image('icons/obj/unmanned_vehicles.dmi', src, "flammer")
 
 /obj/vehicle/unmanned/examine(mob/user, distance, infix, suffix)
 	. = ..()
