@@ -753,6 +753,7 @@
 	deploy_flags = IS_DEPLOYABLE|DEPLOYED_NO_PICKUP|DEPLOY_ON_INITIALIZE
 	gun_features_flags = GUN_DEPLOYED_FIRE_ONLY|GUN_WIELDED_FIRING_ONLY|GUN_SMOKE_PARTICLES
 	gun_firemode_list = list(GUN_FIREMODE_AUTOMATIC)
+	attachable_allowed = list(/obj/item/attachable/scope/mg_scope1930)
 
 	allowed_ammo_types = list(
 		/obj/item/ammo_magazine/maxim1910,
