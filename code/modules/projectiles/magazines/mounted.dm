@@ -219,3 +219,17 @@
 	default_ammo = /datum/ammo/bullet/machinegun
 	reload_delay = 5 SECONDS
 	icon_state_mini = "mag_hmg"
+
+/obj/item/ammo_magazine/maxim1910
+
+	name = "Maxim 1910 box magazine(7.62x54mm)" // maxim 1910 has 54 caliber, like Mosin
+	desc = "A box of 250, 7.62x54mm light rounds for the Maxim machine gun of the 1910 model, designed by gunsmiths P.P. Tretyakov and master I.A. Pastukhov"
+	w_class = WEIGHT_CLASS_BULKY
+	icon = 'icons/obj/items/ammo/stationary.dmi'
+	icon_state = "maxim1910"
+	magazine_flags = NONE
+	caliber = CALIBER_762X54
+	max_rounds = 250 // box for ammo of light round for Maxin 1910 has 250 rounds capacity
+	default_ammo = /datum/ammo/bullet/machinegun
+	reload_delay = 5 SECONDS
+	icon_state_mini = "mag_hmg"

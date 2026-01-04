@@ -732,22 +732,22 @@
 
 /obj/item/weapon/gun/maxim
 	name = "\improper Maxim machinegun 1910"
-	desc = ""
+	desc = "The 1910 machine gun is a Russian version of the weapon, which was improved by gunsmiths, including Colonel A. A. Sokolov. He designed a wheeled machine gun and a slightly curved shield."
 	w_class = WEIGHT_CLASS_GIGANTIC
 	equip_slot_flags = ITEM_SLOT_BACK
-	icon = 'icons/obj/artillery/hiram.dmi'
-	icon_state = "maxim"
-	fire_sound = 'sound/weapons/guns/fire/maxim.ogg'
+	icon = 'icons/obj/artillery/maxim1910.dmi'
+	icon_state = "maxim1910"
+	fire_sound = 'sound/weapons/guns/fire/maxim1910.ogg'
 	reload_sound = 'sound/weapons/guns/interact/maxim_reload.ogg'
 	unload_sound = 'sound/weapons/guns/interact/maxim_unload.ogg'
 	empty_sound = 'sound/weapons/guns/interact/maxim_empty.ogg'
 
-	default_ammo_type = /obj/item/ammo_magazine/hiram
+	default_ammo_type = /obj/item/ammo_magazine/maxim1910
 
 	scatter = 10
 	deployed_scatter_change = -10
-	fire_delay = 0.5 SECONDS
-	extra_delay = 0.7 SECONDS
+	fire_delay = 0.2 SECONDS
+	extra_delay = 0.2 SECONDS
 
 	item_flags = TWOHANDED
 	deploy_flags = IS_DEPLOYABLE|DEPLOYED_NO_PICKUP|DEPLOY_ON_INITIALIZE
@@ -755,11 +755,15 @@
 	gun_firemode_list = list(GUN_FIREMODE_AUTOMATIC)
 
 	allowed_ammo_types = list(
-		/obj/item/ammo_magazine/hiram,
+		/obj/item/ammo_magazine/maxim1910,
 	)
 
 	undeploy_time = 2000 SECONDS
-	deployable_item = /obj/machinery/deployable/mounted/moveable/hiram
+	deployable_item = /obj/machinery/deployable/mounted/moveable/maxim1910
 
 	max_integrity = 500
 	soft_armor = list(MELEE = 50, BULLET = 80, LASER = 80, ENERGY = 80, BOMB = 20, BIO = 10, FIRE = 80, ACID = 30)
+
+/obj/machinery/deployable/mounted/moveable/maxim1910
+	resistance_flags = XENO_DAMAGEABLE
+	coverage = 95
