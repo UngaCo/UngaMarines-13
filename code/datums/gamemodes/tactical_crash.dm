@@ -7,9 +7,6 @@
 		/datum/job/clf/medic = 1,
 		/datum/job/clf/specialist = 1,
 		/datum/job/clf/leader = 1,
-		/datum/job/terragov/medical/professor = 1,
-		/datum/job/terragov/medical/medicalofficer = 1,
 		/datum/job/terragov/silicon/synthetic = 1,
-		/datum/job/terragov/command/fieldcommander = 1,
 		/datum/job/xenomorph = FREE_XENO_AT_START
 	)
