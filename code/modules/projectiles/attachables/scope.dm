@@ -195,6 +195,22 @@
 	desc = "A marine standard mounted zoom sight scope made for the PL-02 plasma sniper rifle, allows zoom by activating the attachment. Use F12 if your HUD doesn't come back."
 	icon_state = "plasma_scope"
 
+/obj/item/attachable/scope/mg_scope1930
+	name = "Machine gun optical scope mod. 1930"
+	icon_state = "miniscope"
+	desc = "The sight is mounted on the left side of the machine gun on a special bracket. However, the sight has not found widespread use in the military. The production of an optical sight with a panorama was expensive and technically difficult, and simpler and cheaper designs were required in wartime conditions."
+	slot = ATTACHMENT_SLOT_RAIL
+	wield_delay_mod = 0.2 SECONDS
+	accuracy_unwielded_mod = -0.05
+	aim_speed_mod = 0.2
+	scoped_accuracy_mod = SCOPE_RAIL_MINI
+	scope_zoom_mod = TRUE
+	has_nightvision = FALSE
+	zoom_allow_movement = TRUE
+	zoom_slowdown = 0.3
+	zoom_tile_offset = 7
+	zoom_viewsize = 0
+
 /obj/item/attachable/scope/mini
 	name = "mini rail scope"
 	icon_state = "miniscope"
