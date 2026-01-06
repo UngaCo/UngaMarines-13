@@ -10,3 +10,5 @@
 		/datum/job/terragov/silicon/synthetic = 1,
 		/datum/job/xenomorph = FREE_XENO_AT_START
 	)
+
+	var/shuttle_id = SHUTTLE_CANTERBURY
