@@ -582,6 +582,7 @@
 #include "code\datums\gamemodes\objective.dm"
 #include "code\datums\gamemodes\objective_items.dm"
 #include "code\datums\gamemodes\points_defence.dm"
+#include "code\datums\gamemodes\warfare.dm"
 #include "code\datums\gamemodes\zombie_crash.dm"
 #include "code\datums\greyscale\_greyscale_config.dm"
 #include "code\datums\greyscale\greyscale_configs.dm"

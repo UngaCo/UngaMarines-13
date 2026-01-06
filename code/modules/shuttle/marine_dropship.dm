@@ -1441,7 +1441,7 @@
 	if(!allowed(usr))
 		to_chat(usr, span_danger("Access denied."))
 		return TRUE
-	if(!href_list["move"] || !iscrashgamemode(SSticker.mode))
+	if(!href_list["move"] || !(iscrashgamemode(SSticker.mode) || iswarfaregamemode(SSticker.mode)))
 		to_chat(usr, span_warning("[src] is unresponsive."))
 		return FALSE
 
