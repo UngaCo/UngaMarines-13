@@ -55,7 +55,7 @@
 	desc = "Attracts the target to the owner of the ability."
 	action_icon_state = "grab"
 	action_icon = 'icons/Xeno/actions/shrike.dmi'
-	cooldown_duration = 12 SECONDS
+	cooldown_duration = 30 SECONDS
 	ability_cost = 100
 	keybinding_signals = list(
 		KEYBINDING_NORMAL = COMSIG_XENOABILITY_PSYCHIC_GRAB,
