@@ -313,6 +313,7 @@ GLOBAL_VAR_INIT(refid_filter, TYPEID(filter(type="angular_blur")))
 #define isdistressgamemode(O) (istype(O, /datum/game_mode/infestation/distress))
 #define ispointsdefencegamemode(O) (istype(O, /datum/game_mode/infestation/distress/points_defence))
 #define islaststandgamemode(O) istype(O, /datum/game_mode/last_stand)
+#define istacticalcrashgamemode(O) istype(O, /datum/game_mode/infestation/crash/tactical_crash)
 
 #define isxenoresearcharea(A) (istype(A, /area/mainship/medical/medical_science))
 
