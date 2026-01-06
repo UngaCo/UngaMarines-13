@@ -30,7 +30,7 @@ GLOBAL_VAR_INIT(generators_on_ground, 0)
 
 /obj/machinery/power/geothermal/Initialize(mapload)
 	. = ..()
-	RegisterSignals(SSdcs, list(COMSIG_GLOB_OPEN_TIMED_SHUTTERS_LATE, COMSIG_GLOB_OPEN_SHUTTERS_EARLY, COMSIG_GLOB_TADPOLE_LANDED_OUT_LZ), PROC_REF(activate_corruption))
+	RegisterSignals(SSdcs, list(COMSIG_GLOB_OPEN_TIMED_SHUTTERS_LATE, COMSIG_GLOB_OPEN_SHUTTERS_EARLY, COMSIG_GLOB_TADPOLE_LANDED_OUT_LZ, COMSIG_GLOB_CANTERBURRY_LANDING), PROC_REF(activate_corruption))
 	update_icon()
 
 	update_minimap_icon()
@@ -128,7 +128,7 @@ GLOBAL_VAR_INIT(generators_on_ground, 0)
 	if(corrupted && corruption_on)
 		if(!GLOB.generators_on_ground)	//Prevent division by 0
 			return PROCESS_KILL
-		if((length(GLOB.humans_by_zlevel["2"]) > 0.2 * length(GLOB.alive_human_list_faction[FACTION_TERRAGOV])))
+		if((length(GLOB.humans_by_zlevel["2"]) > 0.2 * length(GLOB.alive_human_list_faction[FACTION_TERRAGOV])) && !iscrashgamemode(SSticker?.mode))
 			//You get points proportional to the % of generators corrupted (for example, if 66% of generators are corrupted the hive gets 0.66 points per second)
 			var/psypoints_amount = GENERATOR_PSYCH_POINT_OUTPUT / GLOB.generators_on_ground
 			SSpoints.add_psy_points(corrupted, psypoints_amount)
