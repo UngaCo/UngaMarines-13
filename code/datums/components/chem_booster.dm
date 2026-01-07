@@ -198,7 +198,7 @@
 	update_resource(-resource_drain_amount)
 
 	wearer.adjust_tox_loss(-tox_heal * boost_amount)
-	wearer.heal_overall_damage(6 * boost_amount*brute_heal_amp, 6 * boost_amount * burn_heal_amp)
+	wearer.heal_overall_damage(5 * boost_amount*brute_heal_amp, 5 * boost_amount * burn_heal_amp)
 	vali_necro_timer = world.time - processing_start
 	if(vali_necro_timer > 20 SECONDS)
 		return
