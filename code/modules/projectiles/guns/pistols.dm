@@ -440,10 +440,8 @@
 	force = 5
 	attachable_allowed = list(
 		/obj/item/attachable/suppressor,
-		/obj/item/attachable/flashlight,
 		/obj/item/attachable/heavy_barrel,
 		/obj/item/attachable/lace,
-		/obj/item/attachable/flashlight/under,
 	)
 
 	gun_features_flags = GUN_CAN_POINTBLANK|GUN_AMMO_COUNTER|GUN_SMOKE_PARTICLES

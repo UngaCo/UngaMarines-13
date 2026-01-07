@@ -17,8 +17,8 @@
 	overlay_type = null
 	groundhit_sound_is_playable = FALSE
 	var/fuel = 0
-	var/lower_fuel_limit = 60
-	var/upper_fuel_limit = 75
+	var/lower_fuel_limit = 150
+	var/upper_fuel_limit = 200
 
 /obj/item/explosive/grenade/flare/dissolvability(acid_strength)
 	return 2
