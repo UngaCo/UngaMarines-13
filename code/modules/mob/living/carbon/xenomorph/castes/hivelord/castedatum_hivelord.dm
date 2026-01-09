@@ -96,7 +96,6 @@
 		/datum/action/ability/xeno_action/blessing_menu,
 		/datum/action/ability/activable/xeno/transfer_plasma/improved,
 		/datum/action/ability/activable/xeno/corrosive_acid/strong,
-		/datum/action/ability/xeno_action/sow,
 		/datum/action/ability/xeno_action/build_tunnel,
 		/datum/action/ability/xeno_action/toggle_speed,
 		/datum/action/ability/xeno_action/pheromones,

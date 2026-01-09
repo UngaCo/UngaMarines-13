@@ -135,3 +135,4 @@
 	contains = list(/obj/machinery/researchcomp)
 	containertype = null
 	cost = 200
+	crash_restricted = TRUE

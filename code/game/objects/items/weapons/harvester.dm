@@ -98,7 +98,7 @@
 	)
 	icon_state = "rapier"
 	worn_icon_state = "rapier"
-	force = 60
+	force = 50
 	attack_speed = 5
 
 /obj/item/weapon/sword/officer/valirapier/Initialize(mapload)

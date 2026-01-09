@@ -357,8 +357,4 @@
 	staggerstun(target_mob, proj, knockback = 1)
 
 /datum/ammo/bullet/shotgun/flechette/shq6/on_hit_mob(mob/target_mob, atom/movable/projectile/proj)
-	if(!isliving(target_mob))
-		return
-
-	var/mob/living/living_victim = target_mob
-	living_victim.apply_status_effect(STATUS_EFFECT_SHATTER, 3 SECONDS)
+	return

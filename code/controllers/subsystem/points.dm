@@ -94,6 +94,9 @@ SUBSYSTEM_DEF(points)
 		supply_packs_contents[pack] = list("name" = P.name, "item_notes" = P.notes, "container_name" = initial(P.containertype.name), "cost" = P.cost, "contains" = containsname)
 
 /datum/controller/subsystem/points/fire(resumed = FALSE)
+	if(iscrashgamemode(SSticker?.mode))
+		return
+
 	dropship_points += DROPSHIP_POINT_RATE / (1 MINUTES / wait)
 
 	var/current_supply_point_rate = SUPPLY_POINT_RATE / (1 MINUTES / wait)
