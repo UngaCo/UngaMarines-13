@@ -77,7 +77,7 @@
 	to_chat(src,"<b>[span_deadsay("<p style='font-size:1.5em'><big>We have perished.</big><br><small>But it is not the end of us yet... wait until a newborn can rise in this world...</small></p>")]</b>")
 
 	if(islaststandgamemode(SSticker.mode)) // snowflaky, but we need to cleanup
-		addtimer(CALLBACK(src, PROC_REF(last_stand_death)), 1 MINUTES)
+		addtimer(CALLBACK(src, PROC_REF(last_stand_death)), 3 SECONDS)
 
 	return ..()
 
@@ -115,5 +115,4 @@
 	if(QDELETED(src)) // in case we were gibbed
 		return
 
-	fade_out(src, our_time = 5 SECONDS)
-	QDEL_IN(src, 5 SECONDS)
+	gib()

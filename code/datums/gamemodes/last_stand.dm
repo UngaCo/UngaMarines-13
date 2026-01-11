@@ -85,6 +85,10 @@
 		var/datum/wave_spawner/wave = spawner
 		wave = new spawner()
 		waves_spawner[spawner] = wave
+	for(var/i in 1 to max(MIN_PHORON_MINER_AMOUNT, length(GLOB.miner_phorone_locs) * 0.5))
+		new /obj/machinery/miner/damaged(pick_n_take(GLOB.miner_phorone_locs))
+	for(var/i in 1 to max(MIN_PLATINUM_MINER_AMOUNT, length(GLOB.miner_platinum_locs) * 0.5))
+		new /obj/machinery/miner/damaged/platinum(pick_n_take(GLOB.miner_platinum_locs))
 
 /datum/game_mode/last_stand/process()
 	. = ..()
