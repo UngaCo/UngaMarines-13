@@ -100,7 +100,7 @@
 
 /datum/game_mode/last_stand/proc/spawn_wave()
 	var/list/living_player_list = count_humans_and_xenos(count_flags = COUNT_IGNORE_ALIVE_SSD|COUNT_IGNORE_XENO_SPECIAL_AREA)
-	var/points = (living_player_list[1] * 0.2) + waves_power
+	var/points = (living_player_list[1] * 0.4) + waves_power
 
 	var/wave_spawned = FALSE
 	var/wave_checks = 0
@@ -117,8 +117,8 @@
 			continue
 		wave_spawned = wave.spawn_wave(points, health_factor)
 
-	waves_power += 0.08
-	health_factor += 0.03
+	waves_power += 0.1
+	health_factor += 0.05
 
 /datum/game_mode/last_stand/check_finished()
 	if(round_finished)
