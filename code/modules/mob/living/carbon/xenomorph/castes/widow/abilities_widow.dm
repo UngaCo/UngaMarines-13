@@ -343,7 +343,7 @@
 	action_icon_state = "larval hugger"
 	action_icon = 'icons/Xeno/actions/carrier.dmi'
 	ability_cost = 60
-	cooldown_duration = 20 SECONDS
+	cooldown_duration = 60 SECONDS
 	keybinding_signals = list(
 		KEYBINDING_NORMAL = COMSIG_XENOABILITY_CREATE_HUGGER,
 	)
