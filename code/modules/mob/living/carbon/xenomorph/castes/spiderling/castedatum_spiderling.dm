@@ -21,5 +21,5 @@
 	// *** Minimap Icon *** //
 	minimap_icon = "spiderling"
 	// *** Defense *** //
-	soft_armor = list(MELEE = 15, BULLET = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	soft_armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 
