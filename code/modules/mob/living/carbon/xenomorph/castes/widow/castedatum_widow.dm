@@ -9,7 +9,7 @@
 	wound_type = "widow"
 
 	// *** Melee Attacks *** //
-	melee_damage = 18
+	melee_damage = 20
 
 	// *** Speed *** //
 	speed = -0.5
@@ -19,7 +19,7 @@
 	plasma_gain = 55
 
 	// *** Health *** //
-	max_health = 550
+	max_health = 400
 
 	// *** Flags *** //
 	caste_flags = CASTE_EVOLUTION_ALLOWED
