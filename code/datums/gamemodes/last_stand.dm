@@ -117,7 +117,7 @@
 			continue
 		wave_spawned = wave.spawn_wave(points, health_factor)
 
-	waves_power += 0.1
+	waves_power *= 1.1
 	health_factor += 0.05
 
 /datum/game_mode/last_stand/check_finished()
