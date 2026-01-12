@@ -32,7 +32,7 @@
 	var/last_waves_check
 
 	///the strength of the waves is ultimately multiplied by the number of people
-	var/waves_power = 0.8
+	var/waves_power = 1
 	var/health_factor = 1
 	///time from the beginning of the round when the waves will not spawn
 	var/neutral_time = 5 MINUTES
@@ -100,7 +100,7 @@
 
 /datum/game_mode/last_stand/proc/spawn_wave()
 	var/list/living_player_list = count_humans_and_xenos(count_flags = COUNT_IGNORE_ALIVE_SSD|COUNT_IGNORE_XENO_SPECIAL_AREA)
-	var/points = living_player_list[1] * waves_power
+	var/points = (living_player_list[1] * 0.2) + waves_power
 
 	var/wave_spawned = FALSE
 	var/wave_checks = 0
@@ -117,8 +117,8 @@
 			continue
 		wave_spawned = wave.spawn_wave(points, health_factor)
 
-	waves_power += 0.05
-	health_factor += 0.04
+	waves_power += 0.08
+	health_factor += 0.03
 
 /datum/game_mode/last_stand/check_finished()
 	if(round_finished)
