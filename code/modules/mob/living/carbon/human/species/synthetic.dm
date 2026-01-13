@@ -38,14 +38,6 @@
 	/// The maximum damage you get while in crit
 	var/melting_max_damage = 16
 
-/datum/species/synthetic/handle_unique_behavior(mob/living/carbon/human/H)
-	if(H.health <= SYNTHETIC_CRIT_THRESHOLD && H.stat != DEAD) // Instead of having a critical condition, they overheat and slowly die.
-		H.apply_effect(4 SECONDS, EFFECT_STUTTER) // Added flavor
-		H.take_overall_damage(rand(melting_min_damage, melting_max_damage), BURN, updating_health = TRUE, max_limbs = 1) // Melting!!!
-		if(prob(12))
-			H.visible_message(span_boldwarning("[H] shudders violently and shoots out sparks!"), span_warning("Critical damage sustained. Internal temperature regulation systems offline. Shutdown imminent. <b>Estimated integrity: [round(H.health)]%.</b>"))
-			do_sparks(4, TRUE, H)
-
 /datum/species/synthetic/on_species_gain(mob/living/carbon/human/H, datum/species/old_species)
 	. = ..()
 	var/datum/atom_hud/AH = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED_SYNTH]

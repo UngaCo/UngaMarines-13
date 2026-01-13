@@ -301,12 +301,6 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 				"color" = "label"
 			))
 			advice += list(list(
-				"advice" = "Synthetic: Patient overheats while lower than [SYNTHETIC_CRIT_THRESHOLD / patient.maxHealth * 100]% health.",
-				"tooltip" = "Synthetics overheat rapidly while their health is lower than [SYNTHETIC_CRIT_THRESHOLD / patient.maxHealth * 100]%. When defibrillating, the patient should be repaired above this threshold to avoid unnecessary burning.",
-				"icon" = "robot",
-				"color" = "label"
-			))
-			advice += list(list(
 				"advice" = "Synthetic: Patient does not suffer from brain-death.",
 				"tooltip" = "Synthetics don't expire after 5 minutes of death.",
 				"icon" = "robot",
