@@ -84,4 +84,4 @@
 		/mob/living/carbon/xenomorph/queen/ai,
 	)
 	min_time = 30 MINUTES
-	points_factor = 0.4
+	points_factor = 0.2
