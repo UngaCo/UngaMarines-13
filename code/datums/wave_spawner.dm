@@ -22,23 +22,23 @@
 		/mob/living/carbon/xenomorph/beetle/ai,
 		/mob/living/carbon/xenomorph/mantis/ai,
 		/mob/living/carbon/xenomorph/scorpion/ai,
-		/mob/living/carbon/xenomorph/nymph/ai,
+		//mob/living/carbon/xenomorph/nymph/ai,
 	)
 	points_factor = 2
 
 /datum/wave_spawner/t1
 	spawn_types = list(
-		/mob/living/carbon/xenomorph/runner/ai,
+		//mob/living/carbon/xenomorph/runner/ai,
 		/mob/living/carbon/xenomorph/sentinel/ai,
 		/mob/living/carbon/xenomorph/defender/ai,
-		/mob/living/carbon/xenomorph/drone/ai,
+		//mob/living/carbon/xenomorph/drone/ai,
 	)
 	points_factor = 1.5
 	min_time = 10 MINUTES
 
 /datum/wave_spawner/t2
 	spawn_types = list(
-		/mob/living/carbon/xenomorph/hivelord/ai,
+		//mob/living/carbon/xenomorph/hivelord/ai,
 		/mob/living/carbon/xenomorph/hunter/ai,
 		/mob/living/carbon/xenomorph/spitter/ai,
 		/mob/living/carbon/xenomorph/warrior/ai,
@@ -61,12 +61,12 @@
 	spawn_types = list(
 		/mob/living/carbon/xenomorph/mantis/ai,
 		/mob/living/carbon/xenomorph/scorpion/ai,
-		/mob/living/carbon/xenomorph/nymph/ai,
-		/mob/living/carbon/xenomorph/runner/ai,
+		//mob/living/carbon/xenomorph/nymph/ai,
+		//mob/living/carbon/xenomorph/runner/ai,
 		/mob/living/carbon/xenomorph/sentinel/ai,
 		/mob/living/carbon/xenomorph/defender/ai,
-		/mob/living/carbon/xenomorph/drone/ai,
-		/mob/living/carbon/xenomorph/hivelord/ai,
+		//mob/living/carbon/xenomorph/drone/ai,
+		//mob/living/carbon/xenomorph/hivelord/ai,
 		/mob/living/carbon/xenomorph/hunter/ai,
 		/mob/living/carbon/xenomorph/spitter/ai,
 		/mob/living/carbon/xenomorph/warrior/ai,
@@ -83,5 +83,5 @@
 	spawn_types = list(
 		/mob/living/carbon/xenomorph/queen/ai,
 	)
-	min_time = 30 MINUTES
+	min_time = 35 MINUTES
 	points_factor = 0.2
