@@ -32,7 +32,7 @@
 	var/last_waves_check
 
 	///the strength of the waves is ultimately multiplied by the number of people
-	var/waves_power = 0.8
+	var/waves_power = 1
 	var/health_factor = 1
 	///time from the beginning of the round when the waves will not spawn
 	var/neutral_time = 5 MINUTES
@@ -85,6 +85,10 @@
 		var/datum/wave_spawner/wave = spawner
 		wave = new spawner()
 		waves_spawner[spawner] = wave
+	for(var/i in 1 to max(MIN_PHORON_MINER_AMOUNT, length(GLOB.miner_phorone_locs) * 0.5))
+		new /obj/machinery/miner/damaged(pick_n_take(GLOB.miner_phorone_locs))
+	for(var/i in 1 to max(MIN_PLATINUM_MINER_AMOUNT, length(GLOB.miner_platinum_locs) * 0.5))
+		new /obj/machinery/miner/damaged/platinum(pick_n_take(GLOB.miner_platinum_locs))
 
 /datum/game_mode/last_stand/process()
 	. = ..()
@@ -96,7 +100,7 @@
 
 /datum/game_mode/last_stand/proc/spawn_wave()
 	var/list/living_player_list = count_humans_and_xenos(count_flags = COUNT_IGNORE_ALIVE_SSD|COUNT_IGNORE_XENO_SPECIAL_AREA)
-	var/points = living_player_list[1] * waves_power
+	var/points = (living_player_list[1] * 0.4) + waves_power
 
 	var/wave_spawned = FALSE
 	var/wave_checks = 0
@@ -113,7 +117,7 @@
 			continue
 		wave_spawned = wave.spawn_wave(points, health_factor)
 
-	waves_power += 0.05
+	waves_power += 0.15
 	health_factor += 0.04
 
 /datum/game_mode/last_stand/check_finished()

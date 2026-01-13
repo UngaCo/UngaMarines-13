@@ -191,7 +191,7 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 				SSadvanced_pathfinding.node_pathfinding_to_do += src
 				registered_for_node_pathfinding = TRUE
 			return
-		set_current_node(GLOB.all_nodes[goal_nodes[length(goal_nodes)] + 1])
+		set_current_node(goal_nodes[length(goal_nodes)])
 		goal_nodes.len--
 	else
 		set_current_node(current_node.get_best_adj_node(list(NODE_LAST_VISITED = -1), identifier))
@@ -233,9 +233,9 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 /datum/ai_behavior/proc/look_for_node_path()
 	if(QDELETED(goal_node) || QDELETED(current_node))
 		return
-	var/goal_nodes_serialized = rustg_generate_path_astar("[current_node.unique_id]", "[goal_node.unique_id]")
-	if(rustg_json_is_valid(goal_nodes_serialized))
-		goal_nodes = json_decode(goal_nodes_serialized)
+	var/goal_nodes_new = get_path(current_node, goal_node)
+	if(goal_nodes_new)
+		goal_nodes = goal_nodes_new
 	else
 		goal_nodes = list()
 		set_current_node(null)
