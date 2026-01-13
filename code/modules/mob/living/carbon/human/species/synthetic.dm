@@ -33,16 +33,12 @@
 	warcries = list(MALE = SFX_MALE_WARCRY, FEMALE = SFX_FEMALE_WARCRY)
 	laughs = list(MALE = SFX_MALE_LAUGH, FEMALE = SFX_FEMALE_LAUGH)
 	special_death_message = "You have been shut down.<br><small>But it is not the end of you yet... if you still have your body, wait until somebody can resurrect you...</small>"
-	/// The minimum damage you get while in crit
-	var/melting_min_damage = 5
-	/// The maximum damage you get while in crit
-	var/melting_max_damage = 16
 
 /datum/species/synthetic/on_species_gain(mob/living/carbon/human/H, datum/species/old_species)
 	. = ..()
 	var/datum/atom_hud/AH = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED_SYNTH]
 	AH.add_hud_to(H)
-	H.health_threshold_crit = -100 // They overheat below SYNTHETIC_CRIT_THRESHOLD health.
+	H.health_threshold_crit = -100
 
 /datum/species/synthetic/prefs_name(datum/preferences/prefs)
 	. = prefs.synthetic_name
@@ -76,6 +72,3 @@
 	species_flags = NO_BREATHE|NO_BLOOD|NO_POISON|NO_PAIN|IS_SYNTHETIC|NO_CHEM_METABOLIZATION|NO_STAMINA|DETACHABLE_HEAD|HAS_UNDERWEAR|ROBOTIC_LIMBS|GREYSCALE_BLOOD
 
 	hair_color = "#000000"
-
-	melting_min_damage = 7
-	melting_max_damage = 19
