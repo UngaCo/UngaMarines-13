@@ -312,6 +312,40 @@
 	update_icon()
 	return TRUE
 
+/obj/machinery/atmospherics/components/unary/cryo_cell/proc/move_in(mob/living/target, mob/user)
+	if(!ishuman(target) || !ishuman(user) || user.incapacitated(TRUE))
+		return
+
+	if(occupant)
+		to_chat(user, span_notice("[src] is already occupied!"))
+		return
+
+	if(machine_stat & (NOPOWER|BROKEN))
+		to_chat(user, span_notice("[src] is non-functional!"))
+		return
+
+	target.visible_message(span_notice("[target] starts climbing into \the [src]."),
+	span_notice("You start climbing into \the [src]."))
+	if(do_after(target, 1 SECONDS, IGNORE_HELD_ITEM, src, BUSY_ICON_GENERIC))
+		if(occupant)
+			to_chat(user, span_notice("[src] is already occupied!"))
+			return
+		target.stop_pulling()
+		target.forceMove(src)
+		occupant = target
+		update_icon()
+
+/obj/machinery/atmospherics/components/unary/cryo_cell/MouseDrop_T(mob/M, mob/user)
+	. = ..()
+	move_in(M, user)
+
+/obj/machinery/atmospherics/components/unary/cryo_cell/verb/move_inside()
+	set name = "Enter Cryo-cell"
+	set category = "IC.Mob"
+	set src in oview(1)
+
+	move_in(usr, usr)
+
 /obj/machinery/atmospherics/components/unary/cryo_cell/Topic(href, href_list)
 	. = ..()
 	if(.)

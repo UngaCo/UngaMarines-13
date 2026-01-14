@@ -43,7 +43,7 @@
 	//It uses power
 	use_power = ACTIVE_POWER_USE
 	idle_power_usage = 15
-	active_power_usage = 120000 // It rebuilds you from nothing...
+	active_power_usage = 60000 // It rebuilds you from nothing...
 
 	var/locked = FALSE
 	var/mob/living/carbon/human/occupant = null
@@ -759,13 +759,6 @@
 	if(machine_stat & (NOPOWER|BROKEN))
 		to_chat(user, span_notice("[src] is non-functional!"))
 		return
-
-	if(user.skills.getRating(SKILL_SURGERY) < SKILL_SURGERY_TRAINED && !event)
-		target.visible_message(span_notice("[target] fumbles around figuring out how to get into \the [src]."),
-		span_notice("You fumble around figuring out how to get into \the [src]."))
-		var/fumbling_time = max(0 , SKILL_TASK_TOUGH - ( SKILL_TASK_EASY * user.skills.getRating(SKILL_SURGERY) ))// 8 secs non-trained, 5 amateur
-		if(!do_after(target, fumbling_time, NONE, src, BUSY_ICON_UNSKILLED))
-			return
 
 	target.visible_message(span_notice("[target] starts climbing into \the [src]."),
 	span_notice("You start climbing into \the [src]."))
