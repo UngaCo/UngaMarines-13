@@ -437,6 +437,8 @@
 
 	fully_created = TRUE
 
+	log_world("fully_created = TRUE")
+
 /client/proc/get_steam_profile(steamid)
 	var/url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=[STEAM_KEY]&steamids=[steamid]"
 	var/datum/http_request/req = new()
