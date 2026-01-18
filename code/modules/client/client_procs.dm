@@ -144,7 +144,7 @@
 	TopicData = null	//Prevent calls to client.Topic from connect
 
 	if(IsSteamKey(key))
-		CRASH("IsSteamKey(key) error")
+		log_world("IsSteamKey(key) error")
 		return null
 
 	var/list/params = tdata ? params2list(tdata) : list()
@@ -167,22 +167,22 @@
 		try
 			data = json_decode(result.body)
 		catch()
-			CRASH("Ошибка парсинга ответа Steam.")
+			log_world("Ошибка парсинга ответа Steam.")
 			return null
 
 		var/list/params_data = data["response"]["params"]
 
 		if (!params_data)
-			CRASH("params_data is null")
+			log_world("params_data is null")
 			return null
 
 		if (params_data["result"] != "OK")
-			CRASH("Ошибка Steam: нет steamid.")
+			log_world("Ошибка Steam: нет steamid.")
 			return null
 
 		var/steamid = params_data["steamid"]
 		if (!steamid)
-			CRASH("Ошибка Steam: нет steamid.")
+			log_world("Ошибка Steam: нет steamid.")
 			return null
 
 		// ovveride guest_ key AND ckey
@@ -195,7 +195,10 @@
 		if(profile)
 			src.steam_name = profile["personaname"]
 
+		log_world("УСПЕХ steamid.")
+
 	if(connection != "seeker" && connection != "web")	//Invalid connection type.
+		log_world("Invalid connection type.")
 		return null
 
 	GLOB.clients += src
@@ -265,7 +268,11 @@
 		player_details.byond_version = full_version
 		GLOB.player_details[ckey] = player_details
 
+	log_world("1--calls mob.Login()")
+
 	. = ..()	//calls mob.Login()
+
+	log_world("2--calls mob.Login()")
 
 	// Admin Verbs need the client's mob to exist. Must be after ..()
 	var/connecting_admin = FALSE //because de-admined admins connecting should be treated like
