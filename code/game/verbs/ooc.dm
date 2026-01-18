@@ -126,6 +126,10 @@
 			continue
 
 		var/display_name = key
+
+		if(steam_name)
+			display_name = steam_name
+
 		if(holder?.fakekey)
 			if(check_other_rights(C, R_ADMIN|R_MENTOR, FALSE))
 				display_name = "[holder.fakekey]/([key])"
