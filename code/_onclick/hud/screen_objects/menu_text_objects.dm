@@ -219,5 +219,15 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/text/lobby)
 	player.handle_playeR_POLLSing()
 	fetch_polls()
 
+/atom/movable/screen/text/lobby/clickable/youtube
+	maptext = span_lobbytext("Гайд для новичков на ютуб")
+	icon_state = "youtube"
+
+/atom/movable/screen/text/lobby/clickable/youtube/Click()
+	. = ..()
+	var/mob/new_player/player = hud.mymob
+	if(player.client)
+		player.client << link("https://youtu.be/nu5DxYIKHUs?si=HWq5UqQAEcygwUjk/")
+
 #undef COLOR_HOVER_MOUSE
 #undef MAX_CHAR_NAME_DISPLAYED
