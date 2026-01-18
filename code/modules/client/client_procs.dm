@@ -144,6 +144,7 @@
 	TopicData = null	//Prevent calls to client.Topic from connect
 
 	if(IsSteamKey(key))
+		CRASH("IsSteamKey(key) error")
 		return null
 
 	var/list/params = tdata ? params2list(tdata) : list()
@@ -166,18 +167,22 @@
 		try
 			data = json_decode(result.body)
 		catch()
+			CRASH("Ошибка парсинга ответа Steam.")
 			return null
 
 		var/list/params_data = data["response"]["params"]
 
 		if (!params_data)
+			CRASH("params_data is null")
 			return null
 
 		if (params_data["result"] != "OK")
+			CRASH("Ошибка Steam: нет steamid.")
 			return null
 
 		var/steamid = params_data["steamid"]
 		if (!steamid)
+			CRASH("Ошибка Steam: нет steamid.")
 			return null
 
 		// ovveride guest_ key AND ckey
