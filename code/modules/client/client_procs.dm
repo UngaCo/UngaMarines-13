@@ -633,6 +633,9 @@
 /client/proc/set_client_age_from_db(connectiontopic)
 	if(IsGuestKey(key))
 		return
+	//мы так обходим cid, лучше конечно нормально сделать
+	if(IsSteamKey(key))
+		return
 	if(!SSdbcore.Connect())
 		return
 	var/datum/db_query/query_get_related_ip = SSdbcore.NewQuery(
