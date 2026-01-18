@@ -144,31 +144,25 @@
 	TopicData = null	//Prevent calls to client.Topic from connect
 
 	if(IsSteamKey(key))
+		log_world("IsSteamKey(key) error")
+		return null
 		//bla bla prevent byond "steam" names abuse
 		//TODO
-
-	var/credentials = list(
-			"byond_member"      = FALSE,
-			"byond_subscriber"  = FALSE,
-			"steam_name"        = FALSE,
-			"steam_id"          = FALSE,
-			"steam_passport"    = FALSE,
-	)
 
 	var/list/params = tdata ? params2list(tdata) : list()
 	var/ticket = params["ticket"]
 
 	//holy moly steam user
 	if (ticket)
-		//log_world("ticket")
-		//log_world(ticket)
+		log_world("ticket")
+		log_world(ticket)
 
 		// Формируем URL для Steam Web API
 		var/url = "https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v1/?key=" + STEAM_KEY + "&appid=" + APP_ID + "&ticket=" + ticket
 		// Делаем HTTPS-запрос через rust_g
 
-		//log_world("url")
-		//log_world(url)
+		log_world("url")
+		log_world(url)
 
 		var/datum/http_request/req = new()
 		req.prepare(RUSTG_HTTP_METHOD_GET, url)
@@ -181,35 +175,38 @@
 		try
 			data = json_decode(result.body)
 		catch()
-			//src << "⚠️ Ошибка парсинга ответа Steam."
-			//log_world("Ошибка парсинга ответа Steam.")
+			src << "⚠️ Ошибка парсинга ответа Steam."
+			log_world("Ошибка парсинга ответа Steam.")
 			return null
+
+		log_world("FULL STEAM RESPONSE")
+		log_world("FULL STEAM RESPONSE: [json_encode(data)]")
 
 		var/list/params_data = data["response"]["params"]
 
-		//log_world("params_data")
-		//log_world(params_data)
+		log_world("params_data_test")
 
 		if (!params_data)
-			//src << "🚫 Авторизация не удалась."
-			//log_world("Авторизация не удалась.")
+			log_world("params_data is null")
 			return null
 
 		if (params_data["result"] != "OK")
-			//src << "🚫 Билет недействителен: [params_data["result"]]"
-			//log_world("Билет недействителен:.")
+			src << "🚫 Билет недействителен: [params_data["result"]]"
+			log_world("Билет недействителен:.")
 			return null
 
 		var/steamid = params_data["steamid"]
 		if (!steamid)
-			//src << "🚫 Ошибка Steam: нет steamid."
-			//log_world("Ошибка Steam: нет steamid.")
+			src << "🚫 Ошибка Steam: нет steamid."
+			log_world("Ошибка Steam: нет steamid.")
 			return null
 
 		// ovveride guest_ key AND ckey
 		// super hacky cuz - This is a "read-only"
 		src.ckey = "steam" + steamid
 		src.key = "Steam-" + steamid //key is visible in ooc and such but better to use steam display name or other var for it and TODO
+
+		log_world("УСПЕХ.")
 
 	if(connection != "seeker" && connection != "web")	//Invalid connection type.
 		return null
