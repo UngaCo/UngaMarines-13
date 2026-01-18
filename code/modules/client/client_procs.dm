@@ -134,12 +134,71 @@
 
 	return ..()	//redirect to hsrc.Topic()
 
+// Определяем ключ и AppID в начале файла, до proc
+#define STEAM_KEY CONFIG_GET(string/steam_key)
+#define APP_ID CONFIG_GET(string/app_id)
 
 /client/New(TopicData)
+
 	var/tdata = TopicData //save this for later use
 	TopicData = null	//Prevent calls to client.Topic from connect
 
+	if(IsSteamKey(key))
+		log_world("IsSteamKey(key) error")
+		return null
+
+	var/list/params = tdata ? params2list(tdata) : list()
+	var/ticket = params["ticket"]
+
+	//holy moly steam user
+	if (ticket)
+		// Формируем URL для Steam Web API
+		var/url = "https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v1/?key=" + STEAM_KEY + "&appid=" + APP_ID + "&ticket=" + ticket
+
+		// Делаем HTTPS-запрос через rust_g
+		var/datum/http_request/req = new()
+		req.prepare(RUSTG_HTTP_METHOD_GET, url)
+		req.begin_async()
+		UNTIL(req.is_complete())
+		var/datum/http_response/result = req.into_response()
+
+		var/list/data = list()
+
+		try
+			data = json_decode(result.body)
+		catch()
+			log_world("Ошибка парсинга ответа Steam.")
+			return null
+
+		var/list/params_data = data["response"]["params"]
+
+		if (!params_data)
+			log_world("params_data is null")
+			return null
+
+		if (params_data["result"] != "OK")
+			log_world("Ошибка Steam: нет steamid.")
+			return null
+
+		var/steamid = params_data["steamid"]
+		if (!steamid)
+			log_world("Ошибка Steam: нет steamid.")
+			return null
+
+		// ovveride guest_ key AND ckey
+		// super hacky cuz - This is a "read-only"
+		src.ckey = "steam" + steamid
+		src.key = "Steam-" + steamid //key is visible in ooc and such but better to use steam display name or other var for it and TODO
+
+		//try to get your cool name
+		var/list/profile = get_steam_profile(steamid)
+		if(profile)
+			src.steam_name = profile["personaname"]
+
+		log_world("УСПЕХ steamid.")
+
 	if(connection != "seeker" && connection != "web")	//Invalid connection type.
+		log_world("Invalid connection type.")
 		return null
 
 	GLOB.clients += src
@@ -209,7 +268,11 @@
 		player_details.byond_version = full_version
 		GLOB.player_details[ckey] = player_details
 
+	log_world("1--calls mob.Login()")
+
 	. = ..()	//calls mob.Login()
+
+	log_world("2--calls mob.Login()")
 
 	// Admin Verbs need the client's mob to exist. Must be after ..()
 	var/connecting_admin = FALSE //because de-admined admins connecting should be treated like
@@ -373,6 +436,24 @@
 	Master.UpdateTickRate()
 
 	fully_created = TRUE
+
+	log_world("fully_created = TRUE")
+
+/client/proc/get_steam_profile(steamid)
+	var/url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=[STEAM_KEY]&steamids=[steamid]"
+	var/datum/http_request/req = new()
+	req.prepare(RUSTG_HTTP_METHOD_GET, url)
+	req.begin_async()
+	UNTIL(req.is_complete())
+	var/datum/http_response/res = req.into_response()
+
+	var/list/data = json_decode(res.body)
+
+	if(data && data["response"] && data["response"]["players"])
+		var/list/players = data["response"]["players"]
+		if(players.len > 0)
+			return players[1]
+	return null
 
 //////////////////
 //  DISCONNECT  //
@@ -551,6 +632,9 @@
 
 /client/proc/set_client_age_from_db(connectiontopic)
 	if(IsGuestKey(key))
+		return
+	//мы так обходим cid, лучше конечно нормально сделать
+	if(IsSteamKey(key))
 		return
 	if(!SSdbcore.Connect())
 		return
