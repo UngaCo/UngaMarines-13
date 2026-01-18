@@ -7,6 +7,7 @@ GLOBAL_LIST_INIT(medic_gear_listed_products, list(
 	/obj/item/reagent_containers/glass/bottle/lemoline/doctor = list(CAT_MEDSUP, "Lemoline bottle", 14, "orange"),
 	/obj/item/storage/pill_bottle/meralyne = list(CAT_MEDSUP, "Meralyne pills", 14, "orange"),
 	/obj/item/storage/pill_bottle/dermaline = list(CAT_MEDSUP, "Dermaline pills", 14, "orange"),
+	/obj/item/reagent_containers/hypospray/autoinjector/sulfasalazine = list(CAT_MEDSUP, "Sulfasalazine AutoInjector", 10, "cyan"),
 	/obj/item/storage/pill_bottle/quickclot = list(CAT_MEDSUP, "Quickclot pills", 6, "orange"),
 	/obj/item/storage/pill_bottle/peridaxon = list(CAT_MEDSUP, "Peridaxon pills", 6, "orange"),
 	/obj/item/stack/medical/heal_pack/advanced/bruise_combat_pack = list(CAT_MEDSUP, "Combat Trauma Kit", 3, "orange"),

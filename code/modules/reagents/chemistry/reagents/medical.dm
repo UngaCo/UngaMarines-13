@@ -1518,38 +1518,102 @@
 	return ..()
 
 /datum/reagent/medicine/sulfasalazine
-	name = "sulfasalazine"
-	description = "Sulfasalazine, a self-restoring agent that has great healing effects at the cost of purging all the other reagents."
+	name = "Sulfasalazine"
+	description = "Sulfasalazine, a self-restoring agent that has great healing effects, but it also purges most other reagents."
 	color = COLOR_REAGENT_SULFASALAZINE
 	custom_metabolism = 0
-	purge_rate = 5
+	purge_rate = 10
 	var/absorbtion = 0
 	var/max_absorbtion = 10
-	var/max_reagent = 50
+	var/max_reagent = 125
+
+/datum/reagent/medicine/sulfasalazine/on_mob_add(mob/living/L, metabolism)
+	if(L.bodytemperature < 169)
+		L.reagents.del_reagent(type)
+		return
+	..()
 
 /datum/reagent/medicine/sulfasalazine/on_mob_life(mob/living/L, metabolism)
+
+	L.adjust_tox_loss(-0.5 * effect_str)
+	L.reagent_pain_modifier += PAIN_REDUCTION_HEAVY
+
+	if(!ishuman(L))
+		return ..()
+	var/mob/living/carbon/human/human = L
+
+	if(volume > 100 && prob(10))
+
+		var/datum/internal_organ/organ = human.get_damaged_organ()
+		if(!organ)
+			return ..()
+		L.adjust_tox_loss(15 * effect_str)
+		holder.remove_reagent(/datum/reagent/medicine/sulfasalazine, 25)
+		organ.heal_organ_damage(10 * effect_str)
+		return ..()
+
+	if(volume > 100 && prob(10))
+
+		for(var/datum/limb/i_limb in human.limbs)
+			for(var/datum/wound/internal_bleeding/i_bleed in i_limb.wounds)
+				L.adjust_tox_loss(15 * effect_str)
+				holder.remove_reagent(/datum/reagent/medicine/sulfasalazine, 25)
+				i_bleed.damage = (i_bleed.damage - 100)
+		return ..()
+
+	if(L.bodytemperature < 169)
+		purge_rate = 0
+	else
+		purge_rate = 10
+
 	if(absorbtion > 0 && volume < max_reagent)
-		L.reagents.add_reagent(/datum/reagent/medicine/sulfasalazine, 3.5)
+		L.reagents.add_reagent(/datum/reagent/medicine/sulfasalazine, 2.5)
 
 	if(absorbtion > 0)
 		absorbtion--
 
-	if (volume > 5 && L.get_brute_loss(organic_only = TRUE) && absorbtion <= 0)
+	if (volume > 5 && L.get_brute_loss(organic_only = TRUE))
+		absorbtion = -5
 		L.heal_overall_damage(4*effect_str, 0)
-		holder.remove_reagent(/datum/reagent/medicine/sulfasalazine, 3.5)
+		holder.remove_reagent(/datum/reagent/medicine/sulfasalazine, 2.5)
 
-	if (volume > 5 && L.get_fire_loss(organic_only = TRUE) && absorbtion <= 0)
+	if (volume > 5 && L.get_fire_loss(organic_only = TRUE))
+		absorbtion = -5
 		L.heal_overall_damage(0, 4*effect_str)
-		holder.remove_reagent(/datum/reagent/medicine/sulfasalazine, 3.5)
+		holder.remove_reagent(/datum/reagent/medicine/sulfasalazine, 2.5)
+
+	var/static/list/excluded_reagents_sulfa = list(
+		/datum/reagent/medicine/sulfasalazine,
+		/datum/reagent/medicine/spaceacillin,
+		/datum/reagent/consumable/nutriment,
+		/datum/reagent/consumable/sugar,
+		/datum/reagent/medicine/saline_glucose,
+	)
 
 	for(var/datum/reagent/R in L.reagents.reagent_list)
-		//we dont purge themself
-		if(R.type != /datum/reagent/medicine/sulfasalazine)
-			var/purge = min(R.volume, purge_rate)
-			L.reagents.remove_reagent(R.type, purge)
-			absorbtion = min(absorbtion + purge, max_absorbtion)
+		if(is_type_in_list(R, excluded_reagents_sulfa))
+			continue
+
+		var/purge = min(R.volume, purge_rate)
+		L.reagents.remove_reagent(R.type, purge)
+		absorbtion = min(absorbtion + purge, max_absorbtion)
 
 	return ..()
+
+/datum/reagent/medicine/sulfasalazine/on_mob_delete(mob/living/L, metabolism)
+	if(L.bodytemperature > 169)
+		to_chat(L, span_userdanger("You feel the Sulfasalazine stirring deep within your tissues..."))
+		var/datum/weakref/sulfa_issue = WEAKREF(L)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(restore_sulfasalazine), sulfa_issue), 7.5 SECONDS)
+	return ..()
+
+/proc/restore_sulfasalazine(datum/weakref/sulfa_issue)
+	var/mob/living/L = sulfa_issue.resolve()
+	if(!L)
+		return
+
+	to_chat(L, span_userdanger("The Sulfasalazine erupts back into your bloodstream!"))
+	L.reagents.add_reagent(/datum/reagent/medicine/sulfasalazine, 5)
 
 /datum/reagent/histamine
 	name = "Histamine"

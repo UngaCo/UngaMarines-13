@@ -427,7 +427,7 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 				else
 					advice += temp_advice
 			var/datum/internal_organ/brain/brain = patient.get_organ_slot(ORGAN_SLOT_BRAIN)
-			if(brain.organ_status != ORGAN_HEALTHY)
+			if(brain.organ_status != ORGAN_HEALTHY && !chemicals_lists["Sulfasalazine"])
 				temp_advice = list(list(
 					"advice" = "Administer a single dose of alkysine.",
 					"tooltip" = "Significant brain damage detected. Alkysine heals brain damage. If left untreated, patient may be unable to function well.",
@@ -440,7 +440,7 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 				else
 					advice += temp_advice
 			var/datum/internal_organ/eyes/eyes = patient.get_organ_slot(ORGAN_SLOT_EYES)
-			if(eyes.organ_status != ORGAN_HEALTHY)
+			if(eyes.organ_status != ORGAN_HEALTHY && !chemicals_lists["Sulfasalazine"])
 				temp_advice = list(list(
 					"advice" = "Administer a single dose of imidazoline.",
 					"tooltip" = "Eye damage detected. Imidazoline heals eye damage. If left untreated, patient may be unable to see properly.",
@@ -452,7 +452,7 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 						advice += temp_advice
 				else
 					advice += temp_advice
-			if(patient.get_brute_loss(organic_only = TRUE) > 30 && !chemicals_lists["Medical nanites"])
+			if(patient.get_brute_loss(organic_only = TRUE) > 30 && !chemicals_lists["Medical nanites"] && !chemicals_lists["Sulfasalazine"])
 				temp_advice = list(list(
 					"advice" = "Administer a single dose of bicaridine to reduce physical trauma.",
 					"tooltip" = "Significant physical trauma detected. Bicaridine reduces brute damage.",
@@ -464,7 +464,7 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 						advice += temp_advice
 				else
 					advice += temp_advice
-			if(patient.get_fire_loss(organic_only = TRUE) > 30 && !chemicals_lists["Medical nanites"])
+			if(patient.get_fire_loss(organic_only = TRUE) > 30 && !chemicals_lists["Medical nanites"] && !chemicals_lists["Sulfasalazine"])
 				temp_advice = list(list(
 					"advice" = "Administer a single dose of kelotane to reduce burns.",
 					"tooltip" = "Significant tissue burns detected. Kelotane reduces burn damage.",
@@ -476,7 +476,7 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 						advice += temp_advice
 				else
 					advice += temp_advice
-			if(patient.get_tox_loss() > 15)
+			if(patient.get_tox_loss() > 15 && !chemicals_lists["Sulfasalazine"])
 				temp_advice = list(list(
 					"advice" = "Administer a single dose of dylovene.",
 					"tooltip" = "Significant blood toxins detected. Dylovene will reduce toxin damage, or their liver will filter it out on its own. Damaged livers will take even more damage while clearing blood toxins.",
@@ -488,7 +488,7 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 						advice += temp_advice
 				else
 					advice += temp_advice
-			if(patient.get_oxy_loss() > 30)
+			if(patient.get_oxy_loss() > 30 && !chemicals_lists["Sulfasalazine"])
 				temp_advice = list(list(
 					"advice" = "Administer a single dose of dexalin plus to re-oxygenate patient's blood.",
 					"tooltip" = "If you don't have Dexalin or Dexalin Plus, CPR or treating their other symptoms and waiting for their bloodstream to re-oxygenate will work.",
@@ -515,6 +515,14 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 					"color" = "blue"
 					))
 				advice += temp_advice
+			if(chemicals_lists["Sulfasalazine"])
+				temp_advice = list(list(
+					"advice" = "Sulfasalazine detected - only administer spaceacillin, nutriments, sugar and saline glucose.",
+					"tooltip" = "Sulfasalazine uses the reagents it purges for self-replication. It embeds itself into the deepest tissues of the body, making it impossible to remove from the user after administration.",
+					"icon" = "window-close",
+					"color" = "#266930"
+					))
+				advice += temp_advice
 			if(patient.stat != DEAD && patient.health < patient.get_crit_threshold())
 				temp_advice = list(list(
 					"advice" = "Administer a single dose of inaprovaline.",
@@ -531,7 +539,7 @@ GLOBAL_LIST_INIT(known_implants, subtypesof(/obj/item/implant))
 			if(patient.painloss > 50)
 				has_pain = TRUE
 
-			if(has_pain && !chemicals_lists["Paracetamol"] && !chemicals_lists["Medical nanites"])
+			if(has_pain && !chemicals_lists["Paracetamol"] && !chemicals_lists["Medical nanites"] && !chemicals_lists["Sulfasalazine"])
 				temp_advice = list(list(
 					"advice" = "Administer a single dose of tramadol to reduce pain.",
 					"tooltip" = "The patient is experiencing performance impeding pain and may suffer symptoms from sluggishness to collapsing. Tramadol reduces pain.",
