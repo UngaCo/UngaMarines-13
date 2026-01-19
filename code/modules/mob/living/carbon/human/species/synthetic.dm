@@ -34,9 +34,9 @@
 	laughs = list(MALE = SFX_MALE_LAUGH, FEMALE = SFX_FEMALE_LAUGH)
 	special_death_message = "You have been shut down.<br><small>But it is not the end of you yet... if you still have your body, wait until somebody can resurrect you...</small>"
 	/// The minimum damage you get while in crit
-	var/melting_min_damage = 5
+	var/melting_min_damage = 3
 	/// The maximum damage you get while in crit
-	var/melting_max_damage = 16
+	var/melting_max_damage = 12
 
 /datum/species/synthetic/handle_unique_behavior(mob/living/carbon/human/H)
 	if(H.health <= SYNTHETIC_CRIT_THRESHOLD && H.stat != DEAD) // Instead of having a critical condition, they overheat and slowly die.
@@ -85,5 +85,5 @@
 
 	hair_color = "#000000"
 
-	melting_min_damage = 7
-	melting_max_damage = 19
+	melting_min_damage = 5
+	melting_max_damage = 14
