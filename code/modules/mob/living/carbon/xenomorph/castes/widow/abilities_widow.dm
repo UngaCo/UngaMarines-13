@@ -337,35 +337,6 @@
 	succeed_activate()
 	add_cooldown()
 
-/datum/action/ability/xeno_action/create_hugger
-	name = "Create Hugger"
-	desc = "Create a facehugger."
-	action_icon_state = "larval hugger"
-	action_icon = 'icons/Xeno/actions/carrier.dmi'
-	ability_cost = 60
-	cooldown_duration = 60 SECONDS
-	keybinding_signals = list(
-		KEYBINDING_NORMAL = COMSIG_XENOABILITY_CREATE_HUGGER,
-	)
-
-/datum/action/ability/xeno_action/create_hugger/can_use_action(silent = FALSE, override_flags)
-	. = ..()
-	if(!.)
-		return
-	if(owner.l_hand || owner.r_hand)
-		if(!silent)
-			owner.balloon_alert(owner, "Need empty hands")
-		return FALSE
-
-/datum/action/ability/xeno_action/create_hugger/action_activate()
-	if(!do_after(owner, 1 SECONDS, IGNORE_LOC_CHANGE, owner, BUSY_ICON_HOSTILE))
-		return FALSE
-	var/obj/item/clothing/mask/facehugger/hugger = new(owner.loc)
-	hugger.hivenumber = owner.get_xeno_hivenumber()
-	owner.put_in_hands(hugger)
-	add_cooldown()
-	succeed_activate()
-
 // ***************************************
 // *********** Unleash spiderlings
 // ***************************************
