@@ -9,7 +9,7 @@
 	wound_type = "widow"
 
 	// *** Melee Attacks *** //
-	melee_damage = 18
+	melee_damage = 20
 
 	// *** Speed *** //
 	speed = -0.5
@@ -19,7 +19,7 @@
 	plasma_gain = 55
 
 	// *** Health *** //
-	max_health = 550
+	max_health = 450
 
 	// *** Flags *** //
 	caste_flags = CASTE_EVOLUTION_ALLOWED
@@ -41,7 +41,6 @@
 		/datum/action/ability/xeno_action/watch_xeno,
 		/datum/action/ability/activable/xeno/psydrain,
 		/datum/action/ability/activable/xeno/cocoon,
-		/datum/action/ability/xeno_action/create_hugger,
 		/datum/action/ability/xeno_action/widow_unleash,
 		/datum/action/ability/xeno_action/widow_recall,
 		/datum/action/ability/activable/xeno/web_spit,
@@ -73,7 +72,6 @@
 		/datum/action/ability/xeno_action/watch_xeno,
 		/datum/action/ability/activable/xeno/psydrain,
 		/datum/action/ability/activable/xeno/cocoon,
-		/datum/action/ability/xeno_action/create_hugger,
 		/datum/action/ability/xeno_action/widow_unleash,
 		/datum/action/ability/xeno_action/widow_recall,
 		/datum/action/ability/activable/xeno/web_spit,

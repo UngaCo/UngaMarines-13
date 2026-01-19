@@ -8,18 +8,18 @@
 	tier = XENO_TIER_MINION
 	upgrade = XENO_UPGRADE_BASETYPE
 	// *** Melee Attacks *** //
-	melee_damage = 8
+	melee_damage = 5
 	// *** Speed *** //
 	speed = -0.6
 	// *** Plasma *** //
 	plasma_max = 200
 	plasma_gain = 1
 	// *** Health *** //
-	max_health = 150
+	max_health = 90
 	// *** Flags *** //
 	caste_flags = CASTE_NOT_IN_BIOSCAN|CASTE_DO_NOT_ANNOUNCE_DEATH|CASTE_DO_NOT_ALERT_LOW_LIFE|CASTE_IS_A_MINION
 	// *** Minimap Icon *** //
 	minimap_icon = "spiderling"
 	// *** Defense *** //
-	soft_armor = list(MELEE = 15, BULLET = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+	soft_armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 

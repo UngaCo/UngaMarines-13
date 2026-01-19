@@ -1242,13 +1242,6 @@
 	keybind_signal = COMSIG_XENOABILITY_WEB_SPIT
 	hotkey_keys = list("R")
 
-/datum/keybinding/xeno/create_hugger
-	name = "Create Facehugger"
-	full_name = "Widow: Create Facehugger"
-	description = "Create a facehugger."
-	keybind_signal = COMSIG_XENOABILITY_CREATE_HUGGER
-	hotkey_keys = list("G")
-
 /datum/keybinding/xeno/widow_unleash
 	name = "Unleash Spiderlings"
 	full_name = "Widow: Unleash Spiderlings"
