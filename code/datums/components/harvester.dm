@@ -30,7 +30,7 @@
 	///Selects the active reagent
 	var/datum/action/harvester/reagent_select/reagent_select_action
 	///The maximum amount that one chemical can be loaded
-	var/max_loadable_reagent_amount = 30
+	var/max_loadable_reagent_amount = 45
 
 /datum/component/harvester/Initialize(max_reagent_amount)
 	if(!isitem(parent))

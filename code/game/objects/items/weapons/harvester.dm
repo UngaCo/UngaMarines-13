@@ -64,12 +64,14 @@
 	icon = 'icons/obj/items/vali.dmi'
 	icon_state = "vali_claymore"
 	worn_icon_list = list(
+		slot_belt_str = 'icons/mob/inhands/weapons/vali_left.dmi',
 		slot_l_hand_str = 'icons/mob/inhands/weapons/vali_left.dmi',
 		slot_r_hand_str = 'icons/mob/inhands/weapons/vali_right.dmi',
 	)
 	worn_icon_state = "vali_claymore"
 	attack_speed = 24
 	resistance_flags = NONE
+	equip_slot_flags = ITEM_SLOT_BELT|ITEM_SLOT_BACK
 
 /obj/item/weapon/twohanded/glaive/harvester/Initialize(mapload)
 	. = ..()
