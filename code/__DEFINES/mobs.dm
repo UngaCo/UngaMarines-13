@@ -166,6 +166,7 @@
 #define EFFECT_STUTTER "stutter"
 #define EFFECT_EYE_BLUR "eye_blur"
 #define EFFECT_DROWSY "drowsy"
+#define EFFECT_WEAKEN "weaken"
 
 //=================================================
 
