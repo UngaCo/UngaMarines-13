@@ -70,6 +70,8 @@
 		belly.reagents.remove_reagent(our_reagent.type, our_reagent.volume / rand(2, 5)) // vomit out some reagents from our stomach
 
 /mob/living/carbon/human/adjust_ear_damage(damage = 0, deaf = 0)
+	if(HAS_TRAIT(src, TRAIT_EARDAMAGE_IMMUNE))
+		return
 	if(isspeciessynthetic(src))
 		return
 	return ..()

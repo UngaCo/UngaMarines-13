@@ -81,6 +81,7 @@
 #define SPECIES_TRAIT "species" // /datum/species innate trait
 #define CRYOPOD_TRAIT "cryopod"
 #define XENO_TRAIT "xeno"
+#define SUPERSOLDIER_TRAIT "supersoldier"
 #define ARMOR_TRAIT "armor"
 #define STAT_TRAIT "stat"
 #define NECKGRAB_TRAIT "neckgrab"
@@ -130,6 +131,8 @@
 #define CURRENTLY_TYPING_TRAIT "currently_typing"
 /// Makes you way too tall. Like just too much, dude, it's kind of creepy. Humanoid only.
 #define TRAIT_TOO_TALL "too_tall"
+///massively decreases human MANUAL get up time
+#define TRAIT_QUICK_GETUP "quick_getup"
 #define TRAIT_MOVE_VENTCRAWLING "move_ventcrawling"
 #define VENTCRAWLING_TRAIT "ventcrawling_trait"
 
@@ -229,7 +232,6 @@
 #define TRAIT_SLOWDOWNIMMUNE "slowdown_immunity" //Immunity to slowdown
 #define TRAIT_EARDAMAGE_IMMUNE "eardmgimmune" //immune to getting deaf through ear dmg
 ///massively decreases human MANUAL get up time
-#define TRAIT_QUICK_GETUP "quick_getup"
 #define TRAIT_SEE_IN_DARK "see_in_dark" //Able to see in dark
 #define TRAIT_MUTED "muted" //target is mute and can't speak
 #define TRAIT_STEALTH "stealth" //mob is in stealth, it means that turrets and ai ignore it, also you can't bump it

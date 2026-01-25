@@ -50,7 +50,7 @@ GLOBAL_LIST_EMPTY_TYPED(operation_namepool, /datum/operation_namepool)
 /datum/namepool/necoarc/get_random_name()
 	return "Neco Arc [rand(1,9)]X[ascii2text(rand(65, 87))]" //65 to 87 is (uppercase) A to W
 
-/datum/namepool/vatborn/
+/datum/namepool/vatborn
 	firstname_male_pool = "names/first_male"
 	firstname_female_pool = "names/first_female"
 
@@ -90,3 +90,13 @@ GLOBAL_LIST_EMPTY_TYPED(operation_namepool, /datum/operation_namepool)
 	operation_name += " [pick(SSstrings.get_list_from_file(operation_prefixes))]"
 	operation_name += "-[pick(SSstrings.get_list_from_file(operation_postfixes))]"
 	return uppertext(operation_name)
+
+/datum/namepool/prototype_supersoldier
+	firstname_female_pool = "names/prototype_supersoldier"
+
+/datum/namepool/prototype_supersoldier/get_random_name(gender = MALE)
+	. = "[ascii2text(rand(65, 90))]" //65 to 87 is (uppercase) A to Z
+	. += "[rand(1,9)]"
+	. += "[ascii2text(rand(65, 90))] " //65 to 87 is (uppercase) A to Z
+	. += pick(SSstrings.get_list_from_file(firstname_female_pool))
+	//result is [A-Z][num][A-Z] - [Combat Role] e.g A2V Saboteur
