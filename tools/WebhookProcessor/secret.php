@@ -11,10 +11,10 @@ $hookSecret = '08ajh0qj93209qj90jfq932j32r';
 $apiKey = '209ab8d879c0f987d06a09b9d879c0f987d06a09b9d8787d0a089c';
 
 //The repository auto-updates are sourced from.
-$repoOwnerAndName = "PMC-Unga-Marines/Unga-Marines";
+$repoOwnerAndName = "PMC-Unga-Marines/UngaMarines-13";
 
 //Whitelist of repository names that have PRs auto-tagged
-$repoAutoTaggerWhitelist = array("PMC-Unga-Marines", "Unga-Marines");
+$repoAutoTaggerWhitelist = array("PMC-Unga-Marines", "UngaMarines-13");
 
 //Auto update settings
 $enable_live_tracking = true;	//auto update this file from the repository

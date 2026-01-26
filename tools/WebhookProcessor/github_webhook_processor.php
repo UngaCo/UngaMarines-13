@@ -44,7 +44,7 @@ $discordWebHooks = array();
 // Any repository that players actually care about.
 $game_announce_whitelist = array(
 	"PMC-Unga-Marines",
-	"Unga-Marines",
+	"UngaMarines-13",
 );
 
 // Any repository that matches in this blacklist will not appear on Discord.
