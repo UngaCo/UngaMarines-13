@@ -43,7 +43,7 @@ $discordWebHooks = array();
 // Only these repositories will announce in game.
 // Any repository that players actually care about.
 $game_announce_whitelist = array(
-	"PMC-Unga-Marines-13",
+	"PMC-Unga-Marines",
 	"UngaMarines-13",
 );
 
