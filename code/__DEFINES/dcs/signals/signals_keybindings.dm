@@ -297,11 +297,6 @@
 #define COMSIG_XENOABILITY_HIVE_SUMMON "xenoability_hive_summon"
 
 #define COMSIG_XENOABILITY_SCATTER_SPIT "xenoability_scatter_spit"
-#define COMSIG_XENOABILITY_TOSS_GRENADE "xenoability_toss_grenade"
-#define COMSIG_XENOABILITY_PICK_GRENADE "xenoability_pick_grenade"
-#define COMSIG_XENOABILITY_ACID_MINE "xenoability_acid_mine"
-#define COMSIG_XENOABILITY_GAS_MINE "xenoability_gas_mine"
-#define COMSIG_XENOABILITY_ACID_ROCKET "xenoability_acid_rocket"
 #define COMSIG_XENOABILITY_SLIME_GRENADE "xenoability_slime_grenade"
 
 #define COMSIG_XENOABILITY_PSYCHIC_SHIELD "xenoability_psychic_shield"
@@ -320,13 +315,6 @@
 #define COMSIG_XENOABILITY_EARTH_PILLAR_THROW "xenoability_earth_pillar_throw"
 #define COMSIG_XENOABILITY_SEISMIC_FRACTURE "xenoability_seismic_fracture"
 #define COMSIG_XENOABILITY_PRIMAL_WRATH "xenoability_primal_wrath"
-
-#define COMSIG_XENOABILITY_ABDUCT "xenoability_abduct"
-#define COMSIG_XENOABILITY_DISLOCATE "xenoability_dislocate"
-#define COMSIG_XENOABILITY_ITEM_THROW "xenoability_item_throw"
-#define COMSIG_XENOABILITY_TAIL_LASH "xenoability_tail_lash"
-#define COMSIG_XENOABILITY_TAIL_LASH_SELECT "xenoability_tail_lash_select"
-#define COMSIG_XENOABILITY_ADVANCE_OPPRESSOR "xenoability_advance_oppressor"
 
 #define COMSIG_XENOABILITY_BURROW "xenoability_burrow"
 #define COMSIG_XENOABILITY_LEASH_BALL "xenoability_leash_ball"
