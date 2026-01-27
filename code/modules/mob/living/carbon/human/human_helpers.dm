@@ -5,7 +5,7 @@
 	return g
 
 /proc/get_limb_icon_name(datum/species/S, gender, limb_name, ethnicity)
-	if(S.limb_type == SPECIES_LIMB_HUMAN) // todo this section is fucking stupid and can be way more generic easily
+	if(S.name == "Human" || S.name == "Yautja" || S.name == "Synthetic")
 		switch(limb_name)
 			if ("torso", "chest")
 				return "[ethnicity]_torso_[get_gender_name(gender)]"
@@ -44,7 +44,7 @@
 
 			else
 				return null
-	else if(S.limb_type == SPECIES_LIMB_CLONE)
+	else if(S.name == "Vatborn" || S.name == "Early Vat-Grown Human" || S.name == "Vat-Grown Human")
 		switch(limb_name)
 			if ("torso", "chest")
 				return "torso_[get_gender_name(gender)]"
