@@ -43,6 +43,8 @@
 	/// Falloff of our explosion, aka distance, by the formula of power / falloff
 	var/falloff = 30
 	var/overlay_type = "red"
+		///The actual timer for the grenade
+	var/det_timer
 
 /obj/item/explosive/grenade/Initialize(mapload)
 	. = ..()
@@ -105,7 +107,7 @@
 		GLOB.round_statistics.grenades_thrown++
 		SSblackbox.record_feedback(FEEDBACK_TALLY, "round_statistics", 1, "grenades_thrown")
 		update_icon()
-	addtimer(CALLBACK(src, PROC_REF(prime)), det_time)
+	det_timer = addtimer(CALLBACK(src, PROC_REF(prime)), det_time, TIMER_STOPPABLE)
 	notify_ai_hazard()
 	return TRUE
 

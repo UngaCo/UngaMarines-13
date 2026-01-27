@@ -25,6 +25,11 @@
 	caste_base_type = /datum/xeno_caste/praetorian/dancer
 	skins = null
 
+/mob/living/carbon/xenomorph/praetorian/oppressor
+	icon = 'icons/Xeno/castes/praetorian/oppressor.dmi'
+	caste_base_type = /datum/xeno_caste/praetorian/oppressor
+	skins = null
+
 /mob/living/carbon/xenomorph/praetorian/dancer/Initialize(mapload)
 	. = ..()
 	RegisterSignal(src, COMSIG_XENOMORPH_POSTATTACK_LIVING, PROC_REF(on_postattack))
@@ -38,6 +43,9 @@
 	upgrade = XENO_UPGRADE_PRIMO
 
 /mob/living/carbon/xenomorph/praetorian/dancer/primordial
+	upgrade = XENO_UPGRADE_PRIMO
+
+/mob/living/carbon/xenomorph/praetorian/oppressor/primordial
 	upgrade = XENO_UPGRADE_PRIMO
 
 /mob/living/carbon/xenomorph/praetorian/Corrupted

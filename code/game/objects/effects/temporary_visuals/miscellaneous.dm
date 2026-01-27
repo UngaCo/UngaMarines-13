@@ -3,6 +3,17 @@
 	icon_state = "empdisable"
 	duration = 0.5 SECONDS
 
+/// Used for globadiers heal grenades
+/obj/effect/temp_visual/heal
+	name = "healing splatter"
+	icon_state = "mech_toxin"
+
+/obj/effect/temp_visual/xadar_blast
+	name = "acid cascade"
+	icon = 'icons/Xeno/96x96.dmi'
+	icon_state = "xadar_splash"
+	duration = 0.4 SECONDS
+
 GLOBAL_LIST_EMPTY(blood_particles)
 /particles/splatter
 	icon = 'icons/effects/effects.dmi'

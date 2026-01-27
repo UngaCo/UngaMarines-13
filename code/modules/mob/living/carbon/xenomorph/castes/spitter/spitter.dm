@@ -16,7 +16,18 @@
 		/mob/living/carbon/xenomorph/proc/vent_crawl,
 	)
 
+/mob/living/carbon/xenomorph/spitter/globadier
+	caste_base_type = /datum/xeno_caste/spitter/globadier
+	icon = 'icons/Xeno/castes/spitter/globadier.dmi'
+	skins = null
+
 /mob/living/carbon/xenomorph/spitter/primordial
+	upgrade = XENO_UPGRADE_PRIMO
+
+/mob/living/carbon/xenomorph/spitter/globadier
+	upgrade = XENO_UPGRADE_NORMAL
+
+/mob/living/carbon/xenomorph/spitter/globadier/primordial
 	upgrade = XENO_UPGRADE_PRIMO
 
 /mob/living/carbon/xenomorph/spitter/Corrupted

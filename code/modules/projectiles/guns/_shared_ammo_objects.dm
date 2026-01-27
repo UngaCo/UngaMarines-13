@@ -161,3 +161,21 @@
 	if(burn_level <= 0)
 		qdel(src)
 		return PROCESS_KILL
+
+	return TRUE // For shattering fire
+
+///////////////////////////////
+//        SHATTERING FIRE    //
+///////////////////////////////
+
+/obj/fire/melting_fire/shattering
+	name = "shattering fire"
+	desc = "Cold to the touch, it rapidly spreads cracks through anything it contacts."
+	icon_state = "violet_1"
+	flame_color = "violet"
+
+/obj/fire/melting_fire/shattering/affect_atom(atom/affected)
+	. = ..()
+	if(.) // parent proc only returns true if it applies its effects to a human, so affected must be a human, ergo no type validation needed
+		var/mob/living/carbon/human/victim = affected
+		victim.apply_status_effect(STATUS_EFFECT_SHATTER, 3 SECONDS)
