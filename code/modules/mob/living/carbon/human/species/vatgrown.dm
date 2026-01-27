@@ -5,6 +5,7 @@
 	burn_mod = 1.05
 	slowdown = 0.05
 	joinable_roundstart = FALSE
+	limb_type = SPECIES_LIMB_CLONE
 
 /datum/species/human/vatgrown/random_name(gender)
 	return "CS-[gender == FEMALE ? "F": "M"]-[rand(111,999)]"

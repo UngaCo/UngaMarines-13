@@ -442,6 +442,7 @@ ADMIN_VERB_ONLY_CONTEXT_MENU(show_player_panel, R_ADMIN, "Show Player Panel", mo
 		<a href='byond://?src=[ref];transform=early_synth;mob=[REF(M)]'>Early_Synth</a> |
 		<a href='byond://?src=[ref];transform=vatborn;mob=[REF(M)]'>Vatborn</a> |
 		<a href='byond://?src=[ref];transform=vatgrown;mob=[REF(M)]'>Vatgrown</a> |
+		<a href='?src=[ref];transform=prototype_supersoldier;mob=[REF(M)]'>Prototype Supersoldier</a> |
 		<a href='byond://?src=[ref];transform=combat_robot;mob=[REF(M)]'>Combat_Robot</a> |
 		<a href='byond://?src=[ref];transform=monkey;mob=[REF(M)]'>Monkey</a> |
 		<a href='byond://?src=[ref];transform=moth;mob=[REF(M)]'>Moth</a> |
