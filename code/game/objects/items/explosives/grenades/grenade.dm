@@ -107,7 +107,7 @@
 		GLOB.round_statistics.grenades_thrown++
 		SSblackbox.record_feedback(FEEDBACK_TALLY, "round_statistics", 1, "grenades_thrown")
 		update_icon()
-		det_timer = addtimer(CALLBACK(src, PROC_REF(prime)), det_time, TIMER_STOPPABLE)
+	det_timer = addtimer(CALLBACK(src, PROC_REF(prime)), det_time, TIMER_STOPPABLE)
 	notify_ai_hazard()
 	return TRUE
 
