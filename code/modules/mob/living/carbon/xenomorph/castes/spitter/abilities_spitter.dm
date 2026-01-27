@@ -212,7 +212,6 @@
 GLOBAL_LIST_INIT(globadier_images_list, list(
 	ACID_GRENADE = image('icons/xeno/effects.dmi', icon_state = "acid"),
 	RESIN_GRENADE = image('icons/xeno/effects.dmi', icon_state = "sticky"),
-	GAS_GRENADE = image('icons/effects/effects.dmi', icon_state = "smoke"),
 	HEAL_GRENADE = image('icons/effects/effects.dmi', icon_state = "mech_toxin"),
 ))
 
@@ -228,9 +227,9 @@ GLOBAL_LIST_INIT(globadier_images_list, list(
 		KEYBINDING_ALTERNATE = COMSIG_XENOABILITY_PICK_GRENADE,
 	)
 	///The current amount of grenades this ability has
-	var/current_grenades = 5
+	var/current_grenades = 6
 	///The max amount of grenades this ability can store
-	var/max_grenades = 5
+	var/max_grenades = 6
 	///The timer untill we regenerate another grenade
 	var/timer
 
@@ -407,25 +406,6 @@ GLOBAL_LIST_INIT(globadier_images_list, list(
 		for(var/x in 1 to 6)
 			throwloc = get_step(throwloc, owner.dir)
 			owner.throw_at(throwloc, 6, 1.6, src, TRUE)
-	qdel(src)
-
-// ***************************************
-// *********** Gas Grenade
-// ***************************************
-
-/obj/item/explosive/grenade/globadier/gas
-	name = "gas grenade"
-	desc = "A smoking ball of acid"
-	greyscale_colors = "#be340a"
-	det_time = 1.5 SECONDS
-	minetype = /obj/structure/xeno/acid_mine/neuro_mine
-	select_message = "Spreads thin neurotoxin gas over a large area, when detonated."
-	mine_message = "Spreads thick neurotoxin gas when detonated, and injects its victim with neurotoxin."
-
-/obj/item/explosive/grenade/globadier/gas/prime()
-	var/datum/effect_system/smoke_spread/xeno/neuro/light/A = new(get_turf(src))
-	A.set_up(2, src)
-	A.start()
 	qdel(src)
 
 // ***************************************
