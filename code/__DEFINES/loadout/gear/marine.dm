@@ -16,6 +16,7 @@ GLOBAL_LIST_INIT(marine_gear_listed_products, list(
 	/obj/structure/closet/crate/mortar_ammo/mortar_kit = list(CAT_MARINE, "Mortar kit", 45, "orange3"),
 	/obj/structure/closet/crate/mortar_ammo/howitzer_kit = list(CAT_MARINE, "Howitzer kit", 45, "orange3"),
 	/obj/structure/closet/crate/mortar_ammo/mlrs_kit = list(CAT_MARINE, "MLRS kit", 45, "orange3"),
+	/obj/item/reagent_containers/hypospray/autoinjector/sulfasalazine = list(CAT_MARINE, "Sulfasalazine AutoInjector", 30, "cyan"),
 	/obj/item/reagent_containers/hypospray/autoinjector/oxycodone = list(CAT_MARINE, "Oxycodone autoinjector", 10, "cyan"),
 	/obj/item/reagent_containers/hypospray/autoinjector/synaptizine	 = list(CAT_MARINE, "Synaptizine autoinjector", 15, "cyan"),
 	/obj/vehicle/ridden/motorbike = list(CAT_MARINE, "Bike", 45, "blue"),

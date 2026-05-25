@@ -330,7 +330,7 @@
 
 /obj/item/reagent_containers/hypospray/autoinjector/sulfasalazine
 	name = "sulfasalazine autoinjector"
-	desc = "An auto-injector loaded with sulfasalazine, an agent that restores itself at the expense of other reagents and purge them, but has a great healing effect"
+	desc = "An auto-injector loaded with sulfasalazine, an agent that restores itself at the expense of other reagents and purge them, but has a great healing effect. WARNING: It embeds itself into the deepest tissues of the body, making it impossible to remove from the user after administration."
 	icon_state = "autoinjector-6"
 	amount_per_transfer_from_this = 1
 	volume = 1
